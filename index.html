@@ -1,47 +1,54 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CaseForge PRO - FINAL 8 Fancy + All Tools</title>
+<title>CaseForge PRO FINAL - Hindi + Decoration</title>
 <style>
-:root{--bg:#08080a;--card:#121214;--card2:#1e1e24;--border:#2a2a32;--text:#e5e5e5;--muted:#9ca3af;--accent:#a78bfa}
+:root{--bg:#08080a;--card:#121214;--card2:#1e1e24;--border:#2a2a32;--text:#e5e5e5;--muted:#9ca3af;--accent:#a78bfa;--ok:#22c55e}
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui}
 body{background:var(--bg);color:var(--text)}
-.header{position:sticky;top:0;z-index:10;background:rgba(8,8,10,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 18px;display:flex;justify-content:space-between}
-.logo{font-size:20px;font-weight:900;background:linear-gradient(90deg,#a78bfa,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.container{max-width:1150px;margin:0 auto;padding:15px;display:grid;grid-template-columns:1fr 330px;gap:15px}
+.header{position:sticky;top:0;z-index:10;background:rgba(8,8,10,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:12px 15px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:900;background:linear-gradient(90deg,#a78bfa,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.container{max-width:1150px;margin:0 auto;padding:12px;display:grid;grid-template-columns:1fr 320px;gap:12px}
 @media(max-width:950px){.container{grid-template-columns:1fr}}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px}
-.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
-.tab{padding:7px 12px;background:var(--card2);border:1px solid var(--border);border-radius:99px;font-size:11px;font-weight:700;cursor:pointer}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px}
+.tabs{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0}
+.tab{padding:6px 10px;background:var(--card2);border:1px solid var(--border);border-radius:99px;font-size:11px;font-weight:700;cursor:pointer}
 .tab.active{background:var(--accent);color:#000}
-textarea{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:14px;min-height:130px;margin:8px 0}
-textarea:focus{border-color:var(--accent);outline:none}
-.btn{padding:8px 12px;border-radius:8px;border:0;font-weight:700;font-size:11px;cursor:pointer;margin:2px}
+textarea{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px;font-size:14px;min-height:120px;margin:6px 0}
+.btn{padding:7px 11px;border-radius:8px;border:0;font-weight:700;font-size:11px;cursor:pointer;margin:2px;transition:.2s}
 .btn-p{background:var(--accent);color:#000}.btn-s{background:var(--card2);color:var(--text);border:1px solid var(--border)}
+.btn-ok{background:var(--ok)!important;color:#000!important}
 .btn-row{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
-.drop{border:2px dashed var(--accent);border-radius:12px;padding:18px;text-align:center;margin:10px 0;background:var(--card2);cursor:pointer}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(167,139,250,.7)}70%{box-shadow:0 0 0 15px rgba(167,139,250,0)}100%{box-shadow:0 0 0 0 rgba(167,139,250,0)}}
-.cta{display:block;text-align:center;padding:16px;background:linear-gradient(90deg,#a78bfa,#22d3ee);color:#000;font-weight:900;border-radius:12px;text-decoration:none;margin:14px 0;animation:pulse 2s infinite}
-.fancy-item{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px;margin:8px 0}
-.fancy-text{font-size:15px;margin:6px 0;word-break:break-all}
-.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.tool-link{padding:8px;background:var(--card2);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);font-size:11px;font-weight:700;text-align:center}
-.ad{border:1px dashed #555;color:#777;text-align:center;padding:12px;border-radius:10px;margin:10px 0;font-size:11px}
+.drop{border:2px dashed var(--accent);border-radius:12px;padding:16px;text-align:center;margin:8px 0;background:var(--card2);cursor:pointer}
+.cta{display:block;text-align:center;padding:14px;background:linear-gradient(90deg,#a78bfa,#22d3ee);color:#000;font-weight:900;border-radius:10px;text-decoration:none;margin:10px 0}
+.fancy-item{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px;margin:7px 0}
+.ad{border:1px dashed #555;color:#777;text-align:center;padding:10px;border-radius:10px;margin:8px 0;font-size:11px}
 .small{font-size:11px;color:var(--muted)}
+.lang{padding:6px 10px;border-radius:99px;background:var(--card2);border:1px solid var(--border);font-size:11px;cursor:pointer}
+.explain{background:#15151a;border-left:3px solid var(--accent);padding:10px;border-radius:8px;margin:8px 0;font-size:11px;line-height:1.6}
 </style>
 </head>
 <body>
-<div class="header"><div class="logo">CaseForge PRO ⚡ FINAL</div><button class="btn btn-s" onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')=='dark'?'light':'dark')">🌗</button></div>
-<div style="max-width:1150px;margin:0 auto;padding:0 15px"><div class="ad">AdSense Header</div></div>
+<div class="header">
+<div class="logo">CaseForge PRO ⚡</div>
+<div><span class="lang" onclick="setLang('en')" id="l-en">English</span> <span class="lang" onclick="setLang('hi')" id="l-hi">हिन्दी</span> <button class="btn btn-s" onclick="document.documentElement.style.filter=document.documentElement.style.filter?'':'invert(0.9) hue-rotate(180deg)'">🌗</button></div>
+</div>
+
+<div style="max-width:1150px;margin:0 auto;padding:0 12px"><div class="ad">AdSense Header</div></div>
 
 <div class="container">
 <div>
 <div class="card">
-<div class="drop" onclick="document.getElementById('fileIn').click()" ondrop="handleDrop(event)" ondragover="event.preventDefault()">📁 Drag & Drop OR Click to Upload (Multiple)<input type="file" id="fileIn" hidden multiple accept=".txt,.csv,.json" onchange="handleFiles(this.files)"></div>
+<div class="explain" id="explainBox">
+<b id="expTitle">How Binary/Hexa Works (Clear Guide):</b><br>
+<span id="expText">If you type binary like <code>01001000 01101001</code> → Click <b>Binary→Text</b> to get <b>Hi</b> or <b>Binary→Hexa</b> to get <b>48 69</b>. Direct buttons below do it in 1 click! Drag & Drop optional.</span>
+</div>
+
+<div class="drop" onclick="document.getElementById('fileIn').click()" ondrop="handleDrop(event)" ondragover="event.preventDefault()">📁 Drag & Drop OR Click<input type="file" id="fileIn" hidden multiple accept=".txt,.csv,.json" onchange="handleFiles(this.files)"></div>
 
 <div class="tabs">
-<div class="tab active" onclick="setM('case',this)">Case Tools</div>
+<div class="tab active" onclick="setM('case',this)">Case</div>
 <div class="tab" onclick="setM('textBin',this)">Text→Binary</div>
 <div class="tab" onclick="setM('binary',this)">Binary→Text</div>
 <div class="tab" onclick="setM('textHex',this)">Text→Hexa</div>
@@ -50,101 +57,105 @@ textarea:focus{border-color:var(--accent);outline:none}
 <div class="tab" onclick="setM('hexBin',this)">Hexa→Binary</div>
 </div>
 
-<label class="small">INPUT - Type or Paste (Ctrl+V) - No need drag drop:</label>
+<label class="small" id="inpLabel">INPUT - Type / Paste Hindi or English:</label>
+<textarea id="inp" placeholder="Type here - hello world / नमस्ते दुनिया / 01001000" oninput="autoGen()">hello world test</textarea>
 <div class="btn-row"><button class="btn btn-s" onclick="pasteClip()">📋 Paste</button><button class="btn btn-s" onclick="clearAll()">Clear</button></div>
-<textarea id="inp" placeholder="Type or paste here... Example: hello world test OR 01001000 01100101 OR 48656c6c6f" oninput="autoConvert()">hello world test case</textarea>
 
-<div class="btn-row"><button class="btn btn-p" onclick="doConvert()">⚡ GENERATE OUTPUT</button></div>
-<div class="small" id="stats"></div>
+<!-- DIRECT 1-CLICK CONVERSION BUTTONS (Aapne jaisa bola) -->
+<div class="small" style="font-weight:900;margin-top:8px" id="directLabel">DIRECT CONVERT - Binary/Hexa pe click karte hi result:</div>
+<div class="btn-row">
+<button class="btn btn-p" onclick="directConvert('textBin')">Text → Binary</button>
+<button class="btn btn-p" onclick="directConvert('binary')">Binary → Text</button>
+<button class="btn btn-p" onclick="directConvert('textHex')">Text → Hexa</button>
+<button class="btn btn-p" onclick="directConvert('hex')">Hexa → Text</button>
+<button class="btn btn-p" onclick="directConvert('binHex')">Binary → Hexa</button>
+<button class="btn btn-p" onclick="directConvert('hexBin')">Hexa → Binary</button>
+</div>
 
-<label class="small">MAIN OUTPUT - Har format ka result yahan:</label>
+<label class="small" id="outLabel">OUTPUT:</label>
 <textarea id="out" readonly style="border:2px solid #a78bfa"></textarea>
 <div class="btn-row">
-<button class="btn btn-s" onclick="copyAny('out')">📋 Copy</button>
+<button class="btn btn-s" id="btn-out-copy" onclick="copyBtn(this,'out')">📋 Copy</button>
 <button class="btn btn-s" onclick="downloadAny('out')">💾 Download</button>
 <button class="btn btn-s" onclick="shareAny('out')">📤 Share</button>
-<span class="small">🎨 <input type="color" value="#e5e5e5" onchange="document.getElementById('out').style.color=this.value" style="width:28px;height:20px"></span>
 </div>
 
-<div class="small" style="margin-top:10px;font-weight:900">CASE FORMATS (Sahi format me):</div>
+<div class="small" style="font-weight:900;margin-top:10px">CASES:</div>
 <div class="btn-row">
-<button class="btn btn-s" onclick="makeCase('pascal')">PascalCase<br>HelloWorld</button>
-<button class="btn btn-s" onclick="makeCase('camel')">camelCase<br>helloWorld</button>
-<button class="btn btn-s" onclick="makeCase('snake')">snake_case<br>hello_world</button>
-<button class="btn btn-s" onclick="makeCase('kebab')">kebab-case<br>hello-world</button>
+<button class="btn btn-s" onclick="makeCase('pascal')">PascalCase</button>
+<button class="btn btn-s" onclick="makeCase('snake')">snake_case</button>
+<button class="btn btn-s" onclick="makeCase('kebab')">kebab-case</button>
+<button class="btn btn-s" onclick="makeCase('camel')">camelCase</button>
 <button class="btn btn-s" onclick="makeCase('upper')">UPPER</button>
 <button class="btn btn-s" onclick="makeCase('lower')">lower</button>
-<button class="btn btn-s" onclick="makeCase('constant')">CONSTANT_CASE</button>
-<button class="btn btn-s" onclick="makeCase('dot')">dot.case</button>
-<button class="btn btn-s" onclick="makeCase('path')">path/case</button>
 <button class="btn btn-s" onclick="makeCase('title')">Title Case</button>
+<button class="btn btn-s" onclick="makeCase('underline')">U̲n̲d̲e̲r̲l̲i̲n̲e̲</button>
+<button class="btn btn-s" onclick="makeCase('overline')">O̅v̅e̅r̅l̅i̅n̅e̅</button>
+<button class="btn btn-s" onclick="makeCase('strike')">S̶t̶r̶i̶k̶e̶</button>
 </div>
 
-<a href="https://convertmytext.blogspot.com/" target="_blank" class="cta">🚀 More Tools - ConvertMyText Blog</a>
-<div class="ad">AdSense Middle</div>
+<a href="https://convertmytext.blogspot.com/" target="_blank" class="cta">🚀 More Tools - ConvertMyText</a>
 </div>
 
-<!-- 8 FANCY GENERATOR WITH COPY DOWNLOAD SHARE -->
 <div class="card">
-<h3>✨ 8 Fancy Text Generator - Har ek pe Copy/Download/Share</h3>
-<p class="small">Upar type karte hi 8 styles generate honge</p>
+<h3>✨ 8 Fancy Text (Copy/Download/Share har ek pe)</h3>
 <div id="fancyBox"></div>
 </div>
 </div>
 
 <div>
-<div class="card"><h4>🛠️ Other Tools</h4><div class="tool-grid">
-<a href="https://convertmytext.blogspot.com/" target="_blank" class="tool-link">Case Converter</a>
-<a href="https://convertmytext.blogspot.com/" target="_blank" class="tool-link">Word Counter</a>
-<a href="https://convertmytext.blogspot.com/" target="_blank" class="tool-link">Lorem Generator</a>
-<a href="https://convertmytext.blogspot.com/" target="_blank" class="tool-link">Binary Tools</a>
-<a href="https://convertmytext.blogspot.com/" target="_blank" class="tool-link">Hex Tools</a>
-<a href="https://convertmytext.blogspot.com/" target="_blank" class="tool-link">Fancy Text</a>
-<a href="https://lorem-pro-tool.vercel.app" target="_blank" class="tool-link">Lorem PRO</a>
-<a href="https://caseforge-pro.vercel.app" target="_blank" class="tool-link">CaseForge PRO</a>
+<div class="card"><h4>🛠️ Other Tools</h4><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">
+<a href="https://convertmytext.blogspot.com/" target="_blank" class="btn btn-s" style="text-decoration:none;text-align:center">Case Converter</a>
+<a href="https://convertmytext.blogspot.com/" target="_blank" class="btn btn-s" style="text-decoration:none;text-align:center">Binary Tools</a>
+<a href="https://convertmytext.blogspot.com/" target="_blank" class="btn btn-s" style="text-decoration:none;text-align:center">Hex Tools</a>
+<a href="https://convertmytext.blogspot.com/" target="_blank" class="btn btn-s" style="text-decoration:none;text-align:center">Fancy Text</a>
 </div></div>
-<div class="card"><h4>📊 Live Stats</h4><div id="freq" class="small"></div></div>
 <div class="ad">AdSense Sidebar</div>
 </div>
 </div>
 
 <script>
-let mode='case';
+let mode='case', curLang='en';
+const dict={
+ en:{inp:"INPUT - Type / Paste Hindi or English:",out:"OUTPUT:",direct:"DIRECT CONVERT - Binary/Hexa pe click karte hi result:",expT:"How Binary/Hexa Works:",exp:"If you type binary like 01001000 01101001 → Click Binary→Text to get Hi or Binary→Hexa to get 48 69. Direct buttons do it in 1 click! Type/Paste works, drag-drop optional."},
+ hi:{inp:"इनपुट - हिन्दी या English टाइप / पेस्ट करें:",out:"आउटपुट:",direct:"डायरेक्ट कन्वर्ट - बटन दबाते ही रिजल्ट:",expT:"Binary/Hexa कैसे काम करता है:",exp:"अगर आप 01001000 01101001 जैसा binary लिखते हैं → Binary→Text दबाएं तो Hi मिलेगा, Binary→Hexa दबाएं तो 48 69 मिलेगा। नीचे वाले बटन 1 क्लिक में काम करते हैं! टाइप/पेस्ट से काम होगा।"}
+};
+function setLang(l){curLang=l;document.getElementById('inpLabel').innerText=dict[l].inp;document.getElementById('outLabel').innerText=dict[l].out;document.getElementById('directLabel').innerText=dict[l].direct;document.getElementById('expTitle').innerText=dict[l].expT;document.getElementById('expText').innerText=dict[l].exp;document.getElementById('l-en').style.background=l==='en'?'#a78bfa':'var(--card2)';document.getElementById('l-hi').style.background=l==='hi'?'#a78bfa':'var(--card2)';}
 function setM(m,el){mode=m;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');doConvert()}
 
-function parseWords(s){return s.trim().split(/[\s_\-]+/).filter(Boolean).map(w=>w.replace(/[^a-zA-Z0-9]/g,'')).filter(Boolean)}
+function parseWords(s){return s.trim().split(/[\s_\-]+/).filter(Boolean).map(w=>w.replace(/[^a-zA-Z0-9\u0900-\u097F]/g,'')).filter(Boolean)}
 
 function makeCase(t){
- let src=document.getElementById('inp').value; if(!src.trim()){alert('Input likho pehle!');return}
- let words=parseWords(src); let out='';
+ let src=document.getElementById('inp').value; if(!src.trim())return; let words=parseWords(src); let out='';
  if(t==='pascal') out=words.map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join('');
- else if(t==='camel') out=words.map((w,i)=>i===0?w.toLowerCase():w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join('');
  else if(t==='snake') out=words.map(w=>w.toLowerCase()).join('_');
  else if(t==='kebab') out=words.map(w=>w.toLowerCase()).join('-');
+ else if(t==='camel') out=words.map((w,i)=>i===0?w.toLowerCase():w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join('');
  else if(t==='upper') out=src.toUpperCase();
  else if(t==='lower') out=src.toLowerCase();
- else if(t==='constant') out=words.map(w=>w.toUpperCase()).join('_');
- else if(t==='dot') out=words.map(w=>w.toLowerCase()).join('.');
- else if(t==='path') out=words.map(w=>w.toLowerCase()).join('/');
  else if(t==='title') out=src.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());
- document.getElementById('out').value=out; updateStats();
+ else if(t==='underline') out=src.split('').map(c=>c+'\u0332').join(''); // U̲n̲d̲e̲r̲
+ else if(t==='overline') out=src.split('').map(c=>c+'\u0305').join(''); // O̅v̅e̅r̅
+ else if(t==='strike') out=src.split('').map(c=>c+'\u0336').join(''); // S̶t̶r̶i̶k̶e̶
+ document.getElementById('out').value=out;
 }
+
+function directConvert(type){mode=type; doConvert(); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));}
 
 function doConvert(){
  let inp=document.getElementById('inp').value.trim(); if(!inp){document.getElementById('out').value='';return}
- let out='';
- try{
+ let out=''; try{
   if(mode==='textBin') out=inp.split('').map(c=>c.charCodeAt(0).toString(2).padStart(8,'0')).join(' ');
-  else if(mode==='binary') out=inp.split(/[\s]+/).map(b=>{let v=parseInt(b,2); return isNaN(v)?'':String.fromCharCode(v)}).join('');
+  else if(mode==='binary') out=inp.split(/[\s]+/).map(b=>{let v=parseInt(b,2);return isNaN(v)?'':String.fromCharCode(v)}).join('');
   else if(mode==='textHex') out=inp.split('').map(c=>c.charCodeAt(0).toString(16).padStart(2,'0')).join(' ');
   else if(mode==='hex') out=(inp.replace(/\s/g,'').match(/.{1,2}/g)||[]).map(h=>String.fromCharCode(parseInt(h,16))).join('');
   else if(mode==='binHex') out=inp.split(/[\s]+/).map(b=>parseInt(b,2).toString(16).padStart(2,'0')).join(' ');
   else if(mode==='hexBin') out=inp.split(/[\s]+/).map(h=>parseInt(h,16).toString(2).padStart(8,'0')).join(' ');
   else out=inp;
  }catch(e){out='Error: '+e.message}
- document.getElementById('out').value=out; updateStats();
+ document.getElementById('out').value=out; genFancy();
 }
-function autoConvert(){doConvert(); genFancy()}
+function autoGen(){doConvert(); genFancy();}
 
 function genFancy(){
  let t=document.getElementById('inp').value; if(!t.trim()){document.getElementById('fancyBox').innerHTML='<span class="small">Type to generate...</span>';return}
@@ -152,30 +163,32 @@ function genFancy(){
   {name:'1. Bold', fn:s=>s.replace(/[A-Za-z]/g,c=>String.fromCodePoint(c.charCodeAt(0)<97?0x1D400+c.charCodeAt(0)-65:0x1D41A+c.charCodeAt(0)-97))},
   {name:'2. Italic', fn:s=>s.replace(/[A-Za-z]/g,c=>String.fromCodePoint(c.charCodeAt(0)<97?0x1D434+c.charCodeAt(0)-65:0x1D44E+c.charCodeAt(0)-97))},
   {name:'3. Bold Italic', fn:s=>s.replace(/[A-Za-z]/g,c=>String.fromCodePoint(c.charCodeAt(0)<97?0x1D468+c.charCodeAt(0)-65:0x1D482+c.charCodeAt(0)-97))},
-  {name:'4. Monospace', fn:s=>s.replace(/[A-Za-z]/g,c=>String.fromCodePoint(c.charCodeAt(0)<97?0x1D670+c.charCodeAt(0)-65:0x1D68A+c.charCodeAt(0)-97))},
-  {name:'5. Double Struck', fn:s=>s.replace(/[A-Za-z]/g,c=>String.fromCodePoint(c.charCodeAt(0)<97?0x1D538+c.charCodeAt(0)-65:0x1D552+c.charCodeAt(0)-97))},
-  {name:'6. Small Caps', fn:s=>s.toUpperCase()},
-  {name:'7. Wide Text', fn:s=>s.split('').join(' ')},
-  {name:'8. Upside Down', fn:s=>s.split('').reverse().join('').replace(/a/g,'ɐ').replace(/e/g,'ǝ')},
+  {name:'4. Underline Deco', fn:s=>s.split('').map(c=>c+'\u0332').join('')},
+  {name:'5. Overline Deco', fn:s=>s.split('').map(c=>c+'\u0305').join('')},
+  {name:'6. Strike Deco', fn:s=>s.split('').map(c=>c+'\u0336').join('')},
+  {name:'7. Wide', fn:s=>s.split('').join(' ')},
+  {name:'8. Small Caps', fn:s=>s.toUpperCase()},
  ];
  let html='';
  styles.forEach((st,i)=>{
-  let v=st.fn(t);
-  let id='fancy_'+i;
-  html+=`<div class="fancy-item"><div class="small">${st.name}</div><div class="fancy-text" id="${id}">${v}</div><div class="btn-row"><button class="btn btn-s" onclick="copyAny('${id}')">📋 Copy</button><button class="btn btn-s" onclick="downloadAny('${id}')">💾 Download</button><button class="btn btn-s" onclick="shareAny('${id}')">📤 Share</button></div></div>`;
+  let v=st.fn(t); let id='f_'+i;
+  html+=`<div class="fancy-item"><div class="small">${st.name}</div><div id="${id}" style="font-size:14px;margin:4px 0;word-break:break-all">${v}</div><div><button class="btn btn-s" onclick="copyBtn(this,'${id}')">📋 Copy</button><button class="btn btn-s" onclick="downloadAny('${id}')">💾 Download</button><button class="btn btn-s" onclick="shareAny('${id}')">📤 Share</button></div></div>`;
  });
  document.getElementById('fancyBox').innerHTML=html;
 }
 function getVal(id){let el=document.getElementById(id); return el.value!==undefined?el.value:el.innerText}
-function copyAny(id){let txt=getVal(id); navigator.clipboard.writeText(txt); alert('Copied: '+txt.slice(0,30))}
+function copyBtn(btn,id){
+ let txt=getVal(id); navigator.clipboard.writeText(txt);
+ let old=btn.innerText; btn.innerText='Copied ✓'; btn.classList.add('btn-ok');
+ setTimeout(()=>{btn.innerText=old; btn.classList.remove('btn-ok')},1500);
+}
 function downloadAny(id){let txt=getVal(id); let blob=new Blob([txt],{type:'text/plain'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=id+'.txt'; a.click()}
-async function shareAny(id){let txt=getVal(id); if(navigator.share){try{await navigator.share({text:txt})}catch{}} else copyAny(id)}
-async function pasteClip(){try{let txt=await navigator.clipboard.readText(); document.getElementById('inp').value=txt; autoConvert()}catch{alert('Ctrl+V se paste karo')}}
-function clearAll(){document.getElementById('inp').value='';document.getElementById('out').value='';autoConvert()}
-function handleFiles(files){let txt='',c=0; Array.from(files).forEach(f=>{let r=new FileReader(); r.onload=e=>{txt+=e.target.result+'\n'; c++; if(c===files.length){document.getElementById('inp').value=txt; autoConvert()}}; r.readAsText(f)})}
+async function shareAny(id){let txt=getVal(id); if(navigator.share){try{await navigator.share({text:txt})}catch{}} else copyBtn(document.querySelector('button'),id)}
+async function pasteClip(){try{let txt=await navigator.clipboard.readText(); document.getElementById('inp').value=txt; autoGen()}catch{}}
+function clearAll(){document.getElementById('inp').value='';document.getElementById('out').value='';genFancy()}
+function handleFiles(files){let txt='',c=0; Array.from(files).forEach(f=>{let r=new FileReader(); r.onload=e=>{txt+=e.target.result+'\n'; c++; if(c===files.length){document.getElementById('inp').value=txt; autoGen()}}; r.readAsText(f)})}
 function handleDrop(e){e.preventDefault(); handleFiles(e.dataTransfer.files)}
-function updateStats(){let t=document.getElementById('inp').value; document.getElementById('stats').innerText=(t.trim().split(/\s+/).filter(Boolean).length||0)+' words | '+t.length+' chars'}
-autoConvert();
+autoGen(); setLang('en');
 </script>
 </body>
 </html>
