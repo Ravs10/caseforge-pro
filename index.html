@@ -1,1 +1,78 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CaseForge PRO - Binary, Hex & Case Converter</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:#0a0a0a;color:#fff;padding:15px}
+.container{max-width:900px;margin:0 auto}
+h1{text-align:center;margin:20px 0;background:linear-gradient(90deg,#a78bfa,#22d3ee);-webkit-background-clip:text;color:transparent;font-size:28px}
+.tabs{display:flex;gap:8px;overflow-x:auto;margin-bottom:15px}
+.tab{padding:10px 14px;background:#1a1a1a;border:1px solid #333;border-radius:8px;white-space:nowrap;cursor:pointer}
+.tab.active{background:#a78bfa;color:#000;font-weight:700}
+.box{background:#161616;border:1px solid #2a2a2a;border-radius:12px;padding:15px}
+textarea{width:100%;background:#0f0f0f;color:#fff;border:1px solid #333;border-radius:8px;padding:12px;min-height:140px;margin:10px 0;font-size:14px}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+button{padding:10px 16px;border-radius:8px;border:0;cursor:pointer;font-weight:600}
+.primary{background:#a78bfa;color:#000}
+.secondary{background:#222;color:#fff;border:1px solid #333}
+.stats{font-size:12px;color:#888;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>CaseForge PRO ⚡</h1>
+<div class="tabs">
+<div class="tab active" onclick="setMode('case')">Case Convert</div>
+<div class="tab" onclick="setMode('binary')">Binary → Text</div>
+<div class="tab" onclick="setMode('hex')">Hex → Text</div>
+<div class="tab" onclick="setMode('binaryEncode')">Text → Binary</div>
+<div class="tab" onclick="setMode('hexEncode')">Text → Hex</div>
+</div>
+<div class="box">
+<textarea id="input" placeholder="Yahan text paste karo..."></textarea>
+<div class="btns">
+<button class="primary" onclick="convert()">Convert</button>
+<button class="secondary" onclick="copyOut()">Copy</button>
+<button class="secondary" onclick="clearAll()">Clear</button>
+<input type="file" id="fileInput" style="display:none" onchange="handleFile(this)">
+<button class="secondary" onclick="document.getElementById('fileInput').click()">Bulk Upload (.txt)</button>
+</div>
+<div class="stats" id="stats">0 words | 0 chars</div>
+<textarea id="output" placeholder="Output yahan ayega..." readonly></textarea>
+<div class="btns" style="margin-top:10px">
+<button class="secondary" onclick="toUpper()">UPPER</button>
+<button class="secondary" onclick="toLower()">lower</button>
+<button class="secondary" onclick="toTitle()">Title Case</button>
+</div>
+</div>
+</div>
+<script>
+let mode='case';
+function setMode(m){mode=m;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));event.target.classList.add('active');document.getElementById('output').value='';}
+function convert(){
+ let inp=document.getElementById('input').value;
+ let out='';
+ try{
+  if(mode==='binary'){ out=inp.trim().split(/\s+/).map(b=>String.fromCharCode(parseInt(b,2))).join('');}
+  else if(mode==='hex'){ out=inp.trim().replace(/\s+/g,'').match(/.{1,2}/g).map(h=>String.fromCharCode(parseInt(h,16))).join('');}
+  else if(mode==='binaryEncode'){ out=inp.split('').map(c=>c.charCodeAt(0).toString(2).padStart(8,'0')).join(' ');}
+  else if(mode==='hexEncode'){ out=inp.split('').map(c=>c.charCodeAt(0).toString(16).padStart(2,'0')).join(' ');}
+  else{ out=inp;}
+ }catch(e){out='Error: Invalid '+mode+' format';}
+ document.getElementById('output').value=out;updateStats();
+}
+function toUpper(){let o=document.getElementById('output');o.value=o.value.toUpperCase();}
+function toLower(){let o=document.getElementById('output');o.value=o.value.toLowerCase();}
+function toTitle(){let o=document.getElementById('output');o.value=o.value.toLowerCase().replace(/\b\w/g,s=>s.toUpperCase());}
+function copyOut(){navigator.clipboard.writeText(document.getElementById('output').value);alert('Copied!');}
+function clearAll(){document.getElementById('input').value='';document.getElementById('output').value='';}
+function handleFile(inp){let file=inp.files[0];if(!file)return;let r=new FileReader();r.onload=e=>{document.getElementById('input').value=e.target.result;convert();};r.readAsText(file);}
+document.getElementById('input').addEventListener('input',()=>{let t=document.getElementById('input').value;document.getElementById('stats').innerText=t.split(/\s+/).filter(w=>w).length+' words | '+t.length+' chars';});
+function updateStats(){}
+</script>
+</body>
+</html>
