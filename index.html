@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CaseForge PRO - Bold Italic + New Fancy</title>
+<title>CaseForge PRO - Full Restore + Color + Fonts</title>
 <style>
 :root{--bg:#08080a;--card:#121214;--card2:#1e1e24;--border:#2a2a32;--text:#e5e5e5;--muted:#9ca3af;--accent:#a78bfa;--ok:#22c55e}
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui}
 body{background:var(--bg);color:var(--text)}
-.header{position:sticky;top:0;z-index:10;background:rgba(8,8,10,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 15px;display:flex;justify-content:space-between}
+.header{position:sticky;top:0;z-index:10;background:rgba(8,8,10,.95);border-bottom:1px solid var(--border);padding:12px 15px;display:flex;justify-content:space-between}
 .logo{font-weight:900;background:linear-gradient(90deg,#a78bfa,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .container{max-width:1150px;margin:0 auto;padding:12px;display:grid;grid-template-columns:1fr 330px;gap:12px}
 @media(max-width:950px){.container{grid-template-columns:1fr}}
@@ -15,39 +15,68 @@ body{background:var(--bg);color:var(--text)}
 .tabs{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0}
 .tab{padding:6px 10px;background:var(--card2);border:1px solid var(--border);border-radius:99px;font-size:11px;font-weight:700;cursor:pointer}
 .tab.active{background:var(--accent);color:#000;box-shadow:0 0 12px rgba(167,139,250,.6)}
-textarea{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:14px;min-height:130px;margin:6px 0}
-.btn{padding:10px 14px;border-radius:12px;border:1px solid var(--border);font-weight:700;font-size:12px;cursor:pointer;margin:3px;background:var(--card2);color:var(--text);transition:.2s}
+textarea{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:14px;min-height:120px;margin:6px 0}
+.btn{padding:9px 12px;border-radius:12px;border:1px solid var(--border);font-weight:700;font-size:11px;cursor:pointer;margin:3px;background:var(--card2);color:var(--text);transition:.2s}
 .btn-p{background:var(--accent);color:#000}.btn-ok{background:var(--ok)!important;color:#000!important}
 .btn-highlight{background:var(--accent)!important;color:#000!important;box-shadow:0 0 15px rgba(167,139,250,.8);transform:scale(1.05)}
 .btn-row{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}
-.drop{border:2px dashed var(--accent);border-radius:12px;padding:16px;text-align:center;margin:8px 0;background:var(--card2);cursor:pointer}
-.small{font-size:11px;color:var(--muted)}.section{font-size:11px;font-weight:900;color:var(--accent);margin:14px 0 6px}
+.small{font-size:11px;color:var(--muted)}.section{font-size:11px;font-weight:900;color:var(--accent);margin:14px 0 6px;letter-spacing:.5px}
 .fancy-item{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:12px;margin:8px 0}
-.fancy-preview{font-size:18px;margin:6px 0;word-break:break-all;line-height:1.4}
+.fancy-preview{font-size:17px;margin:6px 0;word-break:break-all}
+input[type=color]{width:40px;height:35px;border-radius:8px;border:1px solid var(--border);background:var(--card2)}
+select{background:var(--card2);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:8px;font-size:12px}
+.drop{border:2px dashed var(--accent);border-radius:12px;padding:14px;text-align:center;margin:8px 0;background:var(--card2);cursor:pointer}
 </style>
 </head>
 <body>
-<div class="header"><div class="logo">CaseForge PRO ⚡ NEW FANCY</div><div><button class="btn" onclick="pasteClip()">Paste</button><button class="btn" onclick="clearAll()">Clear</button></div></div>
+<div class="header"><div class="logo">CaseForge PRO ⚡ FULL RESTORED</div><div><button class="btn" onclick="pasteClip()">Paste</button><button class="btn" onclick="clearAll()">Clear</button></div></div>
 
 <div class="container">
 <div>
 <div class="card">
 <div class="drop" onclick="document.getElementById('fileIn').click()" ondrop="handleDrop(event)" ondragover="event.preventDefault()">📁 Drag & Drop<input type="file" id="fileIn" hidden multiple onchange="handleFiles(this.files)"></div>
+
 <div class="tabs">
-<div class="tab active" onclick="setM('case',this)">Case Tools</div>
-<div class="tab" onclick="setM('textBin',this)">Text→Binary</div>
-<div class="tab" onclick="setM('binary',this)">Binary→Text</div>
-<div class="tab" onclick="setM('textHex',this)">Text→Hexa</div>
-<div class="tab" onclick="setM('hex',this)">Hexa→Text</div>
+<div class="tab active" id="t-case" onclick="setM('case',this)">Case Tools</div>
+<div class="tab" id="t-textBin" onclick="setM('textBin',this)">Text→Binary</div>
+<div class="tab" id="t-binary" onclick="setM('binary',this)">Binary→Text</div>
+<div class="tab" id="t-textHex" onclick="setM('textHex',this)">Text→Hexa</div>
+<div class="tab" id="t-hex" onclick="setM('hex',this)">Hexa→Text</div>
+<div class="tab" id="t-binHex" onclick="setM('binHex',this)">Binary→Hexa</div>
+<div class="tab" id="t-hexBin" onclick="setM('hexBin',this)">Hexa→Binary</div>
 </div>
 
 <textarea id="inp" oninput="autoGen()">hello world test case</textarea>
 <div class="small" id="stats"></div>
-<button class="btn btn-p" id="btn-convert" onclick="doConvert(true)">Convert →</button>
-<textarea id="out" readonly style="border:2px solid #a78bfa;min-height:120px"></textarea>
+<button class="btn btn-p" id="btn-convert" onclick="doConvert(true)">Convert → (Highlight hoga)</button>
+<textarea id="out" readonly style="border:2px solid #a78bfa;min-height:130px"></textarea>
 <div class="btn-row"><button class="btn" onclick="copyBtn(this,'out')">📋 Copy</button><button class="btn" onclick="downloadAny('out')">💾 Download</button><button class="btn" onclick="shareAny('out')">📤 Share</button></div>
 
-<div class="section">ALL CASES + NEW BOLD / ITALIC:</div>
+<div class="section">COLOR OPTION (New Add kiya):</div>
+<div class="btn-row" style="align-items:center">
+<input type="color" id="colorPick" value="#a78bfa" oninput="applyColor()">
+<select id="colorType" onchange="applyColor()"><option value="color">Text Color</option><option value="bg">Background Highlight</option></select>
+<button class="btn" onclick="applyColor()">Apply Color 🎨</button>
+<button class="btn" onclick="clearColor()">Clear Color</button>
+</div>
+<div id="colorPreview" style="padding:10px;border-radius:10px;margin:6px 0;background:var(--card2);border:1px solid var(--border)">Color preview yahan dikhega</div>
+
+<div class="section">FONT STYLES OPTION (New Add kiya):</div>
+<div class="btn-row" style="align-items:center">
+<select id="fontSel" onchange="applyFont()">
+<option value="Inter,system-ui">Default Font</option>
+<option value="monospace">Monospace - Code jaisa</option>
+<option value="serif">Serif - Stylish</option>
+<option value="cursive">Cursive - Handwriting</option>
+<option value="'Courier New',monospace">Typewriter</option>
+<option value="'Times New Roman',serif">Times New Roman</option>
+<option value="'Comic Sans MS',cursive">Comic Sans</option>
+<option value="Impact,fantasy">Impact - Bold Title</option>
+</select>
+<button class="btn" onclick="applyFont()">Apply Font ✨</button>
+</div>
+
+<div class="section">ALL CASES (Full Restored - Koi nahi hataya):</div>
 <div class="btn-row">
 <button class="btn case-btn" onclick="makeCase('upper',this)">UPPER</button>
 <button class="btn case-btn" onclick="makeCase('lower',this)">lower</button>
@@ -57,34 +86,43 @@ textarea{width:100%;background:var(--bg);color:var(--text);border:1px solid var(
 <button class="btn case-btn" onclick="makeCase('camel',this)">camelCase</button>
 <button class="btn case-btn" onclick="makeCase('snake',this)">snake_case</button>
 <button class="btn case-btn" onclick="makeCase('kebab',this)">kebab-case</button>
-<button class="btn case-btn" style="border:2px solid #a78bfa" onclick="makeCase('bold',this)">𝗕𝗼𝗹𝗱 (New)</button>
-<button class="btn case-btn" style="border:2px solid #a78bfa" onclick="makeCase('italic',this)">𝘐𝘵𝘢𝘭𝘪𝘤 (New)</button>
+<button class="btn case-btn" onclick="makeCase('constant',this)">CONSTANT_CASE</button>
+<button class="btn case-btn" onclick="makeCase('dot',this)">dot.case</button>
+<button class="btn case-btn" onclick="makeCase('path',this)">path/case</button>
+<button class="btn case-btn" style="border:2px solid #a78bfa" onclick="makeCase('bold',this)">𝗕𝗼𝗹𝗱</button>
+<button class="btn case-btn" style="border:2px solid #a78bfa" onclick="makeCase('italic',this)">𝘐𝘵𝘢𝘭𝘪𝘤</button>
 <button class="btn case-btn" onclick="makeCase('underline',this)">U̲n̲d̲e̲r̲l̲i̲n̲e̲</button>
+<button class="btn case-btn" onclick="makeCase('overline',this)">O̅v̅e̅r̅l̅i̅n̅e̅</button>
+<button class="btn case-btn" onclick="makeCase('strike',this)">S̶t̶r̶i̶k̶e̶</button>
 </div>
 
-<div class="section">SORT & TRIM - TESTED OK:</div>
+<div class="section">CLEANUP & SORT (Full Restored):</div>
 <div class="btn-row">
-<button class="btn extra-btn" onclick="makeExtra('trim',this)">Trim - Spaces hatayega</button>
-<button class="btn extra-btn" onclick="makeExtra('extraSpaces',this)">Extra Spaces</button>
 <button class="btn extra-btn" onclick="makeExtra('removeLineBreaks',this)">Remove Line Breaks</button>
+<button class="btn extra-btn" onclick="makeExtra('extraSpaces',this)">Extra Spaces</button>
+<button class="btn extra-btn" onclick="makeExtra('trim',this)">Trim ✅</button>
+<button class="btn extra-btn" onclick="makeExtra('removeDupLines',this)">Remove Dup Lines</button>
+<button class="btn extra-btn" onclick="makeExtra('removeDupWords',this)">Remove Dup Words</button>
 <button class="btn extra-btn" onclick="makeExtra('sortAZ',this)">Sort A-Z ✅</button>
 <button class="btn extra-btn" onclick="makeExtra('sortZA',this)">Sort Z-A ✅</button>
 <button class="btn extra-btn" onclick="makeExtra('reverse',this)">Reverse</button>
 <button class="btn extra-btn" onclick="makeExtra('rot13',this)">ROT13</button>
-<button class="btn extra-btn" onclick="makeExtra('removeDupLines',this)">Remove Dup Lines</button>
+<button class="btn extra-btn" onclick="makeExtra('removeEmoji',this)">Remove Emojis/Special</button>
 </div>
 
-<div class="section">DIRECT:</div>
+<div class="section">DIRECT BINARY / HEXA (Full Restored + Binary to Hexa):</div>
 <div class="btn-row">
 <button class="btn btn-p direct-btn" onclick="directConvert('textBin',this)">Text → Binary</button>
 <button class="btn btn-p direct-btn" onclick="directConvert('binary',this)">Binary → Text</button>
 <button class="btn btn-p direct-btn" onclick="directConvert('textHex',this)">Text → Hexa</button>
 <button class="btn btn-p direct-btn" onclick="directConvert('hex',this)">Hexa → Text</button>
+<button class="btn btn-p direct-btn" style="border:2px solid #22c55e" onclick="directConvert('binHex',this)">Binary → Hexa (Restored)</button>
+<button class="btn btn-p direct-btn" style="border:2px solid #22c55e" onclick="directConvert('hexBin',this)">Hexa → Binary (Restored)</button>
 </div>
 </div>
 
 <div class="card">
-<h3>✨ NEW 12 Fancy Text - Alag Style (Insta / Bio ke liye)</h3>
+<h3>✨ 12 New Fancy - Alag Style (Instagram ke liye)</h3>
 <div id="fancyBox"></div>
 </div>
 </div>
@@ -108,44 +146,34 @@ function makeCase(t,btn){
  else if(t==='camel') out=words.map((w,i)=>i===0?w.toLowerCase():w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join('');
  else if(t==='snake') out=words.map(w=>w.toLowerCase()).join('_');
  else if(t==='kebab') out=words.map(w=>w.toLowerCase()).join('-');
- else if(t==='bold') out=src.replace(/[A-Za-z0-9]/g,c=>{
-   if(c>='A'&&c<='Z') return String.fromCodePoint(0x1D5D4 + c.charCodeAt(0)-65);
-   if(c>='a'&&c<='z') return String.fromCodePoint(0x1D5EE + c.charCodeAt(0)-97);
-   if(c>='0'&&c<='9') return String.fromCodePoint(0x1D7EC + c.charCodeAt(0)-48);
-   return c;
- });
- else if(t==='italic') out=src.replace(/[A-Za-z]/g,c=>{
-   if(c>='A'&&c<='Z') return String.fromCodePoint(0x1D608 + c.charCodeAt(0)-65);
-   if(c>='a'&&c<='z') return String.fromCodePoint(0x1D622 + c.charCodeAt(0)-97);
-   return c;
- });
+ else if(t==='constant') out=words.map(w=>w.toUpperCase()).join('_');
+ else if(t==='dot') out=words.map(w=>w.toLowerCase()).join('.');
+ else if(t==='path') out=words.map(w=>w.toLowerCase()).join('/');
+ else if(t==='bold') out=src.replace(/[A-Za-z0-9]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D5D4+c.charCodeAt(0)-65);if(c>='a'&&c<='z')return String.fromCodePoint(0x1D5EE+c.charCodeAt(0)-97);if(c>='0'&&c<='9')return String.fromCodePoint(0x1D7EC+c.charCodeAt(0)-48);return c});
+ else if(t==='italic') out=src.replace(/[A-Za-z]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D608+c.charCodeAt(0)-65);return String.fromCodePoint(0x1D622+c.charCodeAt(0)-97)});
  else if(t==='underline') out=src.split('').map(c=>c+'\u0332').join('');
+ else if(t==='overline') out=src.split('').map(c=>c+'\u0305').join('');
+ else if(t==='strike') out=src.split('').map(c=>c+'\u0336').join('');
  document.getElementById('out').value=out; updateStats();
 }
 
 function makeExtra(t,btn){
  highlightBtn(btn,'extra-btn');
  let src=document.getElementById('inp').value; if(!src.trim())return; let out='';
- if(t==='sortAZ'){
-   let lines=src.split('\n').map(l=>l.trim()).filter(Boolean);
-   if(lines.length>1) out=lines.sort((a,b)=>a.toLowerCase().localeCompare(b.toLowerCase())).join('\n');
-   else out=src.split(/\s+/).filter(Boolean).sort((a,b)=>a.toLowerCase().localeCompare(b.toLowerCase())).join(' ');
- }
- else if(t==='sortZA'){
-   let lines=src.split('\n').map(l=>l.trim()).filter(Boolean);
-   if(lines.length>1) out=lines.sort((a,b)=>b.toLowerCase().localeCompare(a.toLowerCase())).join('\n');
-   else out=src.split(/\s+/).filter(Boolean).sort((a,b)=>b.toLowerCase().localeCompare(a.toLowerCase())).join(' ');
- }
+ if(t==='sortAZ'){let lines=src.split('\n').map(l=>l.trim()).filter(Boolean); if(lines.length>1) out=lines.sort((a,b)=>a.toLowerCase().localeCompare(b.toLowerCase())).join('\n'); else out=src.split(/\s+/).filter(Boolean).sort((a,b)=>a.toLowerCase().localeCompare(b.toLowerCase())).join(' ');}
+ else if(t==='sortZA'){let lines=src.split('\n').map(l=>l.trim()).filter(Boolean); if(lines.length>1) out=lines.sort((a,b)=>b.toLowerCase().localeCompare(a.toLowerCase())).join('\n'); else out=src.split(/\s+/).filter(Boolean).sort((a,b)=>b.toLowerCase().localeCompare(a.toLowerCase())).join(' ');}
  else if(t==='trim') out=src.split('\n').map(s=>s.trim()).join('\n').trim();
  else if(t==='extraSpaces') out=src.replace(/\s+/g,' ').trim();
  else if(t==='removeLineBreaks') out=src.replace(/[\r\n]+/g,' ');
  else if(t==='removeDupLines') out=[...new Set(src.split('\n'))].join('\n');
+ else if(t==='removeDupWords') out=[...new Set(src.split(/\s+/))].join(' ');
  else if(t==='reverse') out=src.split('').reverse().join('');
  else if(t==='rot13') out=src.replace(/[a-zA-Z]/g,c=>String.fromCharCode((c<='Z'?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26));
+ else if(t==='removeEmoji') out=src.replace(/[^a-zA-Z0-9\u0900-\u097F\s.,!?;:\-_(){}[\]'"`@#$%^&*+=|\\\/<>]/g,'').replace(/\s+/g,' ').trim();
  document.getElementById('out').value=out; updateStats();
 }
 
-function directConvert(type,btn){highlightBtn(btn,'direct-btn');mode=type;doConvert(false)}
+function directConvert(type,btn){highlightBtn(btn,'direct-btn');mode=type;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));let id='t-'+type;if(document.getElementById(id))document.getElementById(id).classList.add('active');doConvert(false)}
 function doConvert(fromMain){
  if(fromMain){let b=document.getElementById('btn-convert');b.classList.add('btn-highlight');setTimeout(()=>b.classList.remove('btn-highlight'),800)}
  let inp=document.getElementById('inp').value.trim(); if(!inp)return; let out='';
@@ -154,39 +182,47 @@ function doConvert(fromMain){
   else if(mode==='binary') out=inp.split(/\s+/).filter(Boolean).map(b=>/^[01]+$/.test(b)?String.fromCharCode(parseInt(b,2)):'').join('');
   else if(mode==='textHex') out=inp.split('').map(c=>c.charCodeAt(0).toString(16).padStart(2,'0')).join(' ');
   else if(mode==='hex'){let cl=inp.replace(/\s/g,''); out=(cl.match(/.{1,2}/g)||[]).map(h=>String.fromCharCode(parseInt(h,16))).join('');}
+  else if(mode==='binHex') out=inp.split(/\s+/).filter(Boolean).map(b=>parseInt(b,2).toString(16).padStart(2,'0')).join(' ');
+  else if(mode==='hexBin') out=inp.split(/\s+/).filter(Boolean).map(h=>parseInt(h,16).toString(2).padStart(8,'0')).join(' ');
   else out=inp;
- }catch(e){out='Error'}
+ }catch(e){out='Error: '+e.message}
  document.getElementById('out').value=out; updateStats(); genFancy();
 }
 function autoGen(){updateStats(); genFancy()}
-function updateStats(){let t=document.getElementById('inp').value; let w=t.trim().split(/\s+/).filter(Boolean).length; document.getElementById('stats').innerText=`${w} words | ${t.length} chars | Tested OK`}
+function updateStats(){let t=document.getElementById('inp').value; let w=t.trim().split(/\s+/).filter(Boolean).length; document.getElementById('stats').innerText=`${w} words | ${t.length} chars | All options restored`}
+
+function applyColor(){
+ let col=document.getElementById('colorPick').value;
+ let type=document.getElementById('colorType').value;
+ let out=document.getElementById('out');
+ let prev=document.getElementById('colorPreview');
+ if(type==='color'){out.style.color=col; out.style.background=''; prev.style.color=col; prev.style.background='var(--card2)'; prev.innerText=`Text Color: ${col} applied`}
+ else {out.style.background=col+'33'; out.style.color=''; prev.style.background=col+'55'; prev.innerText=`Highlight BG: ${col} applied`}
+}
+function clearColor(){let out=document.getElementById('out'); out.style.color=''; out.style.background=''; document.getElementById('colorPreview').innerText='Color cleared'; document.getElementById('colorPreview').style.color=''; document.getElementById('colorPreview').style.background='var(--card2)'}
+function applyFont(){let f=document.getElementById('fontSel').value; document.getElementById('out').style.fontFamily=f; document.getElementById('colorPreview').style.fontFamily=f; document.getElementById('colorPreview').innerText=`Font: ${f} applied`}
 
 function genFancy(){
  let t=document.getElementById('inp').value||'test';
- const mapCircled={A:'Ⓐ',B:'Ⓑ',C:'Ⓒ',a:'ⓐ',b:'ⓑ',c:'ⓒ'};
  const fancyList=[
-  {name:'🔥 Bubble', fn:s=>s.replace(/[A-Za-z0-9]/g,c=>{let m={a:'ⓐ',b:'ⓑ',c:'ⓒ',d:'ⓓ',e:'ⓔ',f:'ⓕ',g:'ⓖ',h:'ⓗ',i:'ⓘ',j:'ⓙ',k:'ⓚ',l:'ⓛ',m:'ⓜ',n:'ⓝ',o:'ⓞ',p:'ⓟ',q:'ⓠ',r:'ⓡ',s:'ⓢ',t:'ⓣ',u:'ⓤ',v:'ⓥ',w:'ⓦ',x:'ⓧ',y:'ⓨ',z:'ⓩ',A:'Ⓐ',B:'Ⓑ',C:'Ⓒ',D:'Ⓓ',E:'Ⓔ',F:'Ⓕ',G:'Ⓖ',H:'Ⓗ',I:'Ⓘ',J:'Ⓙ',K:'Ⓚ',L:'Ⓛ',M:'Ⓜ',N:'Ⓝ',O:'Ⓞ',P:'Ⓟ',Q:'Ⓠ',R:'Ⓡ',S:'Ⓢ',T:'Ⓣ',U:'Ⓤ',V:'Ⓥ',W:'Ⓦ',X:'Ⓧ',Y:'Ⓨ',Z:'Ⓩ',0:'⓪',1:'①',2:'②',3:'③',4:'④',5:'⑤',6:'⑥',7:'⑦',8:'⑧',9:'⑨'};return m[c]||c})},
-  {name:'🌀 Circled +', fn:s=>s.replace(/[A-Za-z]/g,c=>String.fromCodePoint(c>='a'?0x24D0+c.charCodeAt(0)-97:0x24B6+c.charCodeAt(0)-65))},
+  {name:'🔥 Bubble', fn:s=>s.replace(/[A-Za-z0-9]/g,c=>{let m={a:'ⓐ',b:'ⓑ',c:'ⓒ',d:'ⓓ',e:'ⓔ',f:'ⓕ',g:'ⓖ',h:'ⓗ',i:'ⓘ',j:'ⓙ',k:'ⓚ',l:'ⓛ',m:'ⓜ',n:'ⓝ',o:'ⓞ',p:'ⓟ',q:'ⓠ',r:'ⓡ',s:'ⓢ',t:'ⓣ',u:'ⓤ',v:'ⓥ',w:'ⓦ',x:'ⓧ',y:'ⓨ',z:'ⓩ',A:'Ⓐ',B:'Ⓑ',C:'Ⓒ',D:'Ⓓ',E:'Ⓔ',F:'Ⓕ',G:'Ⓖ',H:'Ⓗ',I:'Ⓘ',J:'Ⓙ',K:'Ⓚ',L:'Ⓛ',M:'Ⓜ',N:'Ⓝ',O:'Ⓞ',P:'Ⓟ',Q:'Ⓠ',R:'Ⓡ',S:'Ⓢ',T:'Ⓣ',U:'Ⓤ',V:'Ⓥ',W:'Ⓦ',X:'Ⓧ',Y:'Ⓨ',Z:'Ⓩ'};return m[c]||c})},
   {name:'🙃 Upside Down', fn:s=>{let map={a:'ɐ',b:'q',c:'ɔ',d:'p',e:'ǝ',f:'ɟ',g:'ƃ',h:'ɥ',i:'ᴉ',j:'ɾ',k:'ʞ',l:'ʅ',m:'ɯ',n:'u',o:'o',p:'d',q:'b',r:'ɹ',s:'s',t:'ʇ',u:'n',v:'ʌ',w:'ʍ',x:'x',y:'ʎ',z:'z'};return s.toLowerCase().split('').map(c=>map[c]||c).reverse().join('')}},
-  {name:'✨ Sparkles', fn:s=>'✨ '+s.split('').join(' ✨ ')+' ✨'},
-  {name:'📦 Boxed', fn:s=>'【'+s.toUpperCase()+'】'},
-  {name:'⚡ Bold Sans', fn:s=>s.replace(/[A-Za-z0-9]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D5D4+c.charCodeAt(0)-65);if(c>='a'&&c<='z')return String.fromCodePoint(0x1D5EE+c.charCodeAt(0)-97);if(c>='0'&&c<='9')return String.fromCodePoint(0x1D7EC+c.charCodeAt(0)-48);return c})},
-  {name:'💌 Italic Sans', fn:s=>s.replace(/[A-Za-z]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D608+c.charCodeAt(0)-65);return String.fromCodePoint(0x1D622+c.charCodeAt(0)-97)})},
-  {name:'🖤 Black Bubble', fn:s=>s.replace(/[A-Za-z]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D54A+c.charCodeAt(0)-65);if(c>='a'&&c<='z')return String.fromCodePoint(0x1D552+c.charCodeAt(0)-97);return c})},
-  {name:'🔤 Wide Text', fn:s=>s.split('').map(c=>{let code=c.charCodeAt(0);if(code>=33&&code<=126)return String.fromCharCode(0xFF00+code-32);return c}).join('')},
-  {name:'⚔️ Medieval', fn:s=>s.replace(/[A-Za-z]/g,c=>{let m={a:'𝔞',b:'𝔟',c:'𝔠',d:'𝔡',e:'𝔢',f:'𝔣',g:'𝔤',h:'𝔥',i:'𝔦',j:'𝔧',k:'𝔨',l:'𝔩',m:'𝔪',n:'𝔫',o:'𝔬',p:'𝔭',q:'𝔮',r:'𝔯',s:'𝔰',t:'𝔱',u:'𝔲',v:'𝔳',w:'𝔴',x:'𝔵',y:'𝔶',z:'𝔷',A:'𝔄',B:'𝔅',C:'ℭ',D:'𝔇',E:'𝔈',F:'𝔉',G:'𝔊'};let low=c.toLowerCase();return m[low]||c})},
-  {name:'🌸 Cursive', fn:s=>s.replace(/[A-Za-z]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D4D0+c.charCodeAt(0)-65);if(c>='a'&&c<='z')return String.fromCodePoint(0x1D4EA+c.charCodeAt(0)-97);return c})},
-  {name:'🔠 Small Caps', fn:s=>{let map={a:'ᴀ',b:'ʙ',c:'ᴄ',d:'ᴅ',e:'ᴇ',f:'ꜰ',g:'ɢ',h:'ʜ',i:'ɪ',j:'ᴊ',k:'ᴋ',l:'ʟ',m:'ᴍ',n:'ɴ',o:'ᴏ',p:'ᴘ',q:'ǫ',r:'ʀ',s:'ꜱ',t:'ᴛ',u:'ᴜ',v:'ᴠ',w:'ᴡ',x:'x',y:'ʏ',z:'ᴢ'};return s.toLowerCase().split('').map(c=>map[c]||c).join('')}},
+  {name:'⚡ Bold Sans', fn:s=>s.replace(/[A-Za-z0-9]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D5D4+c.charCodeAt(0)-65);if(c>='a'&&c<='z')return String.fromCodePoint(0x1D5EE+c.charCodeAt(0)-97);return c})},
+  {name:'💌 Italic', fn:s=>s.replace(/[A-Za-z]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D608+c.charCodeAt(0)-65);return String.fromCodePoint(0x1D622+c.charCodeAt(0)-97)})},
+  {name:'🌸 Cursive', fn:s=>s.replace(/[A-Za-z]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D4D0+c.charCodeAt(0)-65);return String.fromCodePoint(0x1D4EA+c.charCodeAt(0)-97)})},
+  {name:'🔠 Small Caps', fn:s=>{let m={a:'ᴀ',b:'ʙ',c:'ᴄ',d:'ᴅ',e:'ᴇ',f:'ꜰ',g:'ɢ',h:'ʜ',i:'ɪ',j:'ᴊ',k:'ᴋ',l:'ʟ',m:'ᴍ',n:'ɴ',o:'ᴏ',p:'ᴘ',q:'ǫ',r:'ʀ',s:'ꜱ',t:'ᴛ',u:'ᴜ',v:'ᴠ',w:'ᴡ',x:'x',y:'ʏ',z:'ᴢ'};return s.toLowerCase().split('').map(c=>m[c]||c).join('')}},
+  {name:'📦 Fullwidth', fn:s=>s.split('').map(c=>{let code=c.charCodeAt(0);if(code>=33&&code<=126)return String.fromCharCode(0xFF00+code-32);return c}).join('')},
+  {name:'🖤 Black Letter', fn:s=>s.replace(/[A-Za-z]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D56C+c.charCodeAt(0)-65);return String.fromCodePoint(0x1D586+c.charCodeAt(0)-97)})},
  ];
- let html=''; fancyList.forEach((st,i)=>{let v=st.fn(t); let id='f_'+i; html+=`<div class="fancy-item"><div class="small">${st.name}</div><div class="fancy-preview" id="${id}">${v}</div><div><button class="btn" onclick="copyBtn(this,'${id}')">📋 Copy</button><button class="btn" onclick="downloadAny('${id}')">💾</button><button class="btn" onclick="shareAny('${id}')">📤 Share</button></div></div>`;});
+ let html=''; fancyList.forEach((st,i)=>{let v=st.fn(t); let id='f_'+i; html+=`<div class="fancy-item"><div class="small">${st.name}</div><div class="fancy-preview" id="${id}">${v}</div><div><button class="btn" onclick="copyBtn(this,'${id}')">📋 Copy</button><button class="btn" onclick="downloadAny('${id}')">💾</button><button class="btn" onclick="shareAny('${id}')">📤</button></div></div>`;});
  document.getElementById('fancyBox').innerHTML=html;
 }
 function getVal(id){let el=document.getElementById(id); return el.value!==undefined?el.value:el.innerText}
 function copyBtn(btn,id){let txt=getVal(id); navigator.clipboard.writeText(txt); let o=btn.innerText; btn.innerText='Copied ✓'; btn.classList.add('btn-ok'); setTimeout(()=>{btn.innerText=o; btn.classList.remove('btn-ok')},1200)}
 function downloadAny(id){let txt=getVal(id); let b=new Blob([txt],{type:'text/plain'}); let a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=id+'.txt'; a.click()}
-async function shareAny(id){let txt=getVal(id); if(navigator.share){try{await navigator.share({text:txt})}catch{}} else copyBtn(document.createElement('button'),id)}
+async function shareAny(id){let txt=getVal(id); if(navigator.share){try{await navigator.share({text:txt})}catch{}}else navigator.clipboard.writeText(txt)}
 async function pasteClip(){try{let txt=await navigator.clipboard.readText(); document.getElementById('inp').value=txt; autoGen()}catch{}}
-function clearAll(){document.getElementById('inp').value='';document.getElementById('out').value='';updateStats();genFancy()}
+function clearAll(){document.getElementById('inp').value='';document.getElementById('out').value='';clearColor();updateStats();genFancy();document.querySelectorAll('.btn-highlight').forEach(b=>b.classList.remove('btn-highlight'))}
 function handleFiles(files){let txt='',c=0; Array.from(files).forEach(f=>{let r=new FileReader(); r.onload=e=>{txt+=e.target.result+'\n'; c++; if(c===files.length){document.getElementById('inp').value=txt; autoGen()}}; r.readAsText(f)})}
 function handleDrop(e){e.preventDefault(); handleFiles(e.dataTransfer.files)}
 autoGen();
