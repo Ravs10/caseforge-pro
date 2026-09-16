@@ -205,4 +205,31 @@ function autoGen(){
   genFancy();
 }
 
-function updateStats(){let t=document.getElementById('inp').value; let w=t.trim().split(/\s+/).filter(Boolean
+function updateStats(){let t=document.getElementById('inp').value; let w=t.trim().split(/\s+/).filter(Boolean).length; document.getElementById('stats').innerText=`${w} words | ${t.length} chars | ${t.split('\n').length} lines`}
+function genFancy(){
+  let t=document.getElementById('inp').value; if(!t.trim()){document.getElementById('fancyBox').innerHTML='<span class="small">Type to generate...</span>';return}
+  const styles=[
+    {name:'1. Bold', fn:s=>s.replace(/[A-Za-z]/g,c=>String.fromCodePoint(c.charCodeAt(0)<97?0x1D400+c.charCodeAt(0)-65:0x1D41A+c.charCodeAt(0)-97))},
+    {name:'2. Italic', fn:s=>s.replace(/[A-Za-z]/g,c=>String.fromCodePoint(c.charCodeAt(0)<97?0x1D434+c.charCodeAt(0)-65:0x1D44E+c.charCodeAt(0)-97))},
+    {name:'3. Bold Italic', fn:s=>s.replace(/[A-Za-z]/g,c=>String.fromCodePoint(c.charCodeAt(0)<97?0x1D468+c.charCodeAt(0)-65:0x1D482+c.charCodeAt(0)-97))},
+    {name:'4. Underline', fn:s=>s.split('').map(c=>c+'\u0332').join('')},
+    {name:'5. Overline', fn:s=>s.split('').map(c=>c+'\u0305').join('')},
+    {name:'6. Strike', fn:s=>s.split('').map(c=>c+'\u0336').join('')},
+    {name:'7. Wide', fn:s=>s.split('').join(' ')},
+    {name:'8. Small Caps', fn:s=>s.toUpperCase()},
+  ];
+  let html=''; styles.forEach((st,i)=>{let v=st.fn(t); let id='f_'+i; html+=`<div class="fancy-item"><div class="small">${st.name}</div><div id="${id}" style="font-size:14px;margin:4px 0;word-break:break-all">${v}</div><div><button class="btn" onclick="copyBtn(this,'${id}')">📋 Copy</button><button class="btn" onclick="downloadAny('${id}')">💾 Download</button><button class="btn" onclick="shareAny('${id}')">📤 Share</button></div></div>`;});
+  document.getElementById('fancyBox').innerHTML=html;
+}
+function getVal(id){let el=document.getElementById(id); return el.value!==undefined?el.value:el.innerText}
+function copyBtn(btn,id){let txt=getVal(id); navigator.clipboard.writeText(txt); let old=btn.innerText; btn.innerText='Copied ✓'; btn.classList.add('btn-ok'); setTimeout(()=>{btn.innerText=old; btn.classList.remove('btn-ok')},1500);}
+function downloadAny(id){let txt=getVal(id); let blob=new Blob([txt],{type:'text/plain'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=id+'.txt'; a.click()}
+async function shareAny(id){let txt=getVal(id); if(navigator.share){try{await navigator.share({text:txt})}catch{}} else {navigator.clipboard.writeText(txt)}}
+async function pasteClip(){try{let txt=await navigator.clipboard.readText(); document.getElementById('inp').value=txt; autoGen()}catch{}}
+function clearAll(){document.getElementById('inp').value='';document.getElementById('out').value='';updateStats();genFancy(); document.querySelectorAll('.btn-highlight').forEach(b=>b.classList.remove('btn-highlight'))}
+function handleFiles(files){let txt='',c=0; Array.from(files).forEach(f=>{let r=new FileReader(); r.onload=e=>{txt+=e.target.result+'\n'; c++; if(c===files.length){document.getElementById('inp').value=txt; autoGen()}}; r.readAsText(f)})}
+function handleDrop(e){e.preventDefault(); handleFiles(e.dataTransfer.files)}
+autoGen();
+</script>
+</body>
+</html>
