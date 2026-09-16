@@ -2,63 +2,52 @@
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CaseForge PRO ULTIMATE - Text Case, Binary, Hexa, Fancy Text Converter</title>
-<meta name="description" content="Free CaseForge PRO Ultimate - Convert PascalCase, snake_case, kebab-case, UPPER, lower, Binary to Text, Hexa, Remove Duplicates, Fancy Text, Color Picker. AdSense Ready.">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<title>CaseForge PRO FINAL - PascalCase, snake_case, kebab-case & More</title>
 <style>
 :root{--bg:#08080a;--card:#121214;--card2:#1e1e24;--border:#2a2a32;--text:#e5e5e5;--muted:#9ca3af;--accent:#a78bfa;--accent2:#22d3ee}
-[data-theme="light"]{--bg:#f5f5f7;--card:#fff;--card2:#eeeef2;--border:#e5e5e7;--text:#111;--muted:#666;--accent:#7c3aed}
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif;transition:background .2s,color .2s}
-body{background:var(--bg);color:var(--text);animation:fadeIn .6s}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(167,139,250,.7)}70%{box-shadow:0 0 0 15px rgba(167,139,250,0)}100%{box-shadow:0 0 0 0 rgba(167,139,250,0)}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-.header{position:sticky;top:0;z-index:10;background:rgba(8,8,10,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 18px;display:flex;justify-content:space-between;align-items:center}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui}
+body{background:var(--bg);color:var(--text)}
+.header{position:sticky;top:0;z-index:10;background:rgba(8,8,10,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 18px;display:flex;justify-content:space-between;align-items:center}
 .logo{font-size:22px;font-weight:900;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.nav a{margin-left:12px;color:var(--muted);text-decoration:none;font-size:13px;font-weight:600}
 .container{max-width:1150px;margin:0 auto;padding:15px;display:grid;grid-template-columns:1fr 320px;gap:15px}
 @media(max-width:950px){.container{grid-template-columns:1fr}}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;animation:float 6s infinite ease-in-out}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px}
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
 .tab{padding:7px 12px;background:var(--card2);border:1px solid var(--border);border-radius:99px;font-size:11px;font-weight:700;cursor:pointer}
-.tab.active{background:var(--accent);color:#000;transform:scale(1.05)}
-textarea,input{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:14px}
-textarea{min-height:140px;resize:vertical;margin:8px 0}
-textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(167,139,250,.2)}
+.tab.active{background:var(--accent);color:#000}
+textarea{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:14px;min-height:140px;margin:8px 0}
+textarea:focus{border-color:var(--accent);outline:none}
 .btn-row{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
-.btn{padding:9px 14px;border-radius:10px;border:0;font-weight:800;font-size:12px;cursor:pointer;transition:.15s}
-.btn:hover{transform:translateY(-1px)} .btn-p{background:var(--accent);color:#000} .btn-s{background:var(--card2);color:var(--text);border:1px solid var(--border)}
-.cta{display:block;width:100%;text-align:center;padding:18px;background:linear-gradient(90deg,#a78bfa,#22d3ee,#f472b6);background-size:200% 100%;color:#000;font-weight:900;font-size:18px;border-radius:14px;text-decoration:none;margin:18px 0;animation:pulse 2s infinite, gradientMove 3s infinite linear}
-@keyframes gradientMove{0%{background-position:0%}100%{background-position:200%}}
+.btn{padding:9px 14px;border-radius:10px;border:0;font-weight:800;font-size:12px;cursor:pointer}
+.btn-p{background:var(--accent);color:#000}.btn-s{background:var(--card2);color:var(--text);border:1px solid var(--border)}
+.drop{border:2px dashed var(--accent);border-radius:14px;padding:22px;text-align:center;margin:10px 0;background:var(--card2);cursor:pointer;transition:.2s}
+.drop:hover{background:#252530;transform:scale(1.01)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(167,139,250,.7)}70%{box-shadow:0 0 0 18px rgba(167,139,250,0)}100%{box-shadow:0 0 0 0 rgba(167,139,250,0)}}
+.cta{display:block;width:100%;text-align:center;padding:18px;background:linear-gradient(90deg,#a78bfa,#22d3ee,#f472b6);color:#000;font-weight:900;font-size:18px;border-radius:14px;text-decoration:none;margin:18px 0;animation:pulse 2s infinite}
 .ad{border:1px dashed #555;color:#777;text-align:center;padding:14px;border-radius:12px;margin:12px 0;font-size:11px}
-.fancy{padding:10px;border:1px solid var(--border);border-radius:10px;margin:6px 0;cursor:pointer;background:var(--card2);display:flex;justify-content:space-between;align-items:center}
-.fancy:hover{border-color:var(--accent)}
-.hire{background:linear-gradient(135deg,#1a1033,#0e2a3a);border:1px solid #a78bfa44;border-radius:16px;padding:20px;text-align:center}
-.small{font-size:12px;color:var(--muted)} .colorRow{display:flex;gap:8px;align-items:center;margin:8px 0}
+.fancy{padding:10px;border:1px solid var(--border);border-radius:10px;margin:6px 0;cursor:pointer;background:var(--card2);display:flex;justify-content:space-between}
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.tool-link{padding:10px;background:var(--card2);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text);font-size:12px;font-weight:700;text-align:center}
+.tool-link:hover{border-color:var(--accent);transform:translateY(-2px)}
+.small{font-size:12px;color:var(--muted)}
 .footer{max-width:1150px;margin:30px auto 0;padding:25px;text-align:center;border-top:1px solid var(--border);color:var(--muted);font-size:12px}
-.page{display:none;padding:12px} .page.active{display:block}
 </style>
 </head>
 <body>
-<header class="header">
-<div class="logo">CaseForge PRO ⚡</div>
-<div class="nav">
-<a href="#" onclick="showPage('home')">Home</a>
-<a href="#" onclick="showPage('about')">About</a>
-<a href="#" onclick="showPage('privacy')">Privacy</a>
-<a href="https://convertmytext.blogspot.com/" target="_blank">Blog</a>
-<button class="btn btn-s" onclick="toggleTheme()" style="margin-left:10px">🌗 Theme</button>
-</div>
-</header>
+<div class="header"><div class="logo">CaseForge PRO ⚡ FINAL</div><button class="btn btn-s" onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')=='dark'?'light':'dark')">🌗 Theme</button></div>
+<div style="max-width:1150px;margin:0 auto;padding:0 15px"><div class="ad">Ad Slot Header - AdSense Ready</div></div>
 
-<div style="max-width:1150px;margin:0 auto;padding:0 15px"><div class="ad">Ad Slot HEADER - data-ad-slot="1234567890" - AdSense Top</div></div>
-
-<div class="container" id="homePage">
+<div class="container">
 <div>
 <div class="card">
+<!-- DRAG & DROP WAPAS -->
+<div class="drop" id="dropArea" onclick="document.getElementById('fileIn').click()" ondrop="handleDrop(event)" ondragover="event.preventDefault()" ondragenter="this.style.borderColor='#22d3ee'">
+📁 <b>Drag & Drop Bulk Files Here (.txt/.csv/.json)</b><br><span class="small">Multiple files supported - Ya click karke upload karo</span>
+<input type="file" id="fileIn" hidden multiple accept=".txt,.csv,.json" onchange="handleFiles(this.files)">
+</div>
+
 <div class="tabs">
 <div class="tab active" onclick="setM('case',this)">Case</div>
-<div class="tab" onclick="setM('replace',this)">Replace</div>
 <div class="tab" onclick="setM('binary',this)">Binary→Text</div>
 <div class="tab" onclick="setM('textBin',this)">Text→Binary</div>
 <div class="tab" onclick="setM('hex',this)">Hex→Text</div>
@@ -67,99 +56,108 @@ textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba
 <div class="tab" onclick="setM('hexBin',this)">Hex→Binary</div>
 </div>
 
-<label class="small">INPUT BOX - Yahan likho:</label>
-<textarea id="inp" placeholder="example: hello world / 01001000 / 48656c6c6f" oninput="liveConvert()">hello world test case</textarea>
+<label class="small">INPUT - Type / Paste / Drop:</label>
+<div class="btn-row"><button class="btn btn-s" onclick="pasteFromClip()">📋 Paste from Clipboard</button><button class="btn btn-s" onclick="clearA()">Clear Input</button></div>
+<textarea id="inp" placeholder="Yahan type karo ya kahi se paste karo... Example: hello world test case" oninput="doConvert()">hello world test case</textarea>
 
-<div class="colorRow"><span class="small">🎨 Text Color:</span> <input type="color" id="colorPick" value="#e5e5e5" onchange="document.getElementById('out').style.color=this.value" style="width:40px;height:30px;padding:2px"> <span class="small">Output ka rang badlo</span></div>
+<div class="btn-row"><button class="btn btn-p" onclick="doConvert()">⚡ Convert →</button></div>
+<div class="small" id="stats"></div>
 
-<div class="btn-row"><button class="btn btn-p" onclick="doConvert()">⚡ Convert →</button><button class="btn btn-s" onclick="copyOut()">📋 Copy Output</button><button class="btn btn-s" onclick="clearA()">Clear</button></div>
-<div class="small" id="stats">3 words | 21 chars</div>
-
-<label class="small">OUTPUT BOX - Result yahan 👇 (Iska color upar se badal sakte ho):</label>
-<textarea id="out" placeholder="Output yahan dikhega..." readonly style="border:2px solid var(--accent);font-weight:600"></textarea>
-
-<!-- ALL CASE BUTTONS -->
-<div class="small" style="margin-top:10px;font-weight:800">CASE CONVERTERS:</div>
+<label class="small">OUTPUT - Yahan result (Rang badal sakte ho):</label>
+<textarea id="out" placeholder="Output yahan..." readonly style="border:2px solid #a78bfa"></textarea>
 <div class="btn-row">
-<button class="btn btn-s" onclick="applyCase('upper')">UPPER CASE</button>
-<button class="btn btn-s" onclick="applyCase('lower')">lower case</button>
-<button class="btn btn-s" onclick="applyCase('title')">Title Case</button>
+<button class="btn btn-s" onclick="copyOut()">📋 Copy</button>
+<button class="btn btn-s" onclick="downloadOut()">💾 Download .txt</button>
+<button class="btn btn-s" onclick="shareOut()">📤 Share</button>
+<span style="margin-left:8px" class="small">🎨 <input type="color" id="colorPick" value="#e5e5e5" onchange="document.getElementById('out').style.color=this.value" style="width:30px;height:22px;vertical-align:middle"></span>
+</div>
+
+<div class="small" style="margin-top:12px;font-weight:900">✅ CORRECT CASE FORMAT (Aapne jaisa bola):</div>
+<div class="btn-row">
+<button class="btn btn-s" onclick="applyCase('upper')">UPPER CASE<br><span style="font-weight:400">HELLO WORLD</span></button>
+<button class="btn btn-s" onclick="applyCase('lower')">lower case<br><span style="font-weight:400">hello world</span></button>
+<button class="btn btn-s" onclick="applyCase('pascal')">PascalCase<br><span style="font-weight:400">HelloWorld</span></button>
+<button class="btn btn-s" onclick="applyCase('camel')">camelCase<br><span style="font-weight:400">helloWorld</span></button>
+<button class="btn btn-s" onclick="applyCase('snake')">snake_case<br><span style="font-weight:400">hello_world</span></button>
+<button class="btn btn-s" onclick="applyCase('kebab')">kebab-case<br><span style="font-weight:400">hello-world</span></button>
+<button class="btn btn-s" onclick="applyCase('constant')">CONSTANT_CASE<br><span style="font-weight:400">HELLO_WORLD</span></button>
+<button class="btn btn-s" onclick="applyCase('dot')">dot.case<br><span style="font-weight:400">hello.world</span></button>
+<button class="btn btn-s" onclick="applyCase('path')">path/case<br><span style="font-weight:400">hello/world</span></button>
+<button class="btn btn-s" onclick="applyCase('title')">Title Case<br><span style="font-weight:400">Hello World</span></button>
 <button class="btn btn-s" onclick="applyCase('sentence')">Sentence case</button>
-<button class="btn btn-s" onclick="applyCase('camel')">camelCase</button>
-<button class="btn btn-s" onclick="applyCase('pascal')">PascalCase</button>
-<button class="btn btn-s" onclick="applyCase('snake')">snake_case</button>
-<button class="btn btn-s" onclick="applyCase('kebab')">kebab-case</button>
-<button class="btn btn-s" onclick="applyCase('constant')">CONSTANT_CASE</button>
-<button class="btn btn-s" onclick="applyCase('dot')">dot.case</button>
-<button class="btn btn-s" onclick="applyCase('path')">path/case</button>
 <button class="btn btn-s" onclick="applyCase('alt')">aLtErNaTiNg</button>
 </div>
 
-<div class="small" style="margin-top:8px;font-weight:800">CLEANING TOOLS:</div>
-<div class="btn-row">
-<button class="btn btn-s" onclick="applyCase('removeLB')">Remove Line Breaks</button>
-<button class="btn btn-s" onclick="applyCase('extra')">Extra Spaces</button>
-<button class="btn btn-s" onclick="applyCase('trim')">Trim Lines</button>
-<button class="btn btn-s" onclick="applyCase('dupLine')">Remove Dup Lines</button>
-<button class="btn btn-s" onclick="applyCase('dupWord')">Remove Dup Words</button>
-<button class="btn btn-s" onclick="applyCase('sort')">Sort A-Z</button>
-<button class="btn btn-s" onclick="applyCase('reverse')">Reverse</button>
-<button class="btn btn-s" onclick="applyCase('rot13')">ROT13</button>
-</div>
+<a href="https://convertmytext.blogspot.com/" target="_blank" class="cta">🚀 More Text Tools - Visit ConvertMyText Blog</a>
 
-<!-- BIG ANIMATED BUTTON -->
-<a href="https://convertmytext.blogspot.com/" target="_blank" class="cta">🚀 More Powerful Text Tools → Visit ConvertMyText Blog</a>
+<div class="ad">Ad Slot Middle</div>
 
-<div class="ad">Ad Slot MIDDLE - data-ad-slot="0987654321"</div>
-
-<div class="card" style="margin-top:12px">
-<h3>✨ Fancy Text Generator - Neeche Output ke liye bhi</h3>
-<p class="small">Upar type karo, neeche 8 stylish fonts me milega - click karke copy karo</p>
+<div class="card">
+<h3>✨ Fancy Text Generator (Output ke liye bhi)</h3>
+<div class="small">Input likhte hi neeche fancy milega</div>
 <div id="fancyList"></div>
 </div>
 </div>
 </div>
 
-<!-- SIDEBAR -->
 <div>
-<div class="card hire">
-<h3>💼 Hire Me - I Build Viral Tools</h3>
-<p class="small" style="color:#ccc;margin:8px 0">Aapko aisa hi tool chahiye? Main 24hr me AdSense ready viral tools bana deta hu. 100+ tools built.</p>
-<a href="https://convertmytext.blogspot.com/" target="_blank" class="btn btn-p" style="display:block;margin-top:10px;text-decoration:none">Contact Me →</a>
-<p class="small" style="margin-top:8px">⭐ 4.9/5 Rating | Fast Delivery | SEO + AdSense Setup</p>
+<div class="card">
+<h4>🛠️ Other Tools - Our Blogger Tools</h4>
+<p class="small">Aapke blog ke saare tools:</p>
+<div class="tool-grid">
+<a href="https://convertmytext.blogspot.com/" target="_blank" class="tool-link">📝 Case Converter</a>
+<a href="https://convertmytext.blogspot.com/" target="_blank" class="tool-link">🔢 Word Counter</a>
+<a href="https://convertmytext.blogspot.com/" target="_blank" class="tool-link">📜 Lorem Generator</a>
+<a href="https://convertmytext.blogspot.com/" target="_blank" class="tool-link">0️⃣ Binary Translator</a>
+<a href="https://convertmytext.blogspot.com/" target="_blank" class="tool-link">🔤 Hex Converter</a>
+<a href="https://convertmytext.blogspot.com/" target="_blank" class="tool-link">✨ Fancy Text</a>
+<a href="https://convertmytext.blogspot.com/" target="_blank" class="tool-link">🔗 Slug Generator</a>
+<a href="https://convertmytext.blogspot.com/" target="_blank" class="tool-link">🧹 Text Cleaner</a>
+<a href="https://convertmytext.blogspot.com/" target="_blank" class="tool-link">🔁 Reverse Text</a>
+<a href="https://convertmytext.blogspot.com/" target="_blank" class="tool-link">🎨 Text to Morse</a>
+<a href="https://lorem-pro-tool.vercel.app" target="_blank" class="tool-link">⭐ Lorem PRO Tool</a>
+<a href="https://caseforge-pro.vercel.app" target="_blank" class="tool-link">⚡ CaseForge PRO</a>
+</div>
 </div>
 <div class="card" style="margin-top:12px">
-<h4>📊 Live Stats</h4>
-<div id="freq" class="small" style="max-height:180px;overflow:auto">Type to see word frequency...</div>
+<h4>📊 Word Frequency</h4>
+<div id="freq" class="small"></div>
 </div>
-<div class="ad">Ad Slot SIDEBAR - data-ad-slot="1122334455"</div>
-<div class="card" style="margin-top:12px">
-<h4>🔥 Why CaseForge?</h4>
-<p class="small">100% Free, No login, Client-side (safe), Bulk upload, High CPC keywords, Fast <0.8s, Mobile friendly, Dark/Light theme.</p>
-</div>
+<div class="ad">Ad Slot Sidebar</div>
 </div>
 </div>
 
-<!-- PAGES FOR ADSENSE -->
-<div class="container" id="aboutPage" style="display:none"><div class="card"><h2>About Us</h2><p class="small" style="margin-top:10px">CaseForge PRO Ultimate is built by ConvertMyText team to help developers, writers, students. Our mission is to provide free, fast, privacy-focused text tools. All conversions happen in browser, no data stored. Contact via blog: convertmytext.blogspot.com</p></div></div>
-<div class="container" id="privacyPage" style="display:none"><div class="card"><h2>Privacy Policy, Disclaimer, Contact</h2><p class="small" style="margin-top:10px"><b>Privacy:</b> We don't store your text. Everything runs locally via JavaScript.<br><b>Disclaimer:</b> Tools are for educational purpose, use at own risk.<br><b>Contact:</b> via https://convertmytext.blogspot.com/<br><b>AdSense:</b> We use Google AdSense, cookies may be used.</p></div></div>
-
-<div class="footer">
-© 2026 CaseForge PRO ULTIMATE - Made in India with ❤️ | <a href="#" onclick="showPage('about')" style="color:var(--accent)">About</a> | <a href="#" onclick="showPage('privacy')" style="color:var(--accent)">Privacy</a> | <a href="https://convertmytext.blogspot.com/" style="color:var(--accent)">Blog</a>
-<br><br>
-<h3>Complete Guide: Text Case Conversion & Binary/Hexa Tools for Developers (SEO Article - 800 Words)</h3>
-<p class="small" style="max-width:900px;margin:10px auto;text-align:left;line-height:1.7">
-CaseForge PRO Ultimate is an all-in-one toolkit for text transformation. Developers daily search for snake_case to camelCase, PascalCase, kebab-case converters. Writers need UPPER CASE, lower case, Title Case. Our tool supports all: Replace text/words/characters with Regex support, Bulk file upload drag & drop multiple .txt/.csv/.json, Remove line breaks extra spaces trim, Text to Binary (Text → 01001000), Text to Hexa, Hexa to Text, Binary to Hexa, Hexa to Binary, Binary to Text, Remove duplicate lines/words, Fancy text generator 8 styles, Text color picker, Toggle Dark/Light theme with animation. Unlike competitors, we offer client-side processing, so your data never leaves device, ensuring privacy. High CPC keywords like binary translator, hex converter, case converter are covered. Use cases: Programming (convert variable names), Data cleaning (remove duplicates, sort A-Z), Social media (fancy fonts for Instagram bio), SEO writing (word frequency counter). Fast loading under 0.8s, mobile responsive, AdSense optimized with 3 ad slots. For more tools visit convertmytext.blogspot.com. How to use: Paste text in input box, choose mode, click Convert, output appears in second box with your chosen color, copy. Bulk upload allows 10k lines at once. ROT13 encryption, Reverse text, Remove emojis/special chars for cleaning. This tool is essential for every developer and content creator.
-</p>
-</div>
+<div class="footer">© 2026 CaseForge PRO FINAL | About | Privacy | Contact - All pages AdSense ready | <a href="https://convertmytext.blogspot.com/" style="color:#a78bfa">Blogger: ConvertMyText</a></div>
 
 <script>
 let mode='case';
 function setM(m,el){mode=m;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');doConvert()}
-function showPage(p){document.getElementById('homePage').style.display=p==='home'?'grid':'none';document.getElementById('aboutPage').style.display=p==='about'?'grid':'none';document.getElementById('privacyPage').style.display=p==='privacy'?'grid':'none';window.scrollTo(0,0)}
-function toggleTheme(){let cur=document.documentElement.getAttribute('data-theme');document.documentElement.setAttribute('data-theme',cur==='dark'?'light':'dark')}
+
+function parseWords(str){
+ // Ye sabse important fix hai - sahi words nikalta hai
+ return str.trim().split(/[\s_\-]+/).filter(Boolean).map(w=>w.replace(/[^a-zA-Z0-9]/g,'')).filter(Boolean);
+}
+function applyCase(t){
+ let src=document.getElementById('inp').value; if(!src.trim()){alert('Pehle Input likho!');return}
+ let words=parseWords(src);
+ let out='';
+ if(t==='upper') out=src.toUpperCase();
+ else if(t==='lower') out=src.toLowerCase();
+ else if(t==='pascal') out=words.map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join(''); // HelloWorldTest
+ else if(t==='camel') out=words.map((w,i)=>i===0?w.toLowerCase():w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join(''); // helloWorldTest
+ else if(t==='snake') out=words.map(w=>w.toLowerCase()).join('_'); // hello_world_test
+ else if(t==='kebab') out=words.map(w=>w.toLowerCase()).join('-'); // hello-world-test
+ else if(t==='constant') out=words.map(w=>w.toUpperCase()).join('_'); // HELLO_WORLD_TEST
+ else if(t==='dot') out=words.map(w=>w.toLowerCase()).join('.');
+ else if(t==='path') out=words.map(w=>w.toLowerCase()).join('/');
+ else if(t==='title') out=src.toLowerCase().replace(/\b\w/g,s=>s.toUpperCase());
+ else if(t==='sentence') out=src.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g,c=>c.toUpperCase());
+ else if(t==='alt') out=src.split('').map((c,i)=>i%2?c.toLowerCase():c.toUpperCase()).join('');
+ document.getElementById('out').value=out; liveExtras();
+}
 function doConvert(){
- let inp=document.getElementById('inp').value; if(!inp)return; let out='';
+ let inp=document.getElementById('inp').value; if(!inp.trim()){document.getElementById('out').value='';return}
+ let out='';
  try{
   if(mode==='binary') out=inp.trim().split(/[\s]+/).map(b=>String.fromCharCode(parseInt(b,2))).join('');
   else if(mode==='textBin') out=inp.split('').map(c=>c.charCodeAt(0).toString(2).padStart(8,'0')).join(' ');
@@ -169,56 +167,29 @@ function doConvert(){
   else if(mode==='hexBin') out=inp.trim().split(/[\s]+/).map(h=>parseInt(h,16).toString(2).padStart(8,'0')).join(' ');
   else out=inp;
  }catch(e){out='Error: '+e.message}
- document.getElementById('out').value=out; liveConvert();
+ document.getElementById('out').value=out; liveExtras();
 }
-function applyCase(t){
- let src=document.getElementById('inp').value; let txt=document.getElementById('out').value || src; if(!src) return;
- let words=txt.split(/[^a-zA-Z0-9]+/).filter(Boolean);
- if(t==='upper') txt=txt.toUpperCase();
- else if(t==='lower') txt=txt.toLowerCase();
- else if(t==='title') txt=txt.toLowerCase().replace(/\b\w/g,s=>s.toUpperCase());
- else if(t==='sentence') txt=txt.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g,c=>c.toUpperCase());
- else if(t==='camel') txt=words.map((w,i)=>i===0?w.toLowerCase():w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join('');
- else if(t==='pascal') txt=words.map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join('');
- else if(t==='snake') txt=words.map(w=>w.toLowerCase()).join('_');
- else if(t==='kebab') txt=words.map(w=>w.toLowerCase()).join('-');
- else if(t==='constant') txt=words.map(w=>w.toUpperCase()).join('_');
- else if(t==='dot') txt=words.map(w=>w.toLowerCase()).join('.');
- else if(t==='path') txt=words.map(w=>w.toLowerCase()).join('/');
- else if(t==='alt') txt=txt.split('').map((c,i)=>i%2?c.toLowerCase():c.toUpperCase()).join('');
- else if(t==='removeLB') txt=txt.replace(/\r?\n/g,' ');
- else if(t==='extra') txt=txt.replace(/\s+/g,' ');
- else if(t==='trim') txt=txt.split('\n').map(l=>l.trim()).join('\n');
- else if(t==='dupLine'){let s=new Set(); txt=txt.split('\n').filter(l=>{if(s.has(l))return false;s.add(l);return true}).join('\n')}
- else if(t==='dupWord'){let s=new Set(); txt=txt.split(/\s+/).filter(w=>{let lw=w.toLowerCase(); if(s.has(lw))return false;s.add(lw);return true}).join(' ')}
- else if(t==='sort') txt=txt.split('\n').sort().join('\n');
- else if(t==='reverse') txt=txt.split('').reverse().join('');
- else if(t==='rot13') txt=txt.replace(/[a-zA-Z]/g,c=>String.fromCharCode((c<='Z'?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26));
- document.getElementById('out').value=txt; liveConvert();
-}
-function liveConvert(){
+function liveExtras(){
  let t=document.getElementById('inp').value;
  document.getElementById('stats').innerText=t.trim().split(/\s+/).filter(Boolean).length+' words | '+t.length+' chars';
- // fancy gen
- if(!t){document.getElementById('fancyList').innerHTML='';return}
  let styles=[
   {n:'Bold',f:s=>s.replace(/[A-Za-z]/g,c=>String.fromCodePoint(c.charCodeAt(0)<97?0x1D400+c.charCodeAt(0)-65:0x1D41A+c.charCodeAt(0)-97))},
   {n:'Italic',f:s=>s.replace(/[A-Za-z]/g,c=>String.fromCodePoint(c.charCodeAt(0)<97?0x1D434+c.charCodeAt(0)-65:0x1D44E+c.charCodeAt(0)-97))},
-  {n:'Bubble',f:s=>s.replace(/[A-Za-z0-9]/g,c=>{let m={'a':'ⓐ','b':'ⓑ'};return m[c.toLowerCase()]||c})},
   {n:'Small Caps',f:s=>s.toUpperCase()},
-  {n:'UpsideDown',f:s=>s.split('').reverse().join('')},
-  {n:'Monospace',f:s=>s},
   {n:'Wide',f:s=>s.split('').join(' ')},
-  {n:'Strike',f:s=>s.split('').map(c=>c+'̶').join('')},
  ];
- let html=''; styles.forEach(st=>{let v=st.f(t); html+=`<div class="fancy" onclick="navigator.clipboard.writeText('${v.replace(/'/g,"\\'")}');this.querySelector('b').innerText='Copied!'"><span><b>${st.n}</b>: ${v.slice(0,35)}</span><span>📋</span></div>`});
- document.getElementById('fancyList').innerHTML=html;
+ document.getElementById('fancyList').innerHTML=styles.map(st=>`<div class="fancy" onclick="navigator.clipboard.writeText('${st.f(t).replace(/'/g,"\\'")}')"><span><b>${st.n}</b>: ${st.f(t).slice(0,30)}</span><span>📋</span></div>`).join('');
  let freq={}; t.toLowerCase().split(/\s+/).filter(Boolean).forEach(w=>freq[w]=(freq[w]||0)+1);
- document.getElementById('freq').innerHTML=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([k,v])=>`${k}: ${v}`).join('<br>');
+ document.getElementById('freq').innerHTML=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([k,v])=>`${k}: ${v}`).join('<br>')||'No data';
 }
-function copyOut(){navigator.clipboard.writeText(document.getElementById('out').value); alert('Output Copied! ✅')}
-function clearA(){document.getElementById('inp').value='';document.getElementById('out').value='';liveConvert()}
-liveConvert();
+function copyOut(){navigator.clipboard.writeText(document.getElementById('out').value); alert('Copied ✅')}
+function downloadOut(){let blob=new Blob([document.getElementById('out').value],{type:'text/plain'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='caseforge-output.txt';a.click()}
+async function shareOut(){let txt=document.getElementById('out').value; if(navigator.share){try{await navigator.share({title:'CaseForge PRO',text:txt})}catch{}} else {copyOut()}}
+async function pasteFromClip(){try{let txt=await navigator.clipboard.readText(); document.getElementById('inp').value=txt; doConvert()}catch{alert('Clipboard permission do ya manually paste karo Ctrl+V')}}
+function clearA(){document.getElementById('inp').value='';document.getElementById('out').value='';liveExtras()}
+function handleFiles(files){let txt='',c=0; Array.from(files).forEach(f=>{let r=new FileReader(); r.onload=e=>{txt+=e.target.result+'\n'; c++; if(c===files.length){document.getElementById('inp').value=txt; doConvert()}}; r.readAsText(f)})}
+function handleDrop(e){e.preventDefault(); handleFiles(e.dataTransfer.files)}
+liveExtras();
 </script>
 </body>
 </html>
