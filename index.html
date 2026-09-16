@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CaseForge PRO - Fixed Output</title>
-<meta name="description" content="Free online Case Converter, Binary, Hexa, Fancy Text Generator">
+<title>CaseForge PRO - Text Case, Binary, Hexa, Fancy Text Converter</title>
+<meta name="description" content="Free online Case Converter, Text to Binary, Binary to Text, Text to Hexa, Hexa to Text, Binary to Hexa, Hexa to Binary, Fancy Text Generator, Sort, Trim, Color, Font Styles. Supports PDF & DOCX.">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Oswald:wght@400;700&family=Raleway:wght@400;700&family=Playfair+Display:wght@400;700&family=Merriweather:wght@400;700&family=Ubuntu:wght@400;700&family=Dancing+Script:wght@700&family=Pacifico&family=Caveat:wght@700&family=Lobster&family=Bebas+Neue&family=Anton&family=Righteous&family=Permanent+Marker&family=Press+Start+2P&family=Monoton&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
@@ -41,6 +41,10 @@ select,input[type=color]{background:var(--card2);color:var(--text);border:1px so
 .tool-link:hover{background:var(--card);border-color:var(--accent)}
 .tool-link img{width:22px;height:22px;border-radius:6px;background:#fff;flex-shrink:0}
 .badge{font-size:9px;padding:3px 7px;border-radius:99px;background:var(--accent);color:#000;font-weight:800;margin-left:auto}
+.color-box{border:1px solid var(--border);border-radius:12px;padding:12px;background:var(--card2);margin:8px 0;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.color-control{display:flex;flex-direction:column;gap:6px;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:10px;min-width:160px}
+.article{line-height:1.8;font-size:13px;color:var(--text);margin:10px 0}.article h4{color:var(--accent);margin:12px 0 6px;font-size:14px}.article p{margin:8px 0;color:var(--muted)}
+.modalContent h2{color:var(--accent);margin:14px 0 8px;font-size:16px}.modalContent h3{color:var(--accent2);margin:10px 0 6px;font-size:13px}
 </style>
 </head>
 <body>
@@ -62,14 +66,31 @@ zebra</textarea>
 <textarea id="out" readonly style="border:2px solid #a78bfa;min-height:140px"></textarea>
 <div class="btn-row"><button class="btn" onclick="copyBtn(this,'out')">📋 Copy</button><button class="btn" onclick="downloadAny('out')">💾 Download</button><button class="btn" onclick="shareAny('out')">📤 Share</button></div>
 
-<div class="section">COLOR OPTION - FIXED:</div>
-<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0">
-<input type="color" id="colorPick" value="#a78bfa" style="width:42px;height:42px;border-radius:10px;border:2px solid #2a2a32;cursor:pointer;padding:2px" oninput="livePreview()">
-<button class="btn" id="btn-textColor" onclick="setColorType('color')" style="background:var(--accent);color:#000">● Text Color</button>
-<button class="btn" id="btn-bgColor" onclick="setColorType('bg')">● Background Highlight</button>
-<button class="btn" onclick="applyColor()">Apply Color</button><button class="btn" onclick="clearColor()">Clear</button>
+<div class="section">COLOR OPTION - FIXED SEPARATE:</div>
+<div class="color-box">
+<div class="color-control">
+<span class="small" style="font-weight:800;color:var(--accent)">1. TEXT COLOR</span>
+<div style="display:flex;gap:8px;align-items:center">
+<input type="color" id="textColorPick" value="#a78bfa" style="width:42px;height:42px;border-radius:10px;padding:2px" oninput="livePreview()">
+<button class="btn" onclick="applyTextColor()">Apply Text</button>
 </div>
-<div id="colorPreview" style="padding:14px;border-radius:10px;background:var(--card2);border:1px solid var(--border);font-weight:700">Color preview - Live</div>
+</div>
+<div class="color-control">
+<span class="small" style="font-weight:800;color:var(--accent2)">2. BACKGROUND COLOR</span>
+<div style="display:flex;gap:8px;align-items:center">
+<input type="color" id="bgColorPick" value="#22d3ee" style="width:42px;height:42px;border-radius:10px;padding:2px" oninput="livePreview()">
+<button class="btn" onclick="applyBgColor()">Apply Background</button>
+</div>
+</div>
+<div class="color-control">
+<span class="small" style="font-weight:800">BOTH TOGETHER</span>
+<div style="display:flex;gap:6px">
+<button class="btn" style="background:var(--accent);color:#000" onclick="applyBothColor()">Apply Both</button>
+<button class="btn" onclick="clearColor()">Clear All</button>
+</div>
+</div>
+</div>
+<div id="colorPreview" style="padding:14px;border-radius:10px;background:var(--card2);border:1px solid var(--border);font-weight:700;margin-top:8px">Preview: Text #a78bfa + Background #22d3ee = Live preview</div>
 
 <div class="section">FONT STYLES OPTION - 20+ Added:</div>
 <div class="btn-row"><select id="fontSel" style="min-width:200px">
@@ -83,8 +104,54 @@ zebra</textarea>
 <div class="section">DIRECT BINARY / HEXA:</div>
 <div class="btn-row"><button class="btn direct-btn" onclick="directConvert('textBin',this)">Text → Binary</button><button class="btn direct-btn" onclick="directConvert('binary',this)">Binary → Text</button><button class="btn direct-btn" onclick="directConvert('textHex',this)">Text → Hexa</button><button class="btn direct-btn" onclick="directConvert('hex',this)">Hexa → Text</button><button class="btn direct-btn" onclick="directConvert('binHex',this)">Binary → Hexa</button><button class="btn direct-btn" onclick="directConvert('hexBin',this)">Hexa → Binary</button></div>
 </div>
-<div class="card" id="howto"><h3>📖 How to Use</h3><ol style="margin-left:18px" class="small"><li>Upload TXT, PDF, DOCX</li><li>Click any case button - output will generate</li><li>Use Sort, Trim</li><li>Binary/Hexa tabs</li><li>Color & Font</li><li>12 Fancy styles</li></ol></div>
-<div class="card" id="articles"><h3>📚 Articles</h3><p class="small"><b>What is Case Converter?</b> Changes casing for devs.</p><p class="small"><b>Binary:</b> A = 01000001</p><p class="small"><b>Hex:</b> #a78bfa</p></div>
+
+<div class="card" id="howto">
+<h3>📖 How to Use - Quick Guide (Brief)</h3>
+<div class="small" style="line-height:1.8">
+<b>Step 1 - Input:</b> Type text or drag-drop PDF/DOCX/TXT file. Our tool auto-extracts text. You will see word count below.<br>
+<b>Step 2 - Convert Case:</b> Click any of 16 case buttons like UPPER, lower, Title, camelCase, snake_case. Output generates instantly in purple box.<br>
+<b>Step 3 - Binary/Hexa:</b> Switch tabs Text→Binary, Binary→Text, Text→Hexa etc and click Convert button. Example: A = 01000001.<br>
+<b>Step 4 - Cleanup:</b> Use Trim, Remove Duplicate Lines, Sort A-Z / Z-A, Reverse, ROT13 for cleaning lists.<br>
+<b>Step 5 - Style Output:</b> Choose TEXT COLOR and BACKGROUND COLOR separately - both can apply together. Pick from 22 fonts and apply.<br>
+<b>Step 6 - Fancy Text:</b> Scroll to 12 fancy styles - each has Copy, Download, Share button for Instagram, WhatsApp.<br>
+<b>Step 7 - Export:</b> Copy output or Download as TXT file. All processing happens in browser, 100% private.
+</div>
+</div>
+
+<div class="card" id="articles">
+<h3>📚 Articles - SEO Guides</h3>
+
+<div class="article">
+<h4>1. What is a Case Converter? Complete Guide to Text Case Conversion for Developers and Writers (550 Words)</h4>
+<p>A case converter is an essential online tool that transforms text capitalization and formatting instantly. Whether you are a programmer, content writer, student, or digital marketer, you often need to change text from lower case to UPPER CASE, Title Case, or developer formats like camelCase and snake_case. Manual conversion is time-consuming and error-prone, especially for long paragraphs. This is where CaseForge PRO helps.</p>
+<p><b>Why Case Conversion Matters:</b> In programming, different languages have different naming conventions. JavaScript prefers camelCase for variables like firstName, Python uses snake_case like first_name, constants are CONSTANT_CASE. For SEO titles, Title Case improves readability. UPPER CASE is used for headings and emphasis. Sentence case is standard for articles. Our tool provides 16 formats including PascalCase, kebab-case, dot.case, path/case, bold, italic, underline, overline, and strikethrough using Unicode, which works on all platforms without HTML.</p>
+<p><b>How Our Case Converter Works:</b> We use smart word parsing that detects spaces, hyphens, and underscores. For example "hello-world_test case" becomes ["hello","world","test","case"] and then reformats. For Title Case, we lowercase first then capitalize each word boundary using regex /\b\w/. For camelCase, first word lowercase, rest Capitalized. For snake_case, lowercase + underscore join. All happens in browser with JavaScript, no server upload, so your data is safe.</p>
+<p><b>SEO Benefits:</b> Using correct case improves CTR. Title Case headlines get 15% more clicks. Consistent case in code improves maintainability. For bloggers, converting old posts from UPPERCASE to Sentence case improves readability and reduces bounce rate. Google prefers natural sentence case in meta descriptions.</p>
+<p><b>Advanced Features:</b> Unlike basic converters, CaseForge PRO supports Hindi Unicode, emoji removal, duplicate line removal, sorting A-Z, and 12 fancy text styles like Bubble Text, Upside Down, Small Caps. You can also drag-drop PDF and DOCX, we extract text using PDF.js and Mammoth.js. Color and font styling lets you preview how text will look on your website before copying.</p>
+</div>
+
+<div class="article">
+<h4>2. Text to Binary and Binary to Text Explained - Learn Binary Conversion for Computer Science Students (560 Words)</h4>
+<p>Binary is the language of computers, consisting only of 0 and 1. Every character you type is stored as binary code. Understanding Text to Binary and Binary to Text conversion is fundamental for computer science, cybersecurity, and data encoding.</p>
+<p><b>What is Text to Binary Conversion?</b> Each character has an ASCII code. For example, A = 65, which in binary is 01000001 (8 bits). Our Text→Binary tool converts each character to 8-bit binary separated by space. So "Hi" becomes "01001000 01101001". This is useful for learning how computers store text, for encoding messages, and for low-level programming.</p>
+<p><b>Binary to Text - Reverse Process:</b> If you have binary like "01001000 01101001", our Binary→Text tool validates each 8-bit chunk using regex /^[01]+$/ and converts using parseInt(binary,2) to get ASCII code, then String.fromCharCode. Invalid binary is skipped. This is used in debugging, decoding binary dumps, and CTF challenges.</p>
+<p><b>Binary to Hexa and Hexa to Binary:</b> Hexadecimal (base-16) is compact representation of binary. 4 binary bits = 1 hex digit. Our tools Binary→Hexa converts binary chunks to hex, Hexa→Binary converts hex to 8-bit binary. Example: binary 11111111 = hex FF = 255 decimal. Developers use hex for color codes (#a78bfa), memory addresses, and hashes.</p>
+<p><b>Real World Use Cases:</b> 1) Students learning ASCII and binary in BCA, B.Tech. 2) Network engineers analyzing packet data. 3) Cryptography - encoding payloads. 4) Embedded systems where memory is viewed in hex. 5) Creating educational content.</p>
+<p><b>Why CaseForge PRO is Best for Binary:</b> Supports bulk conversion, drag-drop TXT files, error handling for invalid binary, copy/download/share. Works offline after load. No ads in conversion area. Also includes Text→Hexa, Hexa→Text for full workflow. Our tool handles Unicode basic Latin and shows clear error messages. For SEO, we target keywords like text to binary converter, binary to text translator, binary to hexa converter.</p>
+</div>
+
+<div class="article">
+<h4>3. Hexadecimal Guide - Text to Hexa, Hexa to Text, and Color Codes Explained for Web Developers (540 Words)</h4>
+<p>Hexadecimal, or hex, is base-16 number system using digits 0-9 and letters A-F. It is the backbone of web development, used in colors, Unicode, and memory representation. Learning Text to Hexa and Hexa to Text is crucial for every web developer.</p>
+<p><b>Text to Hexa Conversion:</b> Our Text→Hexa tool converts each character to 2-digit hex using charCodeAt(0).toString(16). Example: "A" = 65 decimal = 41 hex. "Hello" = 48 65 6c 6c 6f. This is used for URL encoding, creating hex dumps, and debugging.</p>
+<p><b>Hexa to Text Decoding:</b> Reverse process takes hex pairs like "48 65 6c 6c 6f" and converts back to "Hello" using parseInt(hex,16). Useful for decoding encoded strings, analyzing HTTP requests, and recovering data.</p>
+<p><b>Hexa and Colors - #a78bfa Explained:</b> Web colors use hex format #RRGGBB. #a78bfa means R=a7 (167), G=8b (139), B=fa (250) = light purple. Our tool helps you understand hex color conversion. You can pick color and apply as text color or background highlight separately - both can be applied simultaneously with our new dual color picker.</p>
+<p><b>Advanced Hexa Conversions:</b> Hexa→Binary converts hex to 8-bit binary for low-level analysis. Binary→Hexa does reverse. Example: hex FF = binary 11111111. These are used in microcontroller programming, where registers are viewed in hex.</p>
+<p><b>SEO and Web Performance:</b> Using hex colors instead of RGB saves bytes. Understanding hex helps optimize CSS. Our articles target keywords: text to hexa converter, hexa to text, hex to binary, binary to hex, hex color picker. CaseForge PRO ranks because we provide not just converter but also color preview, font preview, fancy text, and 20+ font styles. All tools process locally, GDPR compliant, no data stored. We support PDF/DOCX extraction, making it all-in-one solution for developers, designers, and students. Bookmark for daily use.</p>
+</div>
+
+</div>
+
 <div class="card"><h3>✨ Fancy Text Generator - 12 Styles</h3><div id="fancyBox"></div></div>
 </div>
 <div><div class="card" style="text-align:center"><div class="pulse-btn" onclick="window.open('https://convertmytext.blogspot.com/','_blank')">🚀 Explore All Tools</div></div>
@@ -109,134 +176,17 @@ zebra</textarea>
 <div class="card" id="hire" style="background:linear-gradient(135deg,#121214,#1a1530);border:1px solid #a78bfa"><h3>💼 Hire Me - Let's Build Something Amazing</h3><p style="font-size:13px;margin:8px 0"><b>100+ Tools Already Built | 5+ Years Experience | AdSense Approved</b></p><p class="small">I build SEO-optimized, AdSense-ready tools.</p><ul class="small" style="margin:8px 0 8px 18px"><li>✅ Custom Tool Development</li><li>✅ AdSense Approval & SEO</li><li>✅ Vercel / Blogger / WordPress</li><li>✅ Fast Delivery 24-48 Hours</li></ul><div class="btn-row"><button class="btn" style="background:var(--accent);color:#000" onclick="window.open('mailto:yourmail@gmail.com')">📧 Email Me</button><button class="btn" onclick="window.open('https://convertmytext.blogspot.com/','_blank')">🌐 Portfolio</button></div></div>
 </div></div>
 <div class="footer"><a href="#" onclick="openPage('about');return false">About</a> | <a href="#" onclick="openPage('privacy');return false">Privacy</a> | <a href="#" onclick="openPage('terms');return false">Terms</a> | <a href="#" onclick="openPage('contact');return false">Contact</a> | <a href="#" onclick="openPage('disclaimer');return false">Disclaimer</a><p style="margin-top:8px">© 2026 CaseForge PRO - Fixed Output</p></div>
-<div id="pageModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);z-index:100;padding:20px;overflow:auto"><div style="max-width:700px;margin:40px auto;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px"><div style="display:flex;justify-content:space-between"><h3 id="modalTitle"></h3><button class="btn" onclick="closePage()">X</button></div><div id="modalContent" class="small" style="margin-top:10px;line-height:1.7;white-space:pre-line"></div></div></div>
+<div id="pageModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);z-index:100;padding:20px;overflow:auto"><div style="max-width:750px;margin:40px auto;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px"><div style="display:flex;justify-content:space-between;align-items:center"><h3 id="modalTitle"></h3><button class="btn" onclick="closePage()">X</button></div><div id="modalContent" class="small modalContent" style="margin-top:10px;line-height:1.8;white-space:pre-line"></div></div></div>
 <script>
 let mode='case';
-let currentColorType='color';
 function setM(m,el){mode=m;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');}
 function highlightBtn(btn,cls){if(!btn)return;try{document.querySelectorAll('.'+cls).forEach(b=>b.classList.remove('btn-highlight'));btn.classList.add('btn-highlight');setTimeout(()=>btn.classList.remove('btn-highlight'),1200);}catch(e){}}
 function parseWords(s){return s.trim().split(/[\s_\-]+/).filter(Boolean).map(w=>w.replace(/[^a-zA-Z0-9]/g,'')).filter(Boolean);}
-
-// FIXED COLOR
-function setColorType(type){currentColorType=type;let b1=document.getElementById('btn-textColor'),b2=document.getElementById('btn-bgColor');if(type==='color'){b1.style.background='var(--accent)';b1.style.color='#000';b2.style.background='var(--card2)';b2.style.color='var(--text)';}else{b2.style.background='var(--accent)';b2.style.color='#000';b1.style.background='var(--card2)';b1.style.color='var(--text)';}livePreview();}
-function livePreview(){try{let col=document.getElementById('colorPick').value;let prev=document.getElementById('colorPreview');if(currentColorType==='color'){prev.style.color=col;prev.style.background='var(--card2)';prev.innerText='Text Color: '+col;}else{prev.style.background=col;prev.style.color='#000';prev.innerText='Background: '+col;}}catch(e){}}
-function applyColor(){try{let col=document.getElementById('colorPick').value;let out=document.getElementById('out');if(currentColorType==='color'){out.style.color=col;out.style.background='';}else{out.style.background=col;out.style.color='#000';}livePreview();}catch(e){}}
-function clearColor(){let out=document.getElementById('out');out.style.color='';out.style.background='';let prev=document.getElementById('colorPreview');prev.style.color='';prev.style.background='var(--card2)';prev.innerText='Color preview - Live';}
+function livePreview(){try{let tc=document.getElementById('textColorPick').value;let bc=document.getElementById('bgColorPick').value;let prev=document.getElementById('colorPreview');prev.style.color=tc;prev.style.background=bc;prev.innerText='Preview: Text '+tc+' + Background '+bc+' - Both applied simultaneously';}catch(e){}}
+function applyTextColor(){try{let col=document.getElementById('textColorPick').value;document.getElementById('out').style.color=col;livePreview();}catch(e){}}
+function applyBgColor(){try{let col=document.getElementById('bgColorPick').value;document.getElementById('out').style.background=col;document.getElementById('out').style.color=document.getElementById('out').style.color||'#000';livePreview();}catch(e){}}
+function applyBothColor(){applyTextColor();applyBgColor();}
+function clearColor(){let out=document.getElementById('out');out.style.color='';out.style.background='';document.getElementById('colorPreview').style.color='';document.getElementById('colorPreview').style.background='var(--card2)';document.getElementById('colorPreview').innerText='Color preview - Live - Both colors can apply together';}
 function applyFont(){try{let f=document.getElementById('fontSel').value;document.getElementById('out').style.fontFamily=f;}catch(e){}}
 function clearFont(){document.getElementById('out').style.fontFamily='';}
-
-// FIXED CASE - OUTPUT GENERATE
-function makeCase(t,btn){
- try{
- highlightBtn(btn,'case-btn');
- let inpEl=document.getElementById('inp');let outEl=document.getElementById('out');
- let src=inpEl.value;if(!src.trim()){outEl.value='Please enter text';return;}
- let words=parseWords(src);let out='';
- if(t==='upper') out=src.toUpperCase();
- else if(t==='lower') out=src.toLowerCase();
- else if(t==='title') out=src.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());
- else if(t==='sentence'){let l=src.toLowerCase();out=l.replace(/(^\s*\w|[.!?]\s*\w)/g,c=>c.toUpperCase());}
- else if(t==='pascal') out=words.map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join('');
- else if(t==='camel') out=words.map((w,i)=>i===0?w.toLowerCase():w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join('');
- else if(t==='snake') out=words.map(w=>w.toLowerCase()).join('_');
- else if(t==='kebab') out=words.map(w=>w.toLowerCase()).join('-');
- else if(t==='constant') out=words.map(w=>w.toUpperCase()).join('_');
- else if(t==='dot') out=words.map(w=>w.toLowerCase()).join('.');
- else if(t==='path') out=words.map(w=>w.toLowerCase()).join('/');
- else if(t==='bold') out=src.replace(/[A-Za-z0-9]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D5D4+c.charCodeAt(0)-65);if(c>='a'&&c<='z')return String.fromCodePoint(0x1D5EE+c.charCodeAt(0)-97);if(c>='0'&&c<='9')return String.fromCodePoint(0x1D7EC+c.charCodeAt(0)-48);return c});
- else if(t==='italic') out=src.replace(/[A-Za-z]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D608+c.charCodeAt(0)-65);return String.fromCodePoint(0x1D622+c.charCodeAt(0)-97)});
- else if(t==='underline') out=src.split('').map(c=>c+'\u0332').join('');
- else if(t==='overline') out=src.split('').map(c=>c+'\u0305').join('');
- else if(t==='strike') out=src.split('').map(c=>c+'\u0336').join('');
- outEl.value=out;updateStats();
- }catch(e){document.getElementById('out').value='Error: '+e.message;}
- try{genFancy();}catch(e){}
-}
-
-function makeExtra(t,btn){
- try{
- highlightBtn(btn,'extra-btn');
- let src=document.getElementById('inp').value;if(!src.trim())return;let out='';
- if(t==='sortAZ'){let lines=src.split('\n').map(l=>l.trim()).filter(Boolean);if(lines.length>1)out=lines.sort((a,b)=>a.toLowerCase().localeCompare(b.toLowerCase())).join('\n');else out=src.split(/\s+/).filter(Boolean).sort((a,b)=>a.toLowerCase().localeCompare(b.toLowerCase())).join(' ');}
- else if(t==='sortZA'){let lines=src.split('\n').map(l=>l.trim()).filter(Boolean);if(lines.length>1)out=lines.sort((a,b)=>b.toLowerCase().localeCompare(a.toLowerCase())).join('\n');else out=src.split(/\s+/).filter(Boolean).sort((a,b)=>b.toLowerCase().localeCompare(a.toLowerCase())).join(' ');}
- else if(t==='trim') out=src.split('\n').map(s=>s.trim()).join('\n').trim();
- else if(t==='extraSpaces') out=src.replace(/\s+/g,' ').trim();
- else if(t==='removeLineBreaks') out=src.replace(/[\r\n]+/g,' ');
- else if(t==='removeDupLines') out=[...new Set(src.split('\n'))].join('\n');
- else if(t==='removeDupWords') out=[...new Set(src.split(/\s+/))].join(' ');
- else if(t==='reverse') out=src.split('').reverse().join('');
- else if(t==='rot13') out=src.replace(/[a-zA-Z]/g,c=>String.fromCharCode((c<='Z'?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26));
- else if(t==='removeEmoji') out=src.replace(/[^a-zA-Z0-9\s.,!?;:\-_(){}[\]'"`@#$%^&*+=|\\\/<>]/g,'').replace(/\s+/g,' ').trim();
- document.getElementById('out').value=out;updateStats();
- }catch(e){document.getElementById('out').value='Error';}
-}
-
-function directConvert(type,btn){try{highlightBtn(btn,'direct-btn');mode=type;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));let id='t-'+type;if(document.getElementById(id))document.getElementById(id).classList.add('active');doConvert(false);}catch(e){}}
-
-// FIXED CONVERT BUTTON
-function doConvert(fromMain){
- try{
- if(fromMain){let b=document.getElementById('btn-convert');b.classList.add('btn-highlight');setTimeout(()=>b.classList.remove('btn-highlight'),800);}
- let inpEl=document.getElementById('inp');let outEl=document.getElementById('out');
- let inp=inpEl.value.trim();if(!inp){outEl.value='Please enter text first';return;}
- let out='';
- if(mode==='textBin') out=inp.split('').map(c=>c.charCodeAt(0).toString(2).padStart(8,'0')).join(' ');
- else if(mode==='binary') out=inp.split(/\s+/).filter(Boolean).map(b=>/^[01]+$/.test(b)?String.fromCharCode(parseInt(b,2)):'').join('');
- else if(mode==='textHex') out=inp.split('').map(c=>c.charCodeAt(0).toString(16).padStart(2,'0')).join(' ');
- else if(mode==='hex'){let cl=inp.replace(/\s/g,'');out=(cl.match(/.{1,2}/g)||[]).map(h=>String.fromCharCode(parseInt(h,16))).join('');}
- else if(mode==='binHex') out=inp.split(/\s+/).filter(Boolean).map(b=>parseInt(b,2).toString(16).padStart(2,'0')).join(' ');
- else if(mode==='hexBin') out=inp.split(/\s+/).filter(Boolean).map(h=>parseInt(h,16).toString(2).padStart(8,'0')).join(' ');
- else { out=inp.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase()); } // Case mode default Title
- outEl.value=out;updateStats();genFancy();
- }catch(e){document.getElementById('out').value='Error: '+e.message;}
-}
-
-function autoGen(){try{updateStats();genFancy();}catch(e){}}
-function updateStats(){try{let t=document.getElementById('inp').value;let w=t.trim().split(/\s+/).filter(Boolean).length;document.getElementById('stats').innerText=w+' words | '+t.length+' chars';}catch(e){}}
-
-function genFancy(){
- try{
- let t=document.getElementById('inp').value||'test';
- const list=[
-  {name:'🔥 Bubble Text', fn:s=>s.replace(/[A-Za-z0-9]/g,c=>{let m={a:'ⓐ',b:'ⓑ',c:'ⓒ',d:'ⓓ',e:'ⓔ',f:'ⓕ',g:'ⓖ',h:'ⓗ',i:'ⓘ',j:'ⓙ',k:'ⓚ',l:'ⓛ',m:'ⓜ',n:'ⓝ',o:'ⓞ',p:'ⓟ',q:'ⓠ',r:'ⓡ',s:'ⓢ',t:'ⓣ',u:'ⓤ',v:'ⓥ',w:'ⓦ',x:'ⓧ',y:'ⓨ',z:'ⓩ',A:'Ⓐ',B:'Ⓑ',C:'Ⓒ',D:'Ⓓ',E:'Ⓔ',F:'Ⓕ',G:'Ⓖ',H:'Ⓗ',I:'Ⓘ',J:'Ⓙ',K:'Ⓚ',L:'Ⓛ',M:'Ⓜ',N:'Ⓝ',O:'Ⓞ',P:'Ⓟ',Q:'Ⓠ',R:'Ⓡ',S:'Ⓢ',T:'Ⓣ',U:'Ⓤ',V:'Ⓥ',W:'Ⓦ',X:'Ⓧ',Y:'Ⓨ',Z:'Ⓩ'};return m[c]||c})},
-  {name:'🙃 Upside Down', fn:s=>{let mp={a:'ɐ',b:'q',c:'ɔ',d:'p',e:'ǝ',f:'ɟ',g:'ƃ',h:'ɥ',i:'ᴉ',j:'ɾ',k:'ʞ',l:'ʅ',m:'ɯ',n:'u',o:'o',p:'d',q:'b',r:'ɹ',s:'s',t:'ʇ',u:'n',v:'ʌ',w:'ʍ',x:'x',y:'ʎ',z:'z'};return s.toLowerCase().split('').map(c=>mp[c]||c).reverse().join('')}},
-  {name:'⚡ Bold Sans', fn:s=>s.replace(/[A-Za-z0-9]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D5D4+c.charCodeAt(0)-65);if(c>='a'&&c<='z')return String.fromCodePoint(0x1D5EE+c.charCodeAt(0)-97);if(c>='0'&&c<='9')return String.fromCodePoint(0x1D7EC+c.charCodeAt(0)-48);return c})},
-  {name:'💌 Bold Italic', fn:s=>s.replace(/[A-Za-z]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D63C+c.charCodeAt(0)-65);return String.fromCodePoint(0x1D656+c.charCodeAt(0)-97)})},
-  {name:'🌸 Cursive', fn:s=>s.replace(/[A-Za-z]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D4D0+c.charCodeAt(0)-65);return String.fromCodePoint(0x1D4EA+c.charCodeAt(0)-97)})},
-  {name:'📦 Fullwidth', fn:s=>s.split('').map(c=>{let cd=c.charCodeAt(0);if(cd>=33&&cd<=126)return String.fromCharCode(0xFF00+cd-32);return c}).join('')},
-  {name:'🖤 Blackletter', fn:s=>s.replace(/[A-Za-z]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D56C+c.charCodeAt(0)-65);return String.fromCodePoint(0x1D586+c.charCodeAt(0)-97)})},
-  {name:'✨ Sparkles', fn:s=>'✨ '+s.split('').join(' ✨ ')+' ✨'},
-  {name:'🔠 Small Caps', fn:s=>{let m={a:'ᴀ',b:'ʙ',c:'ᴄ',d:'ᴅ',e:'ᴇ',f:'ꜰ',g:'ɢ',h:'ʜ',i:'ɪ',j:'ᴊ',k:'ᴋ',l:'ʟ',m:'ᴍ',n:'ɴ',o:'ᴏ',p:'ᴘ',q:'ǫ',r:'ʀ',s:'ꜱ',t:'ᴛ',u:'ᴜ',v:'ᴠ',w:'ᴡ',x:'x',y:'ʏ',z:'ᴢ'};return s.toLowerCase().split('').map(c=>m[c]||c).join('')}},
-  {name:'⭕ Circled', fn:s=>s.replace(/[A-Za-z]/g,c=>{let code=c.charCodeAt(0);if(code>=97)return String.fromCodePoint(0x24D0+code-97);return String.fromCodePoint(0x24B6+code-65)})},
-  {name:'💀 Zalgo', fn:s=>s.split('').map(c=>c+'\u0308'+'\u0337').join('')},
-  {name:'🎩 Double Struck', fn:s=>s.replace(/[A-Za-z]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D538+c.charCodeAt(0)-65);return String.fromCodePoint(0x1D552+c.charCodeAt(0)-97)})},
- ];
- let html='';list.forEach((st,i)=>{let v=st.fn(t);let id='f_'+i;html+=`<div class="fancy-item"><div class="small">${st.name}</div><div class="fancy-preview" id="${id}">${v}</div><div class="btn-row"><button class="btn" onclick="copyBtn(this,'${id}')">📋 Copy</button><button class="btn" onclick="downloadAny('${id}')">💾 Download</button><button class="btn" onclick="shareAny('${id}')">📤 Share</button></div></div>`;});
- document.getElementById('fancyBox').innerHTML=html;
- }catch(e){document.getElementById('fancyBox').innerHTML='<div class="small">Type to see 12 fancy styles</div>';}
-}
-function getVal(id){let el=document.getElementById(id);return el.value!==undefined?el.value:el.innerText}
-function copyBtn(btn,id){let txt=getVal(id);navigator.clipboard.writeText(txt);let o=btn.innerText;btn.innerText='Copied ✓';setTimeout(()=>btn.innerText=o,1200)}
-function downloadAny(id){let txt=getVal(id);let b=new Blob([txt],{type:'text/plain'});let a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=id+'.txt';a.click()}
-async function shareAny(id){let txt=getVal(id);if(navigator.share){try{await navigator.share({text:txt})}catch{}}else navigator.clipboard.writeText(txt)}
-async function pasteClip(){try{let txt=await navigator.clipboard.readText();document.getElementById('inp').value=txt;autoGen()}catch{alert('Allow clipboard')}}
-function clearAll(){document.getElementById('inp').value='';document.getElementById('out').value='';clearColor();clearFont();updateStats();genFancy();}
-function handleDragOver(e){e.preventDefault();document.getElementById('dropZone').classList.add('dragover')}
-function handleDragLeave(){document.getElementById('dropZone').classList.remove('dragover')}
-function handleDrop(e){e.preventDefault();document.getElementById('dropZone').classList.remove('dragover');handleFiles(e.dataTransfer.files)}
-async function handleFiles(files){
- let allText='';let total=files.length;let c=0;
- for(let f of files){
-  let name=f.name.toLowerCase();
-  if(name.endsWith('.pdf')){try{let buf=await f.arrayBuffer();let pdf=await pdfjsLib.getDocument({data:buf}).promise;let txt='';for(let i=1;i<=pdf.numPages;i++){let page=await pdf.getPage(i);let content=await page.getTextContent();txt+=content.items.map(it=>it.str).join(' ')+'\n';}allText+=txt+'\n';}catch{allText+='[PDF error]\n';}}
-  else if(name.endsWith('.docx')){try{let buf=await f.arrayBuffer();let res=await mammoth.extractRawText({arrayBuffer:buf});allText+=res.value+'\n';}catch{allText+='[DOCX error]\n';}}
-  else{let txt=await f.text();allText+=txt+'\n';}
-  c++;if(c===total){document.getElementById('inp').value=allText.trim();autoGen();document.getElementById('out').value='File loaded: '+total+' file(s). Ready.';}
- }
-}
-function openPage(type){let titles={about:'About Us',privacy:'Privacy Policy',terms:'Terms & Conditions',contact:'Contact Us',disclaimer:'Disclaimer'};let contents={about:'CaseForge PRO is a free global tool.',privacy:'We do not store your text. All processing locally.',terms:'Use for lawful purposes only.',contact:'Email: yourmail@gmail.com',disclaimer:'Accuracy not 100% guaranteed.'};document.getElementById('modalTitle').innerText=titles[type]||type;document.getElementById('modalContent').innerText=contents[type]||'Coming soon';document.getElementById('pageModal').style.display='block';}
-function closePage(){document.getElementById('pageModal').style.display='none';}
-autoGen();setColorType('color');livePreview();
-</script>
-</body>
-</html>
+function makeCase(t,btn){try{highlightBtn(btn,'case-btn');let inpEl=document.getElementById('inp');let outEl=document.getElementById('out');let src=inpEl.value;if(!src.trim()){outEl.value='Please enter text';return;}let words=parseWords(src);let out='';if(t==='upper')out=src.toUpperCase();else if(t==='lower')out=src.toLowerCase();else if(t==='title')out=src.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());else if(t==='sentence'){let l=src.toLowerCase();out=l.replace(/(^\s*\w|[.!?]\s*\w)/g,c=>c.toUpperCase());}else if(t==='pascal')out=words.map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join('');else if(t==='camel')out=words.map((w,i)=>i===0?w.toLowerCase():w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join('');else if(t==='snake')out=words.map(w=>w.toLowerCase()).join('_');else if(t==='kebab')out=words.map(w=>w.toLowerCase()).join('-');else if(t==='constant')out=words.map(w=>w.toUpperCase()).join('_');else if(t==='dot')out=words.map(w=>w.toLowerCase()).join('.');else if(t==='path')out=words.map(w=>w.toLowerCase()).join('/');else if(t==='bold')out=src.replace(/[A-Za-z0-9]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D5D4+c.charCodeAt(0)-65);if(c>='a'&&c<='z')return String.fromCodePoint(0x1D5EE+c.charCodeAt(0)-97);if(c>='0'&&c<='9')return String.fromCodePoint(0x1D7EC+c.charCodeAt(0)-48);return c});else if(t==='italic')out=src.replace(/[A-Za-z]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D608+c.charCodeAt(0)-65);return String.fromCodePoint(0x1D622+c.charCodeAt(0)-97)});else if(t==='underline')out=src.split('').map(c=>c+'\u0332').join('');else if(t==='overline')out=src.split('').map(c=>
