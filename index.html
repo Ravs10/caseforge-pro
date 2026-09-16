@@ -1,78 +1,121 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CaseForge PRO - Binary, Hex & Case Converter</title>
+<title>CaseForge PRO - Free Binary, Hex & Case Converter | Upper Lower Title Case</title>
+<meta name="description" content="Free online CaseForge PRO tool - Convert UPPER to lower, Binary to Text, Hex to Text, Text to Binary & Hex. Bulk.txt upload, word counter. 100% free.">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-body{background:#0a0a0a;color:#fff;padding:15px}
-.container{max-width:900px;margin:0 auto}
-h1{text-align:center;margin:20px 0;background:linear-gradient(90deg,#a78bfa,#22d3ee);-webkit-background-clip:text;color:transparent;font-size:28px}
-.tabs{display:flex;gap:8px;overflow-x:auto;margin-bottom:15px}
-.tab{padding:10px 14px;background:#1a1a1a;border:1px solid #333;border-radius:8px;white-space:nowrap;cursor:pointer}
-.tab.active{background:#a78bfa;color:#000;font-weight:700}
-.box{background:#161616;border:1px solid #2a2a2a;border-radius:12px;padding:15px}
-textarea{width:100%;background:#0f0f0f;color:#fff;border:1px solid #333;border-radius:8px;padding:12px;min-height:140px;margin:10px 0;font-size:14px}
-.btns{display:flex;flex-wrap:wrap;gap:8px}
-button{padding:10px 16px;border-radius:8px;border:0;cursor:pointer;font-weight:600}
-.primary{background:#a78bfa;color:#000}
-.secondary{background:#222;color:#fff;border:1px solid #333}
-.stats{font-size:12px;color:#888;margin-top:8px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui,sans-serif}
+body{background:#08080a;color:#e5e5e5;line-height:1.6}
+.header{text-align:center;padding:30px 15px 15px}
+.header h1{font-size:32px;background:linear-gradient(90deg,#a78bfa,#22d3ee,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:800}
+.header p{color:#888;margin-top:6px}
+.container{max-width:950px;margin:0 auto;padding:0 15px 40px}
+.card{background:#121214;border:1px solid #222;border-radius:16px;padding:18px;margin-top:15px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:5px;scrollbar-width:none}
+.tab{padding:9px 16px;background:#1c1c20;border:1px solid #2a2a32;border-radius:99px;white-space:nowrap;cursor:pointer;font-size:13px;font-weight:600;transition:.2s}
+.tab.active{background:#a78bfa;color:#000;border-color:#a78bfa}
+textarea{width:100%;background:#0e0e10;color:#fff;border:1px solid #2a2a32;border-radius:12px;padding:14px;min-height:160px;margin:12px 0;font-size:14px;resize:vertical}
+textarea:focus{outline:none;border-color:#a78bfa}
+.btn-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.btn{padding:10px 18px;border-radius:10px;border:0;cursor:pointer;font-weight:700;font-size:13px}
+.btn-p{background:#a78bfa;color:#000}
+.btn-s{background:#1c1c20;color:#fff;border:1px solid #2a2a32}
+.stats{font-size:12px;color:#666;margin:6px 2px}
+.ad{border:1px dashed #333;color:#555;text-align:center;padding:20px;border-radius:12px;margin:18px 0;font-size:12px}
+h2{font-size:20px;margin:25px 0 10px;color:#fff}
+h3{font-size:15px;margin:15px 0 6px;color:#a78bfa}
+.seo{color:#9ca3af;font-size:14px}
+.seo p{margin-bottom:12px}
+.faq{background:#16161a;border-radius:10px;padding:12px;margin:8px 0;border:1px solid #222}
+.faq b{color:#fff;display:block;margin-bottom:4px}
+.footer{text-align:center;color:#555;font-size:12px;margin-top:30px;padding:20px}
 </style>
 </head>
 <body>
-<div class="container">
+<div class="header">
 <h1>CaseForge PRO ⚡</h1>
+<p>Binary, Hex & Advanced Case Converter - 100% Free, No Login</p>
+</div>
+<div class="container">
+<div class="ad">Ad Space - Top (AdSense)</div>
+<div class="card">
 <div class="tabs">
-<div class="tab active" onclick="setMode('case')">Case Convert</div>
-<div class="tab" onclick="setMode('binary')">Binary → Text</div>
-<div class="tab" onclick="setMode('hex')">Hex → Text</div>
-<div class="tab" onclick="setMode('binaryEncode')">Text → Binary</div>
-<div class="tab" onclick="setMode('hexEncode')">Text → Hex</div>
+<div class="tab active" onclick="setMode('case',this)">Case Convert</div>
+<div class="tab" onclick="setMode('binary',this)">Binary → Text</div>
+<div class="tab" onclick="setMode('hex',this)">Hex → Text</div>
+<div class="tab" onclick="setMode('binaryEncode',this)">Text → Binary</div>
+<div class="tab" onclick="setMode('hexEncode',this)">Text → Hex</div>
 </div>
-<div class="box">
-<textarea id="input" placeholder="Yahan text paste karo..."></textarea>
-<div class="btns">
-<button class="primary" onclick="convert()">Convert</button>
-<button class="secondary" onclick="copyOut()">Copy</button>
-<button class="secondary" onclick="clearAll()">Clear</button>
-<input type="file" id="fileInput" style="display:none" onchange="handleFile(this)">
-<button class="secondary" onclick="document.getElementById('fileInput').click()">Bulk Upload (.txt)</button>
+<textarea id="input" placeholder="Yahan text paste karo... Example: hello world or 01001000"></textarea>
+<div class="btn-row">
+<button class="btn btn-p" onclick="convert()">Convert →</button>
+<button class="btn btn-s" onclick="copyOut()">Copy Output</button>
+<button class="btn btn-s" onclick="clearAll()">Clear</button>
+<button class="btn btn-s" onclick="document.getElementById('fileInput').click()">📁 Bulk.txt Upload</button>
+<input type="file" id="fileInput" hidden onchange="handleFile(this)" accept=".txt">
 </div>
-<div class="stats" id="stats">0 words | 0 chars</div>
+<div class="stats" id="stats">0 words | 0 chars | 0 lines</div>
 <textarea id="output" placeholder="Output yahan ayega..." readonly></textarea>
-<div class="btns" style="margin-top:10px">
-<button class="secondary" onclick="toUpper()">UPPER</button>
-<button class="secondary" onclick="toLower()">lower</button>
-<button class="secondary" onclick="toTitle()">Title Case</button>
+<div class="btn-row">
+<button class="btn btn-s" onclick="toUpper()">UPPER CASE</button>
+<button class="btn btn-s" onclick="toLower()">lower case</button>
+<button class="btn btn-s" onclick="toTitle()">Title Case</button>
+<button class="btn btn-s" onclick="toSentence()">Sentence case</button>
+<button class="btn btn-s" onclick="toAlt()">aLtErNaTiNg</button>
 </div>
 </div>
+
+<div class="ad">Ad Space - Middle (AdSense)</div>
+
+<div class="card seo">
+<h2>What is CaseForge PRO?</h2>
+<p><b>CaseForge PRO</b> is a free all-in-one developer toolkit to convert text case, binary code, and hexadecimal code instantly. Unlike other tools, it supports bulk file upload, works offline, and never saves your data.</p>
+<h3>Key Features:</h3>
+<p>✅ <b>Case Converter:</b> Convert to UPPER CASE, lower case, Title Case, Sentence case, and aLtErNaTiNg case in one click. Perfect for writers, students, and programmers.</p>
+<p>✅ <b>Binary Translator:</b> Binary → Text and Text → Binary. Example: 01001000 01101001 becomes "Hi". Essential for CS students.</p>
+<p>✅ <b>Hex Translator:</b> Hex → Text and Text → Hex conversion for developers and debugging.</p>
+<p>✅ <b>Bulk.txt Upload:</b> Upload a 10,000+ lines text file and convert everything at once. No other free tool offers this.</p>
+<p>✅ <b>Privacy First:</b> All conversion happens in your browser. We don't store anything on server.</p>
+<h2>How to Use?</h2>
+<p>1. Paste your text / binary / hex in first box. 2. Select mode from tabs. 3. Click Convert. 4. Copy output. That's it! For bulk, click Bulk Upload.</p>
+<h2>FAQs</h2>
+<div class="faq"><b>Is it free?</b> Yes, 100% free forever. No login, no limit.</div>
+<div class="faq"><b>Is my data safe?</b> Yes, all processing is client-side JavaScript. Your data never leaves your device.</div>
+<div class="faq"><b>What is Binary to Text?</b> Computers store text as 0 and 1. This tool translates that binary code back to human readable text.</div>
+<div class="faq"><b>Can I convert large files?</b> Yes, use Bulk.txt Upload. Supports up to ~1MB files instantly.</div>
 </div>
+
+<div class="ad">Ad Space - Bottom (AdSense)</div>
+<div class="footer">© 2026 CaseForge PRO - Built for Developers, Writers & Students. Made in India.</div>
+</div>
+
 <script>
 let mode='case';
-function setMode(m){mode=m;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));event.target.classList.add('active');document.getElementById('output').value='';}
+function setMode(m,el){mode=m;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');}
 function convert(){
  let inp=document.getElementById('input').value;
  let out='';
  try{
-  if(mode==='binary'){ out=inp.trim().split(/\s+/).map(b=>String.fromCharCode(parseInt(b,2))).join('');}
-  else if(mode==='hex'){ out=inp.trim().replace(/\s+/g,'').match(/.{1,2}/g).map(h=>String.fromCharCode(parseInt(h,16))).join('');}
+  if(mode==='binary'){ out=inp.trim().split(/[\s\n]+/).filter(b=>b).map(b=>String.fromCharCode(parseInt(b,2))).join('');}
+  else if(mode==='hex'){ out=inp.trim().replace(/\s/g,'').match(/.{1,2}/g).map(h=>String.fromCharCode(parseInt(h,16))).join('');}
   else if(mode==='binaryEncode'){ out=inp.split('').map(c=>c.charCodeAt(0).toString(2).padStart(8,'0')).join(' ');}
   else if(mode==='hexEncode'){ out=inp.split('').map(c=>c.charCodeAt(0).toString(16).padStart(2,'0')).join(' ');}
   else{ out=inp;}
- }catch(e){out='Error: Invalid '+mode+' format';}
+ }catch(e){out='Error: Invalid '+mode+' format. Check your input.';}
  document.getElementById('output').value=out;updateStats();
 }
 function toUpper(){let o=document.getElementById('output');o.value=o.value.toUpperCase();}
 function toLower(){let o=document.getElementById('output');o.value=o.value.toLowerCase();}
 function toTitle(){let o=document.getElementById('output');o.value=o.value.toLowerCase().replace(/\b\w/g,s=>s.toUpperCase());}
-function copyOut(){navigator.clipboard.writeText(document.getElementById('output').value);alert('Copied!');}
-function clearAll(){document.getElementById('input').value='';document.getElementById('output').value='';}
-function handleFile(inp){let file=inp.files[0];if(!file)return;let r=new FileReader();r.onload=e=>{document.getElementById('input').value=e.target.result;convert();};r.readAsText(file);}
-document.getElementById('input').addEventListener('input',()=>{let t=document.getElementById('input').value;document.getElementById('stats').innerText=t.split(/\s+/).filter(w=>w).length+' words | '+t.length+' chars';});
-function updateStats(){}
+function toSentence(){let o=document.getElementById('output');o.value=o.value.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g,c=>c.toUpperCase());}
+function toAlt(){let o=document.getElementById('output');o.value=o.value.split('').map((c,i)=>i%2?c.toLowerCase():c.toUpperCase()).join('');}
+function copyOut(){navigator.clipboard.writeText(document.getElementById('output').value);let b=event.target;let t=b.innerText;b.innerText='Copied!';setTimeout(()=>b.innerText=t,1200);}
+function clearAll(){document.getElementById('input').value='';document.getElementById('output').value='';updateStats();}
+function handleFile(inp){let f=inp.files[0];if(!f)return;let r=new FileReader();r.onload=e=>{document.getElementById('input').value=e.target.result;updateStats();convert();};r.readAsText(f);}
+function updateStats(){let t=document.getElementById('input').value;let w=t.trim()?t.trim().split(/\s+/).length:0;let l=t?t.split('\n').length:0;document.getElementById('stats').innerText=w+' words | '+t.length+' chars | '+l+' lines';}
+document.getElementById('input').addEventListener('input',updateStats);
 </script>
 </body>
 </html>
