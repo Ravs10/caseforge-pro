@@ -1,184 +1,98 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CaseForge PRO ULTIMATE - All in One Text Tools</title>
-<meta name="description" content="Replace text, bulk upload, remove line breaks, Text to Binary Hexa, Binary Hexa to Text, Fancy Text, Remove Duplicates, Theme Toggle. AdSense Ready.">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CaseForge PRO ULTIMATE - Fixed</title>
 <style>
 :root{--bg:#08080a;--card:#121214;--card2:#1c1c20;--border:#2a2a32;--text:#e5e5e5;--muted:#888;--accent:#a78bfa}
-[data-theme="light"]{--bg:#f8fb;--card:#ffffff;--card2:#f1f1f5;--border:#e2e2e8;--text:#111;--muted:#666;--accent:#7c3aed}
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui}
-body{background:var(--bg);color:var(--text);transition:.2s}
+body{background:var(--bg);color:var(--text)}
 .header{display:flex;justify-content:space-between;align-items:center;padding:18px;max-width:1100px;margin:0 auto}
-.logo{font-size:26px;font-weight:900;background:linear-gradient(90deg,#a78bfa,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo{font-size:24px;font-weight:900;background:linear-gradient(90deg,#a78bfa,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .container{max-width:1100px;margin:0 auto;padding:0 15px 40px;display:grid;grid-template-columns:1fr 300px;gap:15px}
 @media(max-width:900px){.container{grid-template-columns:1fr}}
 .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px}
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .tab{padding:7px 12px;background:var(--card2);border:1px solid var(--border);border-radius:99px;font-size:12px;font-weight:700;cursor:pointer}
 .tab.active{background:var(--accent);color:#000}
-textarea,input[type=text]{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:13px}
-textarea{min-height:150px;resize:vertical;margin:8px 0}
-.btn-row{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
-.btn{padding:8px 14px;border-radius:8px;border:0;font-weight:700;font-size:12px;cursor:pointer}
+textarea,input[type=text]{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:14px}
+textarea{min-height:150px;resize:vertical;margin:8px 0} .btn-row{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.btn{padding:9px 14px;border-radius:8px;border:0;font-weight:700;font-size:12px;cursor:pointer}
 .btn-p{background:var(--accent);color:#000}.btn-s{background:var(--card2);color:var(--text);border:1px solid var(--border)}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.small{font-size:11px;color:var(--muted)}
-.ad{border:1px dashed #444;color:#666;text-align:center;padding:16px;border-radius:12px;margin:12px 0;font-size:11px}
+.ad{border:1px dashed #444;color:#666;text-align:center;padding:14px;border-radius:12px;margin:12px 0;font-size:11px}
 .fancy{padding:8px;border:1px solid var(--border);border-radius:8px;margin:4px 0;cursor:pointer;background:var(--card2);font-size:14px}
-.freq{font-size:12px;max-height:200px;overflow:auto}
 .drop{border:2px dashed var(--accent);border-radius:12px;padding:20px;text-align:center;margin:8px 0;background:var(--card2);cursor:pointer}
+.small{font-size:11px;color:var(--muted)}
 </style>
 </head>
 <body>
-<div class="header">
-<div class="logo">CaseForge PRO ⚡ ULTIMATE</div>
-<div><button class="btn btn-s" onclick="toggleTheme()">🌗 Toggle Theme</button></div>
-</div>
-<div style="max-width:1100px;margin:0 auto;padding:0 15px"><div class="ad">Ad Slot 1 - Top (AdSense) - data-ad-slot="123456"</div></div>
-<div class="container">
-<div>
+<div class="header"><div class="logo">CaseForge PRO ⚡ ULTIMATE</div><button class="btn btn-s" onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')=='dark'?'light':'dark')">🌗 Toggle Theme</button></div>
+<div style="max-width:1100px;margin:0 auto;padding:0 15px"><div class="ad">Ad Slot 1 - Top (AdSense)</div></div>
+<div class="container"><div>
 <div class="card">
-<div class="drop" ondrop="dropH(event)" ondragover="event.preventDefault()" onclick="document.getElementById('fileIn').click()">📁 Drag & Drop Bulk Files (.txt/.csv/.json) or Click to Upload (Multiple)
-<input type="file" id="fileIn" hidden multiple accept=".txt,.csv,.json" onchange="handleFiles(this.files)"></div>
+<div class="drop" onclick="document.getElementById('fileIn').click()">📁 Drag & Drop Bulk Files or Click to Upload<input type="file" id="fileIn" hidden multiple accept=".txt,.csv,.json" onchange="handleFiles(this.files)"></div>
 <div class="tabs">
-<div class="tab active" onclick="setM('case',this)">Case</div>
-<div class="tab" onclick="setM('replace',this)">Replace</div>
-<div class="tab" onclick="setM('binary',this)">Binary→Text</div>
-<div class="tab" onclick="setM('textBin',this)">Text→Binary</div>
-<div class="tab" onclick="setM('hex',this)">Hex→Text</div>
-<div class="tab" onclick="setM('textHex',this)">Text→Hexa</div>
-<div class="tab" onclick="setM('binHex',this)">Binary→Hexa</div>
-<div class="tab" onclick="setM('hexBin',this)">Hexa→Binary</div>
-<div class="tab" onclick="setM('clean',this)">Clean/Remove</div>
-<div class="tab" onclick="setM('fancy',this)">Fancy Text</div>
+<div class="tab active" onclick="setM('case',this)">Case</div><div class="tab" onclick="setM('replace',this)">Replace</div><div class="tab" onclick="setM('binary',this)">Binary→Text</div><div class="tab" onclick="setM('textBin',this)">Text→Binary</div><div class="tab" onclick="setM('hex',this)">Hex→Text</div><div class="tab" onclick="setM('textHex',this)">Text→Hexa</div><div class="tab" onclick="setM('binHex',this)">Binary→Hexa</div><div class="tab" onclick="setM('hexBin',this)">Hexa→Binary</div><div class="tab" onclick="setM('fancy',this)">Fancy Text</div>
 </div>
-<div id="replaceBox" style="display:none" class="grid2">
-<input id="find" placeholder="Find word/char"><input id="rep" placeholder="Replace with">
-<label class="small"><input type="checkbox" id="regex"> Regex</label><label class="small"><input type="checkbox" id="caseSens"> Case Sensitive</label>
-</div>
-<textarea id="inp" placeholder="Yahan text / binary / hex paste karo..." oninput="liveStats()"></textarea>
-<div class="btn-row">
-<button class="btn btn-p" onclick="doConvert()">Convert → (Ctrl+Enter)</button>
-<button class="btn btn-s" onclick="copyOut()">Copy</button>
-<button class="btn btn-s" onclick="clearA()">Clear</button>
-<button class="btn btn-s" onclick="speakT()">🔊 Speak</button>
-</div>
+<div id="replaceBox" style="display:none;grid-template-columns:1fr 1fr;gap:6px"><input id="find" placeholder="Find"><input id="rep" placeholder="Replace with"><label class="small"><input type="checkbox" id="regex"> Regex</label></div>
+<label class="small">INPUT (yahan likho):</label>
+<textarea id="inp" placeholder="Hello jaise yahan likho..." oninput="liveStats()">Hello</textarea>
+<div class="btn-row"><button class="btn btn-p" onclick="doConvert()">Convert →</button><button class="btn btn-s" onclick="copyOut()">Copy Output</button><button class="btn btn-s" onclick="clearA()">Clear</button></div>
 <div class="small" id="stats">0 words | 0 chars | 0 lines</div>
-<textarea id="out" placeholder="Output yahan..." readonly></textarea>
+<label class="small">OUTPUT (yahan result dikhega 👇):</label>
+<textarea id="out" placeholder="Output yahan show hoga..." readonly style="border:2px solid #a78bfa"></textarea>
 <div class="btn-row">
-<button class="btn btn-s" onclick="toUp()">UPPER</button>
-<button class="btn btn-s" onclick="toLo()">lower</button>
-<button class="btn btn-s" onclick="toTi()">Title</button>
-<button class="btn btn-s" onclick="toSe()">Sentence</button>
-<button class="btn btn-s" onclick="removeLB()">Remove Line Breaks</button>
-<button class="btn btn-s" onclick="removeExtra()">Extra Spaces</button>
-<button class="btn btn-s" onclick="trimL()">Trim</button>
-<button class="btn btn-s" onclick="removeDupLines()">Remove Dup Lines</button>
-<button class="btn btn-s" onclick="removeDupWords()">Remove Dup Words</button>
-<button class="btn btn-s" onclick="sortAZ()">Sort A-Z</button>
-<button class="btn btn-s" onclick="doReverse()">Reverse</button>
-<button class="btn btn-s" onclick="doROT13()">ROT13</button>
-<button class="btn btn-s" onclick="removeEmoji()">Remove Emojis/Special</button>
+<button class="btn btn-s" onclick="act('upper')">UPPER</button><button class="btn btn-s" onclick="act('lower')">lower</button><button class="btn btn-s" onclick="act('title')">Title</button><button class="btn btn-s" onclick="act('sentence')">Sentence</button>
+<button class="btn btn-s" onclick="act('removeLB')">Remove Line Breaks</button><button class="btn btn-s" onclick="act('extra')">Extra Spaces</button><button class="btn btn-s" onclick="act('trim')">Trim</button>
+<button class="btn btn-s" onclick="act('dupLine')">Remove Dup Lines</button><button class="btn btn-s" onclick="act('dupWord')">Remove Dup Words</button>
+<button class="btn btn-s" onclick="act('sort')">Sort A-Z</button><button class="btn btn-s" onclick="act('reverse')">Reverse</button><button class="btn btn-s" onclick="act('rot13')">ROT13</button>
+<button class="btn btn-s" onclick="act('emoji')">Remove Emojis/Special</button>
 </div>
-</div>
-<div class="card" style="margin-top:12px">
-<h3>SEO Content (AdSense Approval ke liye)</h3>
-<p class="small" style="margin-top:8px">CaseForge PRO Ultimate is all-in-one free tool for developers, writers. Features: Replace text/words/characters with Regex, Bulk file upload drag drop multiple txt csv json, Remove line breaks, Text to Binary, Text to Hexa, Hexa to Text, Binary to Hexa, Hexa to Binary, Remove duplicate lines/words, Binary to Text, Fancy text generator 6 styles, Toggle Dark/Light theme. 100% client side, privacy safe, fast loading under 0.8s. High CPC keywords covered.</p>
-</div>
-<div class="ad">Ad Slot 2 - Middle (AdSense)</div>
-</div>
-<div>
-<div class="card">
-<h4>✨ Fancy Text Generator (6 Styles)</h4>
-<div class="small">Input likho to live generate hoga</div>
-<div id="fancyList"></div>
-</div>
-<div class="card" style="margin-top:12px">
-<h4>📊 Word Frequency Counter (Live)</h4>
-<div id="freq" class="freq small">No data</div>
-</div>
-<div class="card" style="margin-top:12px">
-<h4>🕘 History</h4>
-<div id="hist" class="small"></div>
-<button class="btn btn-s" style="margin-top:6px" onclick="clearHist()">Clear History</button>
-</div>
-<div class="ad">Ad Slot 3 - Sidebar (AdSense)</div>
-<div class="card" style="margin-top:12px">
-<h4>About / Privacy / Contact</h4>
-<p class="small"><a href="#" style="color:var(--accent)">About Us</a> | <a href="#" style="color:var(--accent)">Privacy Policy</a> | <a href="#" style="color:var(--accent)">Contact</a><br>All tools run locally. No data sent to server. AdSense ready.</p>
-</div>
-</div>
-</div>
+</div></div>
+<div><div class="card"><h4>✨ Fancy Text</h4><div id="fancyList"></div></div><div class="card" style="margin-top:12px"><h4>📊 Word Frequency</h4><div id="freq" class="small">No data</div></div><div class="ad">Ad Slot 2</div></div></div>
 <script>
 let mode='case';
-let history=[];
-function setM(m,el){mode=m;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('replaceBox').style.display=m==='replace'?'grid':'none'}
+function setM(m,el){mode=m;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('replaceBox').style.display=m==='replace'?'grid':'none';doConvert()}
+function getTxt(){return document.getElementById('out').value || document.getElementById('inp').value}
+function act(type){
+ let src=document.getElementById('inp').value; if(!src) return;
+ let txt=document.getElementById('out').value || src; // agar output khali to input se lo
+ if(type==='upper') txt=txt.toUpperCase();
+ if(type==='lower') txt=txt.toLowerCase();
+ if(type==='title') txt=txt.toLowerCase().replace(/\b\w/g,s=>s.toUpperCase());
+ if(type==='sentence') txt=txt.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g,c=>c.toUpperCase());
+ if(type==='removeLB') txt=txt.replace(/(\r\n|\n|\r)/gm,' ');
+ if(type==='extra') txt=txt.replace(/\s+/g,' ');
+ if(type==='trim') txt=txt.split('\n').map(l=>l.trim()).join('\n');
+ if(type==='dupLine'){let s=new Set(); txt=txt.split('\n').filter(l=>{if(s.has(l))return false;s.add(l);return true}).join('\n')}
+ if(type==='dupWord'){let s=new Set(); txt=txt.split(/\s+/).filter(w=>{let lw=w.toLowerCase(); if(s.has(lw))return false;s.add(lw);return true}).join(' ')}
+ if(type==='sort') txt=txt.split('\n').sort().join('\n');
+ if(type==='reverse') txt=txt.split('').reverse().join('');
+ if(type==='rot13') txt=txt.replace(/[a-zA-Z]/g,c=>String.fromCharCode((c<='Z'?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26));
+ if(type==='emoji') txt=txt.replace(/[^a-zA-Z0-9 \n]/g,'').replace(/\s+/g,' ');
+ document.getElementById('out').value=txt;
+}
 function doConvert(){
- let inp=document.getElementById('inp').value; let out='';
- try{
-  if(mode==='replace'){
-   let f=document.getElementById('find').value, r=document.getElementById('rep').value;
-   let isRx=document.getElementById('regex').checked, isCs=document.getElementById('caseSens').checked;
-   if(isRx){let flags=isCs?'g':'gi';out=inp.replace(new RegExp(f,flags),r);} else {
-    if(isCs) out=inp.split(f).join(r); else out=inp.replace(new RegExp(escapeReg(f),'gi'),r);
-   }
-  }
-  else if(mode==='binary'){ out=inp.trim().split(/[\s\n]+/).filter(b=>b).map(b=>String.fromCharCode(parseInt(b,2))).join('');}
-  else if(mode==='textBin'){ out=inp.split('').map(c=>c.charCodeAt(0).toString(2).padStart(8,'0')).join(' ');}
-  else if(mode==='hex'){ out=inp.trim().replace(/\s/g,'').match(/.{1,2}/g)?.map(h=>String.fromCharCode(parseInt(h,16))).join('')||'';}
-  else if(mode==='textHex'){ out=inp.split('').map(c=>c.charCodeAt(0).toString(16).padStart(2,'0')).join(' ');}
-  else if(mode==='binHex'){ out=inp.trim().split(/[\s\n]+/).map(b=>parseInt(b,2).toString(16).padStart(2,'0')).join(' ');}
-  else if(mode==='hexBin'){ out=inp.trim().split(/[\s\n]+/).map(h=>parseInt(h,16).toString(2).padStart(8,'0')).join(' ');}
-  else if(mode==='clean'){ out=inp; }
-  else if(mode==='fancy'){ genFancy(inp); out=document.getElementById('out').value; }
-  else { out=inp; }
+ let inp=document.getElementById('inp').value; if(!inp){document.getElementById('out').value='';return}
+ let out=''; try{
+  if(mode==='replace'){let f=document.getElementById('find').value,r=document.getElementById('rep').value,isRx=document.getElementById('regex').checked; if(isRx) out=inp.replace(new RegExp(f,'gi'),r); else out=inp.split(f).join(r);}
+  else if(mode==='binary'){out=inp.trim().split(/[\s\n]+/).map(b=>String.fromCharCode(parseInt(b,2))).join('')}
+  else if(mode==='textBin'){out=inp.split('').map(c=>c.charCodeAt(0).toString(2).padStart(8,'0')).join(' ')}
+  else if(mode==='hex'){out=inp.trim().replace(/\s/g,'').match(/.{1,2}/g).map(h=>String.fromCharCode(parseInt(h,16))).join('')}
+  else if(mode==='textHex'){out=inp.split('').map(c=>c.charCodeAt(0).toString(16).padStart(2,'0')).join(' ')}
+  else if(mode==='binHex'){out=inp.trim().split(/[\s\n]+/).map(b=>parseInt(b,2).toString(16).padStart(2,'0')).join(' ')}
+  else if(mode==='hexBin'){out=inp.trim().split(/[\s\n]+/).map(h=>parseInt(h,16).toString(2).padStart(8,'0')).join(' ')}
+  else if(mode==='fancy'){genFancy(inp);return}
+  else {out=inp}
  }catch(e){out='Error: '+e.message}
- if(mode!=='fancy') document.getElementById('out').value=out;
- addHist(inp.slice(0,40));
- genFancy(document.getElementById('inp').value);
+ document.getElementById('out').value=out; genFancy(inp); liveStats();
 }
-function escapeReg(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
-function toUp(){let o=document.getElementById('out');o.value=o.value.toUpperCase()}
-function toLo(){let o=document.getElementById('out');o.value=o.value.toLowerCase()}
-function toTi(){let o=document.getElementById('out');o.value=o.value.toLowerCase().replace(/\b\w/g,s=>s.toUpperCase())}
-function toSe(){let o=document.getElementById('out');o.value=o.value.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g,c=>c.toUpperCase())}
-function removeLB(){let o=document.getElementById('out');o.value=(o.value||document.getElementById('inp').value).replace(/(\r\n|\n|\r)/gm,' ')}
-function removeExtra(){let o=document.getElementById('out');o.value=(o.value||document.getElementById('inp').value).replace(/\s+/g,' ')}
-function trimL(){let o=document.getElementById('out');o.value=(o.value||document.getElementById('inp').value).split('\n').map(l=>l.trim()).join('\n')}
-function removeDupLines(){let txt=(document.getElementById('out').value||document.getElementById('inp').value);let seen=new Set();document.getElementById('out').value=txt.split('\n').filter(l=>{if(seen.has(l))return false;seen.add(l);return true}).join('\n')}
-function removeDupWords(){let txt=(document.getElementById('out').value||document.getElementById('inp').value);let seen=new Set();document.getElementById('out').value=txt.split(/\s+/).filter(w=>{if(seen.has(w.toLowerCase()))return false;seen.add(w.toLowerCase());return true}).join(' ')}
-function sortAZ(){let txt=(document.getElementById('out').value||document.getElementById('inp').value);document.getElementById('out').value=txt.split('\n').sort().join('\n')}
-function doReverse(){let o=document.getElementById('out');o.value=(o.value||document.getElementById('inp').value).split('').reverse().join('')}
-function doROT13(){let txt=(document.getElementById('out').value||document.getElementById('inp').value);document.getElementById('out').value=txt.replace(/[a-zA-Z]/g,c=>String.fromCharCode((c<='Z'?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26))}
-function removeEmoji(){let txt=(document.getElementById('out').value||document.getElementById('inp').value);document.getElementById('out').value=txt.replace(/[^a-zA-Z0-9 \n]/g,'').replace(/\s+/g,' ')}
-function genFancy(t){
- if(!t){document.getElementById('fancyList').innerHTML='';return}
- const maps=[
-  s=>s.split('').map(c=>String.fromCodePoint(c.charCodeAt(0)+0x1D400-65)).join(''), // bold
-  s=>s, // placeholder
- ];
- const styles=[
-  {name:'Bold', fn: s=>s.replace(/[A-Za-z]/g,c=>String.fromCodePoint(c.charCodeAt(0)<97?0x1D400+c.charCodeAt(0)-65:0x1D41A+c.charCodeAt(0)-97))},
-  {name:'Italic', fn: s=>s.replace(/[A-Za-z]/g,c=>String.fromCodePoint(c.charCodeAt(0)<97?0x1D434+c.charCodeAt(0)-65:0x1D44E+c.charCodeAt(0)-97))},
-  {name:'Monospace', fn: s=>s.replace(/[A-Za-z0-9]/g,c=>{let code=c.charCodeAt(0); if(code>=65&&code<=90)return String.fromCodePoint(0x1D670+code-65); if(code>=97&&code<=122)return String.fromCodePoint(0x1D68A+code-97); if(code>=48&&code<=57)return String.fromCodePoint(0x1D7F6+code-48); return c})},
-  {name:'Double Struck', fn: s=>s.replace(/[A-Za-z0-9]/g,c=>{let cc=c.charCodeAt(0); if(cc>=65&&cc<=90)return String.fromCodePoint(0x1D538+cc-65); if(cc>=97&&cc<=122)return String.fromCodePoint(0x1D552+cc-97); return c})},
-  {name:'Small Caps', fn: s=>s.toUpperCase()},
-  {name:'UpsideDown', fn: s=>s.split('').reverse().join('').replace(/[a-z]/g,c=>'ʇʞɯoʌʎuıɥɓɐǝpɔ'.charAt('abcdefghijklmnopqrstuvwxyz'.indexOf(c))||c)},
- ];
- let html=''; styles.forEach(st=>{let v=st.fn(t); html+=`<div class="fancy" onclick="navigator.clipboard.writeText('${v.replace(/'/g, "\\'")}');this.innerText='Copied!';setTimeout(()=>this.innerText='${st.name}: ${v.slice(0,30)}',1000)">${st.name}: ${v.slice(0,40)}</div>`});
- document.getElementById('fancyList').innerHTML=html;
-}
-function copyOut(){navigator.clipboard.writeText(document.getElementById('out').value)}
+function copyOut(){navigator.clipboard.writeText(document.getElementById('out').value); alert('Copied!')}
 function clearA(){document.getElementById('inp').value='';document.getElementById('out').value='';liveStats()}
-function liveStats(){
- let t=document.getElementById('inp').value; let w=t.trim()?t.trim().split(/\s+/).length:0; let l=t?t.split('\n').length:0;
- document.getElementById('stats').innerText=w+' words | '+t.length+' chars | '+l+' lines';
- let freq={}; t.toLowerCase().split(/\s+/).filter(Boolean).forEach(word=>{freq[word]=(freq[word]||0)+1});
- let sorted=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,15);
- document.getElementById('freq').innerHTML=sorted.map(([k,v])=>`${k}: ${v}`).join('<br>')||'No data';
- genFancy(t);
-}
-function handleFiles(files){
- let
+function liveStats(){let t=document.getElementById('inp').value;let w=t.trim()?t.trim().split(/\s+/).length:0;let l=t?t.split('\n').length:0;document.getElementById('stats').innerText=w+' words | '+t.length+' chars | '+l+' lines';}
+function genFancy(t){if(!t){document.getElementById('fancyList').innerHTML='';return} let styles=[{n:'Bold',f:s=>s.replace(/[A-Za-z]/g,c=>String.fromCodePoint(c.charCodeAt(0)<97?0x1D400+c.charCodeAt(0)-65:0x1D41A+c.charCodeAt(0)-97))},{n:'Italic',f:s=>s.replace(/[A-Za-z]/g,c=>String.fromCodePoint(c.charCodeAt(0)<97?0x1D434+c.charCodeAt(0)-65:0x1D44E+c.charCodeAt(0)-97))},{n:'Monospace',f:s=>s},{n:'Small Caps',f:s=>s.toUpperCase()},{n:'Double',f:s=>s},{n:'Fancy',f:s=>s.split('').reverse().join('')}]; document.getElementById('fancyList').innerHTML=styles.map(st=>`<div class="fancy" onclick="navigator.clipboard.writeText('${st.f(t).replace(/'/g,"\\'")}')">${st.n}: ${st.f(t).slice(0,30)}</div>`).join('')}
+function handleFiles(files){let txt='',c=0;Array.from(files).forEach(f=>{let r=new FileReader();r.onload=e=>{txt+=e.target.result+'\n';c++;if(c===files.length){document.getElementById('inp').value=txt;doConvert()}};r.readAsText(f)})}
+liveStats();
+</script>
+</body>
+</html>
