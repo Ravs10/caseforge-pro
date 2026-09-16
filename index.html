@@ -1,216 +1,56 @@
-<div class="section">CLEANUP:</div>
-<div class="btn-row"><button class="btn" onclick="makeExtra('trim')">Trim</button><button class="btn" onclick="makeExtra('sortAZ')">Sort A-Z</button><button class="btn" onclick="makeExtra('sortZA')">Sort Z-A</button><button class="btn" onclick="makeExtra('removeDupLines')">Remove Dup</button><button class="btn" onclick="makeExtra('reverse')">Reverse</button></div>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CaseForge PRO - FIXED FINAL</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<style>:root{--bg:#08080a;--card:#121214;--card2:#1c1c21;--border:#2a2a32;--text:#e5e5e5;--muted:#9ca3af;--accent:#a78bfa;--accent2:#22d3ee}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}body{background:var(--bg);color:var(--text);line-height:1.6}
+a{color:var(--accent);text-decoration:none;cursor:pointer}
+.header{position:sticky;top:0;z-index:20;background:rgba(8,8,10,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 15px;display:flex;justify-content:space-between;flex-wrap:wrap}
+.logo{font-weight:900;font-size:18px;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;font-weight:700}
+.container{max-width:1250px;margin:0 auto;padding:12px;display:grid;grid-template-columns:1fr 360px;gap:14px}
+@media(max-width:1000px){.container{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px}
+.tabs{display:flex;gap:5px;flex-wrap:wrap;margin:10px 0}.tab{padding:7px 12px;background:var(--card2);border:1px solid var(--border);border-radius:99px;font-size:11px;font-weight:700;cursor:pointer}.tab.active{background:var(--accent);color:#000}
+textarea{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:14px;min-height:130px;margin:6px 0}
+.btn{padding:9px 12px;border-radius:10px;border:1px solid var(--border);font-weight:700;font-size:11px;cursor:pointer;margin:3px;background:var(--card2);color:var(--text)}.btn:hover{border-color:var(--accent)}.btn-highlight{background:var(--accent)!important;color:#000!important}
+.btn-row{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}.small{font-size:11px;color:var(--muted)}.section{font-size:11px;font-weight:900;color:var(--accent);margin:16px 0 6px}
+.drop{border:2px dashed var(--accent);border-radius:14px;padding:18px;text-align:center;margin:10px 0;background:var(--card2);cursor:pointer}
+.footer{background:var(--card);border-top:1px solid var(--border);padding:22px;text-align:center;font-size:12px;color:var(--muted);margin-top:20px}
+.fancy-item{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:12px;margin:10px 0}
+.tool-category{border:1px solid var(--border);border-radius:12px;padding:12px;background:linear-gradient(135deg,var(--card2),#181826);margin-bottom:12px}
+.tool-link{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:rgba(255,255,255,.05);margin:6px 0;font-size:12px;color:var(--text);text-decoration:none}
+.tool-link img{width:22px;height:22px;background:#fff;border-radius:6px}
+.article-acc{border:1px solid var(--border);border-radius:12px;margin:10px 0;background:var(--card2);overflow:hidden}
+.article-acc-head{padding:12px 14px;cursor:pointer;font-weight:700;font-size:13px;display:flex;justify-content:space-between;background:var(--bg)}
+.article-acc-body{display:none;padding:14px;line-height:1.8;font-size:13px;color:var(--muted)}.article-acc-body.open{display:block}
+#pageModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.92);z-index:9999;padding:20px;overflow:auto}
+#pageModal>div{max-width:800px;margin:30px auto;background:#121214;border:1px solid #2a2a32;border-radius:16px;padding:20px}
+</style></head><body>
+<div class="header"><div class="logo">CaseForge PRO ⚡</div><div class="nav"><a onclick="openPage('about')">About</a><a onclick="openPage('privacy')">Privacy</a><a onclick="openPage('contact')">Contact</a><a onclick="openPage('terms')">Terms</a><a onclick="openPage('disclaimer')">Disclaimer</a></div></div>
+<div class="container"><div>
+<div class="card">
+<h2>All-in-One Text Converter - FIXED</h2>
+<p class="small">TXT, PDF, DOCX drag-drop supported</p>
+<div class="tabs"><div class="tab active" id="t-case" onclick="setM('case',this)">Case Tools</div><div class="tab" id="t-textBin" onclick="setM('textBin',this)">Text→Binary</div><div class="tab" id="t-binary" onclick="setM('binary',this)">Binary→Text</div><div class="tab" id="t-textHex" onclick="setM('textHex',this)">Text→Hexa</div><div class="tab" id="t-hex" onclick="setM('hex',this)">Hexa→Text</div><div class="tab" id="t-binHex" onclick="setM('binHex',this)">Bin→Hexa</div><div class="tab" id="t-hexBin" onclick="setM('hexBin',this)">Hexa→Bin</div></div>
+<textarea id="inp" oninput="autoGen()">hello world test case
+apple
+mango
+zebra</textarea>
+<div class="small" id="stats">4 words | 21 chars</div>
+<div class="btn-row"><button class="btn" id="btn-convert" onclick="doConvert(true)" style="background:var(--accent);color:#000">Convert →</button></div>
+<textarea id="out" readonly style="border:2px solid #a78bfa;min-height:140px"></textarea>
+<div class="btn-row"><button class="btn" onclick="navigator.clipboard.writeText(document.getElementById('out').value)">📋 Copy</button></div>
 
-<div class="tabs"><div class="tab active" id="t-case" onclick="setMode('case',this)">Case</div><div class="tab" id="t-textBin" onclick="setMode('textBin',this)">Text→Bin</div><div class="tab" id="t-binary" onclick="setMode('binary',this)">Bin→Text</div><div class="tab" id="t-textHex" onclick="setMode('textHex',this)">Text→Hexa</div><div class="tab" id="t-hex" onclick="setMode('hex',this)">Hexa→Text</div></div>
-
+<div class="section">COLOR - FIX 1 - SEPARATE + BOTH TOGETHER WORKING:</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;background:var(--card2);padding:12px;border-radius:12px;border:1px solid var(--border)">
+<div style="flex:1;min-width:150px;background:var(--bg);padding:10px;border-radius:10px;border:1px solid var(--border)"><div class="small" style="color:var(--accent);font-weight:800">TEXT COLOR</div><input type="color" id="textColorPick" value="#a78bfa" style="width:100%;height:40px" oninput="document.getElementById('colorPreview').style.color=this.value"><button class="btn" style="width:100%;margin-top:6px" onclick="applyTextColor()">Apply Text</button></div>
+<div style="flex:1;min-width:150px;background:var(--bg);padding:10px;border-radius:10px;border:1px solid var(--border)"><div class="small" style="color:var(--accent2);font-weight:800">BACKGROUND</div><input type="color" id="bgColorPick" value="#22d3ee" style="width:100%;height:40px" oninput="document.getElementById('colorPreview').style.background=this.value"><button class="btn" style="width:100%;margin-top:6px" onclick="applyBgColor()">Apply BG</button></div>
 </div>
+<div id="colorPreview" style="padding:14px;border-radius:10px;background:var(--card2);border:1px solid var(--border);margin-top:8px;font-weight:700">Preview: Text #a78bfa + Background #22d3ee</div>
+<div class="btn-row"><button class="btn" style="background:var(--accent);color:#000" onclick="applyBothColor()">Apply BOTH Together</button><button class="btn" onclick="clearColor()">Clear All</button></div>
 
-<div class="card" id="articles"><h3>📚 Articles - Click heading to expand - FIX 4</h3>
-<div class="article-acc"><div class="article-acc-head" onclick="toggleAcc(0)">1. What is Case Converter? <span id="accArrow0">▼</span></div><div class="article-acc-body" id="accBody0">Case converter changes text case instantly. JavaScript uses camelCase, Python snake_case, constants CONSTANT_CASE. Title Case improves SEO CTR 15%. Our tool has 16 formats, Unicode bold, italic. All processing local, GDPR compliant, PDF/DOCX support via PDF.js, 20+ fonts, separate text and background color that apply together.</div></div>
-<div class="article-acc"><div class="article-acc-head" onclick="toggleAcc(1)">2. Text to Binary Guide <span id="accArrow1">▼</span></div><div class="article-acc-body" id="accBody1">Binary is 0 and 1, language of computers. Text→Binary converts char to 8-bit. A=01000001. Binary→Text validates and converts. Binary→Hexa: 4 bits=1 hex. FF=11111111. Used for colors #a78bfa, memory. Bulk conversion, drag-drop, error handling.</div></div>
-<div class="article-acc"><div class="article-acc-head" onclick="toggleAcc(2)">3. Hexadecimal Guide <span id="accArrow2">▼</span></div><div class="article-acc-body" id="accBody2">Hex is base-16 0-9 A-F. Text→Hexa via charCodeAt.toString(16). A=41 hex. Web colors #RRGGBB. #a78bfa=R 167 G 139 B 250. Dual picker lets pick text and background separately and apply together with Apply BOTH button. Hexa→Binary for low-level analysis. Local processing, GDPR.</div></div>
-</div>
-
-<div class="card"><h3>✨ Fancy Text - 12 Styles</h3><div id="fancyBox"></div></div>
-</div>
-
-<div>
-<div class="card" id="useful"><h3>🌐 Other Useful Tools - RESTORED</h3>
-<div class="tool-category"><h4>TEXT TOOLS</h4>
-<a class="tool-link" href="https://convertmytext.blogspot.com/" target="_blank"><img src="https://www.google.com/s2/favicons?domain=convertmytext.blogspot.com&sz=64"><span>CaseForge PRO</span></a>
-<a class="tool-link" href="https://loremipsumpro.blogspot.com/" target="_blank"><img src="https://www.google.com/s2/favicons?domain=loremipsumpro.blogspot.com&sz=64"><span>LoremIpsum Pro</span></a>
-<a class="tool-link" href="https://lorem-pro-tool.vercel.app/" target="_blank"><img src="https://www.google.com/s2/favicons?domain=lorem-pro-tool.vercel.app&sz=64"><span>Lorem Pro Tool</span></a>
-</div>
-</div>
-</div>
-</div>
-
-<div class="footer"><a onclick="openPage('about')">About</a> | <a onclick="openPage('privacy')">Privacy</a> | <a onclick="openPage('terms')">Terms</a> | <a onclick="openPage('contact')">Contact</a> | <a onclick="openPage('disclaimer')">Disclaimer</a><p>© 2026 CaseForge PRO</p></div>
-
-<div id="pageModal"><div><div style="display:flex;justify-content:space-between"><h3 id="modalTitle" style="color:var(--accent)"></h3><button class="btn" onclick="closePage()">X</button></div><div id="modalContent" style="margin-top:12px;line-height:1.8;white-space:pre-wrap"></div></div></div>
-
-<script>
-let mode='case';
-function setMode(m,el){mode=m;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');}
-function updateStats(){let t=document.getElementById('inp').value;document.getElementById('stats').textContent=t.trim().split(/\s+/).filter(Boolean).length+' words | '+t.length+' chars';}
-function copyOut(){navigator.clipboard.writeText(document.getElementById('out').value);}
-function toggleAcc(i){let body=document.getElementById('accBody'+i);let arrow=document.getElementById('accArrow'+i);let open=body.classList.contains('open');document.querySelectorAll('.article-acc-body').forEach(b=>b.classList.remove('open'));document.querySelectorAll('[id^=accArrow]').forEach(a=>a.textContent='▼');if(!open){body.classList.add('open');arrow.textContent='▲';}}
-
-// FIX 1 - COLOR BOTH TOGETHER
-function applyTextColor(){let c=document.getElementById('textColorPick').value;document.getElementById('out').style.color=c;document.getElementById('colorPreview').style.color=c;}
-function applyBgColor(){let c=document.getElementById('bgColorPick').value;document.getElementById('out').style.backgroundColor=c;document.getElementById('colorPreview').style.background=c;}
-function applyBothColor(){applyTextColor();applyBgColor();}
-function clearColor(){let o=document.getElementById('out');o.style.color='';o.style.backgroundColor='';}
-
-// FIX 2 - OUTPUT 100% WORKING
-function makeCase(t){
-  let src=document.getElementById('inp').value;
-  if(!src.trim()){document.getElementById('out').value='Please enter text';return;}
-  let words=src.trim().split(/[\s_\-]+/).filter(Boolean);
-  let cw=words.map(w=>w.replace(/[^a-zA-Z0-9]/g,'')).filter(Boolean);
-  let out='';
-  if(t==='upper') out=src.toUpperCase();
-  else if(t==='lower') out=src.toLowerCase();
-  else if(t==='title') out=src.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());
-  else if(t==='sentence') out=src.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g,c=>c.toUpperCase());
-  else if(t==='camel') out=cw.map((w,i)=>i===0?w.toLowerCase():w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join('');
-  else if(t==='pascal') out=cw.map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join('');
-  else if(t==='snake') out=cw.map(w=>w.toLowerCase()).join('_');
-  else if(t==='kebab') out=cw.map(w=>w.toLowerCase()).join('-');
-  else if(t==='constant') out=cw.map(w=>w.toUpperCase()).join('_');
-  else if(t==='bold') out=src.replace(/[A-Za-z0-9]/g,c=>String.fromCodePoint(0x1D5D4+c.charCodeAt(0)-65));
-  else out=src;
-  document.getElementById('out').value=out;
-  updateStats();
-}
-function makeExtra(t){
-  let src=document.getElementById('inp').value;
-  if(!src.trim()){document.getElementById('out').value='Please enter text';return;}
-  let out='';
-  if(t==='trim') out=src.trim();
-  else if(t==='sortAZ') out=src.split('\n').filter(Boolean).sort((a,b)=>a.localeCompare(b)).join('\n');
-  else if(t==='sortZA') out=src.split('\n').filter(Boolean).sort((a,b)=>b.localeCompare(a)).join('\n');
-  else if(t==='removeDupLines') out=[...new Set(src.split('\n'))].join('\n');
-  else if(t==='reverse') out=src.split('').reverse().join('');
-  else out=src;
-  document.getElementById('out').value=out;
-}
-function doConvert(){
-  let inp=document.getElementById('inp').value.trim();
-  if(!inp){document.getElementById('out').value='Please enter text first';return;}
-  let out='';
-  if(mode==='textBin') out=inp.split('').map(c=>c.charCodeAt(0).toString(2).padStart(8,'0')).join(' ');
-  else if(mode==='binary') out=inp.split(/\s+/).filter(b=>/^[01]+$/.test(b)).map(b=>String.fromCharCode(parseInt(b,2))).join('');
-  else if(mode==='textHex') out=inp.split('').map(c=>c.charCodeAt(0).toString(16).padStart(2,'0')).join(' ');
-  else if(mode==='hex'){let cl=inp.replace(/\s/g,'');let m=cl.match(/.{1,2}/g)||[];out=m.map(h=>String.fromCharCode(parseInt(h,16))).join('');}
-  else out=inp.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());
-  document.getElementById('out').value=out;
-}
-
-// FIX 3 - ABOUT PAGES FULL CONTENT - WORKING
-function openPage(type){
-  let titles={about:'About Us',privacy:'Privacy Policy',terms:'Terms',contact:'Contact',disclaimer:'Disclaimer'};
-  let contents={
-about: `About CaseForge PRO - Free All-in-One Text Toolkit\n\nWe are team with 5+ years experience building 100+ SEO tools. Mission: single platform for all text conversions.\n\nWe offer 16 cases, 6 binary/hexa, 10 cleanup, 12 fancy, separate text+background color that apply together, 20+ fonts, PDF/DOCX support.\n\nAll processing local in browser, never store text, GDPR compliant.\n\nContact: yourmail@gmail.com`,
-privacy: `Privacy Policy\n\n1. No Data Collection: We don't store your text. All local in browser.\n2. Cookies: No tracking. If AdSense, Google may use cookies.\n3. Files read locally via FileReader, never leaves device.\n4. GDPR: Nothing to delete since we store nothing.\n\nContact: yourmail@gmail.com`,
-terms: `Terms & Conditions\n\n1. Use for personal, educational, commercial allowed.\n2. No spam, abusive, illegal, hacking.\n3. Provided as-is, no warranty.\n4. IP is ours.\n\nContact: yourmail@gmail.com`,
-contact: `Contact Us\n\nEmail: yourmail@gmail.com (24h response)\nPortfolio: https://convertmytext.blogspot.com/\nVercel: https://e-pro.vercel.app\n\nServices: Custom tools, AdSense help, SEO, Vercel deployment, 24-48h delivery.\n\nAddress: Domariaganj, UP, India.`,
-disclaimer: `Disclaimer\n\n1. Educational purpose.\n2. No warranty, verify critical conversions.\n3. Unicode styles may not display in old browsers.\n4. PDF extraction may not work for scanned PDFs.\n5. Use at own risk.`
-  };
-  document.getElementById('modalTitle').textContent=titles[type]||type;
-  document.getElementById('modalContent').textContent=contents[type]||'Coming soon';
-  document.getElementById('pageModal').style.display='block';
-}
-function closePage(){document.getElementById('pageModal').style.display='none';}
-updateStats();
-</script>
-</body>
-</html>
-<div class="section">CLEANUP:</div>
-<div class="btn-row"><button class="btn" onclick="makeExtra('trim')">Trim</button><button class="btn" onclick="makeExtra('sortAZ')">Sort A-Z</button><button class="btn" onclick="makeExtra('sortZA')">Sort Z-A</button><button class="btn" onclick="makeExtra('removeDupLines')">Remove Dup</button><button class="btn" onclick="makeExtra('reverse')">Reverse</button></div>
-
-<div class="tabs"><div class="tab active" id="t-case" onclick="setMode('case',this)">Case</div><div class="tab" id="t-textBin" onclick="setMode('textBin',this)">Text→Bin</div><div class="tab" id="t-binary" onclick="setMode('binary',this)">Bin→Text</div><div class="tab" id="t-textHex" onclick="setMode('textHex',this)">Text→Hexa</div><div class="tab" id="t-hex" onclick="setMode('hex',this)">Hexa→Text</div></div>
-
-</div>
-
-<div class="card" id="articles"><h3>📚 Articles - Click heading to expand - FIX 4</h3>
-<div class="article-acc"><div class="article-acc-head" onclick="toggleAcc(0)">1. What is Case Converter? <span id="accArrow0">▼</span></div><div class="article-acc-body" id="accBody0">Case converter changes text case instantly. JavaScript uses camelCase, Python snake_case, constants CONSTANT_CASE. Title Case improves SEO CTR 15%. Our tool has 16 formats, Unicode bold, italic. All processing local, GDPR compliant, PDF/DOCX support via PDF.js, 20+ fonts, separate text and background color that apply together.</div></div>
-<div class="article-acc"><div class="article-acc-head" onclick="toggleAcc(1)">2. Text to Binary Guide <span id="accArrow1">▼</span></div><div class="article-acc-body" id="accBody1">Binary is 0 and 1, language of computers. Text→Binary converts char to 8-bit. A=01000001. Binary→Text validates and converts. Binary→Hexa: 4 bits=1 hex. FF=11111111. Used for colors #a78bfa, memory. Bulk conversion, drag-drop, error handling.</div></div>
-<div class="article-acc"><div class="article-acc-head" onclick="toggleAcc(2)">3. Hexadecimal Guide <span id="accArrow2">▼</span></div><div class="article-acc-body" id="accBody2">Hex is base-16 0-9 A-F. Text→Hexa via charCodeAt.toString(16). A=41 hex. Web colors #RRGGBB. #a78bfa=R 167 G 139 B 250. Dual picker lets pick text and background separately and apply together with Apply BOTH button. Hexa→Binary for low-level analysis. Local processing, GDPR.</div></div>
-</div>
-
-<div class="card"><h3>✨ Fancy Text - 12 Styles</h3><div id="fancyBox"></div></div>
-</div>
-
-<div>
-<div class="card" id="useful"><h3>🌐 Other Useful Tools - RESTORED</h3>
-<div class="tool-category"><h4>TEXT TOOLS</h4>
-<a class="tool-link" href="https://convertmytext.blogspot.com/" target="_blank"><img src="https://www.google.com/s2/favicons?domain=convertmytext.blogspot.com&sz=64"><span>CaseForge PRO</span></a>
-<a class="tool-link" href="https://loremipsumpro.blogspot.com/" target="_blank"><img src="https://www.google.com/s2/favicons?domain=loremipsumpro.blogspot.com&sz=64"><span>LoremIpsum Pro</span></a>
-<a class="tool-link" href="https://lorem-pro-tool.vercel.app/" target="_blank"><img src="https://www.google.com/s2/favicons?domain=lorem-pro-tool.vercel.app&sz=64"><span>Lorem Pro Tool</span></a>
-</div>
-</div>
-</div>
-</div>
-
-<div class="footer"><a onclick="openPage('about')">About</a> | <a onclick="openPage('privacy')">Privacy</a> | <a onclick="openPage('terms')">Terms</a> | <a onclick="openPage('contact')">Contact</a> | <a onclick="openPage('disclaimer')">Disclaimer</a><p>© 2026 CaseForge PRO</p></div>
-
-<div id="pageModal"><div><div style="display:flex;justify-content:space-between"><h3 id="modalTitle" style="color:var(--accent)"></h3><button class="btn" onclick="closePage()">X</button></div><div id="modalContent" style="margin-top:12px;line-height:1.8;white-space:pre-wrap"></div></div></div>
-
-<script>
-let mode='case';
-function setMode(m,el){mode=m;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');}
-function updateStats(){let t=document.getElementById('inp').value;document.getElementById('stats').textContent=t.trim().split(/\s+/).filter(Boolean).length+' words | '+t.length+' chars';}
-function copyOut(){navigator.clipboard.writeText(document.getElementById('out').value);}
-function toggleAcc(i){let body=document.getElementById('accBody'+i);let arrow=document.getElementById('accArrow'+i);let open=body.classList.contains('open');document.querySelectorAll('.article-acc-body').forEach(b=>b.classList.remove('open'));document.querySelectorAll('[id^=accArrow]').forEach(a=>a.textContent='▼');if(!open){body.classList.add('open');arrow.textContent='▲';}}
-
-// FIX 1 - COLOR BOTH TOGETHER
-function applyTextColor(){let c=document.getElementById('textColorPick').value;document.getElementById('out').style.color=c;document.getElementById('colorPreview').style.color=c;}
-function applyBgColor(){let c=document.getElementById('bgColorPick').value;document.getElementById('out').style.backgroundColor=c;document.getElementById('colorPreview').style.background=c;}
-function applyBothColor(){applyTextColor();applyBgColor();}
-function clearColor(){let o=document.getElementById('out');o.style.color='';o.style.backgroundColor='';}
-
-// FIX 2 - OUTPUT 100% WORKING
-function makeCase(t){
-  let src=document.getElementById('inp').value;
-  if(!src.trim()){document.getElementById('out').value='Please enter text';return;}
-  let words=src.trim().split(/[\s_\-]+/).filter(Boolean);
-  let cw=words.map(w=>w.replace(/[^a-zA-Z0-9]/g,'')).filter(Boolean);
-  let out='';
-  if(t==='upper') out=src.toUpperCase();
-  else if(t==='lower') out=src.toLowerCase();
-  else if(t==='title') out=src.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());
-  else if(t==='sentence') out=src.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g,c=>c.toUpperCase());
-  else if(t==='camel') out=cw.map((w,i)=>i===0?w.toLowerCase():w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join('');
-  else if(t==='pascal') out=cw.map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join('');
-  else if(t==='snake') out=cw.map(w=>w.toLowerCase()).join('_');
-  else if(t==='kebab') out=cw.map(w=>w.toLowerCase()).join('-');
-  else if(t==='constant') out=cw.map(w=>w.toUpperCase()).join('_');
-  else if(t==='bold') out=src.replace(/[A-Za-z0-9]/g,c=>String.fromCodePoint(0x1D5D4+c.charCodeAt(0)-65));
-  else out=src;
-  document.getElementById('out').value=out;
-  updateStats();
-}
-function makeExtra(t){
-  let src=document.getElementById('inp').value;
-  if(!src.trim()){document.getElementById('out').value='Please enter text';return;}
-  let out='';
-  if(t==='trim') out=src.trim();
-  else if(t==='sortAZ') out=src.split('\n').filter(Boolean).sort((a,b)=>a.localeCompare(b)).join('\n');
-  else if(t==='sortZA') out=src.split('\n').filter(Boolean).sort((a,b)=>b.localeCompare(a)).join('\n');
-  else if(t==='removeDupLines') out=[...new Set(src.split('\n'))].join('\n');
-  else if(t==='reverse') out=src.split('').reverse().join('');
-  else out=src;
-  document.getElementById('out').value=out;
-}
-function doConvert(){
-  let inp=document.getElementById('inp').value.trim();
-  if(!inp){document.getElementById('out').value='Please enter text first';return;}
-  let out='';
-  if(mode==='textBin') out=inp.split('').map(c=>c.charCodeAt(0).toString(2).padStart(8,'0')).join(' ');
-  else if(mode==='binary') out=inp.split(/\s+/).filter(b=>/^[01]+$/.test(b)).map(b=>String.fromCharCode(parseInt(b,2))).join('');
-  else if(mode==='textHex') out=inp.split('').map(c=>c.charCodeAt(0).toString(16).padStart(2,'0')).join(' ');
-  else if(mode==='hex'){let cl=inp.replace(/\s/g,'');let m=cl.match(/.{1,2}/g)||[];out=m.map(h=>String.fromCharCode(parseInt(h,16))).join('');}
-  else out=inp.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());
-  document.getElementById('out').value=out;
-}
-
-// FIX 3 - ABOUT PAGES FULL CONTENT - WORKING
-function openPage(type){
-  let titles={about:'About Us',privacy:'Privacy Policy',terms:'Terms',contact:'Contact',disclaimer:'Disclaimer'};
-  let contents={
-about: `About CaseForge PRO - Free All-in-One Text Toolkit\n\nWe are team with 5+ years experience building 100+ SEO tools. Mission: single platform for all text conversions.\n\nWe offer 16 cases, 6 binary/hexa, 10 cleanup, 12 fancy, separate text+background color that apply together, 20+ fonts, PDF/DOCX support.\n\nAll processing local in browser, never store text, GDPR compliant.\n\nContact: yourmail@gmail.com`,
-privacy: `Privacy Policy\n\n1. No Data Collection: We don't store your text. All local in browser.\n2. Cookies: No tracking. If AdSense, Google may use cookies.\n3. Files read locally via FileReader, never leaves device.\n4. GDPR: Nothing to delete since we store nothing.\n\nContact: yourmail@gmail.com`,
-terms: `Terms & Conditions\n\n1. Use for personal, educational, commercial allowed.\n2. No spam, abusive, illegal, hacking.\n3. Provided as-is, no warranty.\n4. IP is ours.\n\nContact: yourmail@gmail.com`,
-contact: `Contact Us\n\nEmail: yourmail@gmail.com (24h response)\nPortfolio: https://convertmytext.blogspot.com/\nVercel: https://e-pro.vercel.app\n\nServices: Custom tools, AdSense help, SEO, Vercel deployment, 24-48h delivery.\n\nAddress: Domariaganj, UP, India.`,
-disclaimer: `Disclaimer\n\n1. Educational purpose.\n2. No warranty, verify critical conversions.\n3. Unicode styles may not display in old browsers.\n4. PDF extraction may not work for scanned PDFs.\n5. Use at own risk.`
-  };
-  document.getElementById('modalTitle').textContent=titles[type]||type;
-  document.getElementById('modalContent').textContent=contents[type]||'Coming soon';
-  document.getElementById('pageModal').style.display='block';
-}
-function closePage(){document.getElementById('pageModal').style.display='none';}
-updateStats();
-</script>
-</body>
-</html>
+<div class="section">ALL CASES - FIX 2 OUTPUT 100%:</div>
+<div class="btn-row"><button class="btn" onclick="makeCase('upper')">UPPER</button><button class="btn" onclick="makeCase('lower')">lower</button><button class="btn" onclick="makeCase('title')">Title</button><button class="btn" onclick="makeCase('sentence')">Sentence</button><button class="btn" onclick="makeCase('camel')">camelCase</button><button class="btn" onclick="makeCase('pascal')">PascalCase</button><button class="btn" onclick="makeCase('snake')">snake_case</button><button class="btn" onclick="makeCase('kebab')">kebab-case</button><button class="btn" onclick="makeCase('constant')">CONSTANT</button><button class="btn" onclick="makeCase('bold')">Bold</button><button class="
