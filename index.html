@@ -1,99 +1,40 @@
-import { useState, useEffect } from 'react';
-
-export default function Home() {
-  const [inp, setInp] = useState('hello world test case');
-  const [out, setOut] = useState('');
-  const [mode, setMode] = useState('case');
-  const [color, setColor] = useState('#a78bfa');
-  const [colorType, setColorType] = useState('color');
-  const [outStyle, setOutStyle] = useState({});
-  const [font, setFont] = useState('Inter,system-ui');
-  const [fancy, setFancy] = useState([]);
-
-  const words = inp.trim().split(/\s+/).filter(Boolean).length;
-
-  const parseWords = (s) => s.trim().split(/[\s_\-]+/).filter(Boolean).map(w=>w.replace(/[^a-zA-Z0-9]/g,'')).filter(Boolean);
-
-  const makeCase = (t) => {
-    let src = inp; if(!src.trim()) return; let w = parseWords(src); let res='';
-    if(t==='upper') res=src.toUpperCase(); else if(t==='lower') res=src.toLowerCase();
-    else if(t==='title') res=src.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());
-    else if(t==='sentence') res=src.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g,c=>c.toUpperCase());
-    else if(t==='pascal') res=w.map(x=>x.charAt(0).toUpperCase()+x.slice(1).toLowerCase()).join('');
-    else if(t==='camel') res=w.map((x,i)=>i===0?x.toLowerCase():x.charAt(0).toUpperCase()+x.slice(1).toLowerCase()).join('');
-    else if(t==='snake') res=w.map(x=>x.toLowerCase()).join('_'); else if(t==='kebab') res=w.map(x=>x.toLowerCase()).join('-');
-    else if(t==='constant') res=w.map(x=>x.toUpperCase()).join('_'); else if(t==='dot') res=w.map(x=>x.toLowerCase()).join('.');
-    else if(t==='path') res=w.map(x=>x.toLowerCase()).join('/');
-    else if(t==='bold') res=src.replace(/[A-Za-z0-9]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D5D4+c.charCodeAt(0)-65);if(c>='a'&&c<='z')return String.fromCodePoint(0x1D5EE+c.charCodeAt(0)-97);return c});
-    else if(t==='italic') res=src.replace(/[A-Za-z]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D608+c.charCodeAt(0)-65);return String.fromCodePoint(0x1D622+c.charCodeAt(0)-97)});
-    else if(t==='underline') res=src.split('').map(c=>c+'\u0332').join(''); else if(t==='overline') res=src.split('').map(c=>c+'\u0305').join(''); else if(t==='strike') res=src.split('').map(c=>c+'\u0336').join('');
-    setOut(res);
-  };
-
-  const makeExtra = (t) => {
-    let src=inp; if(!src.trim()) return; let res='';
-    if(t==='trim') res=src.split('\n').map(s=>s.trim()).join('\n').trim();
-    else if(t==='extraSpaces') res=src.replace(/\s+/g,' ').trim();
-    else if(t==='removeLineBreaks') res=src.replace(/[\r\n]+/g,' ');
-    else if(t==='removeDupLines') res=[...new Set(src.split('\n'))].join('\n');
-    else if(t==='removeDupWords') res=[...new Set(src.split(/\s+/))].join(' ');
-    else if(t==='sortAZ'){ let l=src.split('\n').map(x=>x.trim()).filter(Boolean); res=l.length>1?l.sort((a,b)=>a.localeCompare(b)).join('\n'):src.split(/\s+/).filter(Boolean).sort((a,b)=>a.localeCompare(b)).join(' ');}
-    else if(t==='sortZA'){ let l=src.split('\n').map(x=>x.trim()).filter(Boolean); res=l.length>1?l.sort((a,b)=>b.localeCompare(a)).join('\n'):src.split(/\s+/).filter(Boolean).sort((a,b)=>b.localeCompare(a)).join(' ');}
-    else if(t==='reverse') res=src.split('').reverse().join('');
-    else if(t==='rot13') res=src.replace(/[a-zA-Z]/g,c=>String.fromCharCode((c<='Z'?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26));
-    else if(t==='removeEmoji') res=src.replace(/[^\w\s.,!?;:\-()]/g,'').trim();
-    setOut(res);
-  };
-
-  const doConvert = () => {
-    let i=inp.trim(); if(!i) return; let r='';
-    if(mode==='textBin') r=i.split('').map(c=>c.charCodeAt(0).toString(2).padStart(8,'0')).join(' ');
-    else if(mode==='binary') r=i.split(/\s+/).filter(Boolean).map(b=>/^[01]+$/.test(b)?String.fromCharCode(parseInt(b,2)):'').join('');
-    else if(mode==='textHex') r=i.split('').map(c=>c.charCodeAt(0).toString(16).padStart(2,'0')).join(' ');
-    else if(mode==='hex'){ let cl=i.replace(/\s/g,''); r=(cl.match(/.{1,2}/g)||[]).map(h=>String.fromCharCode(parseInt(h,16))).join('');}
-    else if(mode==='binHex') r=i.split(/\s+/).filter(Boolean).map(b=>parseInt(b,2).toString(16).padStart(2,'0')).join(' ');
-    else if(mode==='hexBin') r=i.split(/\s+/).filter(Boolean).map(h=>parseInt(h,16).toString(2).padStart(8,'0')).join(' ');
-    else r=i;
-    setOut(r);
-  };
-
-  const genFancy = () => {
-    let t = inp || 'test';
-    const list = [
-      {n:'🔥 Bubble', f:s=>s.replace(/[A-Za-z]/g,c=>{let m={a:'ⓐ',b:'ⓑ',c:'ⓒ',d:'ⓓ',e:'ⓔ',f:'ⓕ',g:'ⓖ',h:'ⓗ',i:'ⓘ',j:'ⓙ',k:'ⓚ',l:'ⓛ',m:'ⓜ',n:'ⓝ',o:'ⓞ',p:'ⓟ',q:'ⓠ',r:'ⓡ',s:'ⓢ',t:'ⓣ',u:'ⓤ',v:'ⓥ',w:'ⓦ',x:'ⓧ',y:'ⓨ',z:'ⓩ'}; return m[c.toLowerCase()]||c})},
-      {n:'🙃 Upside Down', f:s=>s.toLowerCase().split('').reverse().join('')},
-      {n:'⚡ Bold', f:s=>s.replace(/[A-Za-z]/g,c=>String.fromCodePoint(0x1D5D4 + (c.toLowerCase().charCodeAt(0)-97) + (c===c.toUpperCase()?0:26)))},
-      {n:'🌸 Cursive', f:s=>s},
-      {n:'📦 Fullwidth', f:s=>s.split('').map(c=>{let cd=c.charCodeAt(0); if(cd>=33&&cd<=126) return String.fromCharCode(0xFF00+cd-32); return c}).join('')},
-      {n:'✨ Sparkles', f:s=>'✨ '+s.split('').join(' ✨ ')+' ✨'},
-      {n:'🔠 Small Caps', f:s=>s.toUpperCase()},
-      {n:'⭕ Circled', f:s=>s},
-      {n:'💀 Zalgo', f:s=>s.split('').map(c=>c+'\u0308').join('')},
-      {n:'🎩 Double Struck', f:s=>s},
-      {n:'🖤 Blackletter', f:s=>s},
-      {n:'💌 Italic', f:s=>s},
-    ];
-    setFancy(list.map(x=>({name:x.n, val:x.f(t)})));
-  };
-
-  useEffect(()=>{ genFancy(); }, [inp]);
-
-  const applyColor = () => {
-    if(colorType==='color') setOutStyle({color: color, fontFamily: font});
-    else setOutStyle({background: color, color: '#000', fontFamily: font});
-  };
-
-  return (
-    <>
-    <style>{`
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Poppins:wght@400;700&family=Roboto:wght@400;700&family=Lobster&family=Pacifico&display=swap');
-      :root{--bg:#08080a;--card:#121214;--card2:#1c1c21;--border:#2a2a32;--text:#e5e5e5;--muted:#9ca3af;--accent:#a78bfa;--accent2:#22d3ee}
-      *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
-      body{background:var(--bg);color:var(--text)}
-     .header{position:sticky;top:0;z-index:20;background:#08080a;border-bottom:1px solid #2a2a32;padding:12px 15px;display:flex;justify-content:space-between;flex-wrap:wrap}
-     .logo{font-weight:900;font-size:18px;color:#a78bfa}
-     .container{max-width:1250px;margin:0 auto;padding:12px;display:grid;grid-template-columns:1fr 380px;gap:14px}
-      @media(max-width:900px){.container{grid-template-columns:1fr}}
-     .card{background:#121214;border:1px solid #2a2a32;border-radius:16px;padding:16px;margin-bottom:14px}
-     .tabs{display:flex;gap:5px;flex-wrap:wrap;margin:10px 0}
-     .tab{padding:7px 12px;background:#1c1c21;border:1px solid #2a2a32;border-radius:99px;font-size:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CaseForge PRO - All Tools Working</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<style>
+:root{--bg:#08080a;--card:#121214;--card2:#1c1c21;--border:#2a2a32;--text:#e5e5e5;--accent:#a78bfa}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+body{background:var(--bg);color:var(--text)}
+.header{padding:12px 15px;display:flex;justify-content:space-between;background:#08080a;border-bottom:1px solid var(--border);position:sticky;top:0}
+.logo{font-weight:900;color:var(--accent)} .nav a{color:var(--accent);margin-left:12px;font-size:12px;font-weight:700;text-decoration:none}
+.container{max-width:1250px;margin:0 auto;padding:12px;display:grid;grid-template-columns:1fr 380px;gap:14px}
+@media(max-width:900px){.container{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px}
+.tab{padding:7px 12px;background:var(--card2);border:1px solid var(--border);border-radius:99px;font-size:11px;font-weight:700;cursor:pointer;display:inline-block;margin:3px}
+.tab.active{background:var(--accent);color:#000}
+textarea{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:14px;min-height:130px;margin:6px 0}
+.btn{padding:8px 11px;border-radius:9px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-weight:700;font-size:11px;cursor:pointer;margin:3px}
+.btn.active{border-color:var(--accent);background:var(--accent);color:#000}
+.small{font-size:11px;color:#9ca3af} .section{font-size:11px;font-weight:900;color:var(--accent);margin:14px 0 6px}
+.drop{border:2px dashed var(--accent);border-radius:12px;padding:16px;text-align:center;background:var(--card2);cursor:pointer}
+.tool-link{display:flex;align-items:center;gap:10px;padding:9px;border-radius:8px;background:rgba(255,255,255,.05);margin:6px 0;font-size:12px;text-decoration:none;color:var(--text)}
+.tool-link img{width:18px;height:18px;background:#fff;border-radius:4px}
+.fancy-item{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px;margin:8px 0}
+.footer{text-align:center;padding:20px;font-size:12px;color:#9ca3af;border-top:1px solid var(--border);margin-top:20px}
+.badge{font-size:9px;padding:3px 7px;border-radius:99px;background:var(--accent);color:#000;margin-left:auto;font-weight:800}
+</style>
+</head>
+<body>
+<div class="header"><div class="logo">CaseForge PRO ⚡</div><div class="nav"><a href="#useful">Tools</a><a href="#hire">Hire Me</a></div></div>
+<div class="container">
+<div>
+<div class="card">
+<h3>All-in-One Converter - FIXED</h3>
+<p class="small">Vercel Static Version - Working</p>
+<div class="drop" id="dropZone" onclick="document.getElementById('fileIn').click()">📁 Drag & Drop PDF/DOCX<input type="file" id="fileIn" hidden multiple accept=".txt,.pdf,.docx,.json,.csv" onchange="handleFiles(this.files)"></div>
+<div id="tabs"><span class="tab active" id="t-case" onclick="setMode('case',this)">Case</span><span class="tab" id
