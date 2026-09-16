@@ -4,6 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CaseForge PRO - Text Case, Binary, Hexa, Fancy Text Converter</title>
 <meta name="description" content="Free online Case Converter, Text to Binary, Binary to Text, Text to Hexa, Hexa to Text, Binary to Hexa, Hexa to Binary, Fancy Text Generator, Sort, Trim, Color, Font Styles. Supports PDF & DOCX.">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Oswald:wght@400;700&family=Raleway:wght@400;700&family=Playfair+Display:wght@400;700&family=Merriweather:wght@400;700&family=Ubuntu:wght@400;700&family=Dancing+Script:wght@700&family=Pacifico&family=Caveat:wght@700&family=Lobster&family=Bebas+Neue&family=Anton&family=Righteous&family=Permanent+Marker&family=Press+Start+2P&family=Monoton&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <style>
@@ -32,10 +33,8 @@ select,input[type=color]{background:var(--card2);color:var(--text);border:1px so
 .pulse-btn{display:inline-block;padding:12px 22px;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#000;font-weight:900;font-size:13px;animation:pulse 1.8s infinite;text-align:center;margin:10px 0}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(167,139,250,.6)}70%{box-shadow:0 0 0 16px rgba(167,139,250,0)}100%{box-shadow:0 0 0 0 rgba(167,139,250,0)}}
 .footer{background:var(--card);border-top:1px solid var(--border);padding:22px 15px;margin-top:20px;text-align:center;font-size:12px;color:var(--muted)}
-/* FANCY - 12 Styles */
 .fancy-item{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:12px;margin:10px 0}
 .fancy-preview{font-size:18px;margin:8px 0;word-break:break-all;line-height:1.4}
-/* TOOLS WITH IMAGES */
 .tool-category{border:1px solid var(--border);border-radius:14px;padding:12px;background:linear-gradient(135deg,var(--card2),#181826);margin-bottom:12px;transition:.3s}
 .tool-category:hover{border-color:var(--accent);transform:translateY(-2px)}
 .tool-category h4{font-size:12px;color:var(--accent2);margin-bottom:8px}
@@ -51,7 +50,7 @@ select,input[type=color]{background:var(--card2);color:var(--text);border:1px so
 <div class="logo">CaseForge PRO ⚡</div>
 <div class="nav">
 <a href="#howto">How To Use</a><a href="#articles">Articles</a><a href="#useful">Tools</a><a href="#hire">Hire Me</a>
-<a href="#" onclick="openPage('about')">About</a><a href="#" onclick="openPage('privacy')">Privacy</a>
+<a href="#" onclick="openPage('about');return false">About</a><a href="#" onclick="openPage('privacy');return false">Privacy</a>
 </div>
 </div>
 
@@ -84,23 +83,51 @@ apple
 mango
 zebra</textarea>
 <div class="small" id="stats"></div>
-<div class="btn-row"><button class="btn" id="btn-convert" onclick="doConvert(true)">Convert →</button></div>
+<div class="btn-row"><button class="btn" id="btn-convert" onclick="doConvert(true)" style="background:var(--accent);color:#000">Convert →</button></div>
 
 <label class="small">OUTPUT:</label>
 <textarea id="out" readonly style="border:2px solid #a78bfa;min-height:140px"></textarea>
 <div class="btn-row"><button class="btn" onclick="copyBtn(this,'out')">📋 Copy</button><button class="btn" onclick="downloadAny('out')">💾 Download</button><button class="btn" onclick="shareAny('out')">📤 Share</button></div>
 
-<div class="section">COLOR OPTION:</div>
-<div class="btn-row" style="align-items:center">
-<input type="color" id="colorPick" value="#a78bfa"><select id="colorType"><option value="color">Text Color</option><option value="bg">Background Highlight</option></select>
+<div class="section">COLOR OPTION - FIXED:</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0">
+<input type="color" id="colorPick" value="#a78bfa" style="width:42px;height:42px;border-radius:10px;border:2px solid #2a2a32;cursor:pointer;padding:2px" oninput="livePreview()">
+<button class="btn" id="btn-textColor" onclick="setColorType('color')" style="background:var(--accent);color:#000">● Text Color</button>
+<button class="btn" id="btn-bgColor" onclick="setColorType('bg')">● Background Highlight</button>
 <button class="btn" onclick="applyColor()">Apply Color</button><button class="btn" onclick="clearColor()">Clear</button>
 </div>
-<div id="colorPreview" style="padding:10px;border-radius:10px;background:var(--card2);border:1px solid var(--border)" class="small">Color preview</div>
+<div id="colorPreview" style="padding:14px;border-radius:10px;background:var(--card2);border:1px solid var(--border);font-weight:700">Color preview - Live</div>
 
-<div class="section">FONT STYLES OPTION:</div>
-<div class="btn-row"><select id="fontSel">
-<option value="Inter,system-ui">Default</option><option value="monospace">Monospace</option><option value="serif">Serif</option><option value="cursive">Cursive</option><option value="'Courier New',monospace">Typewriter</option><option value="'Times New Roman',serif">Times New Roman</option><option value="'Comic Sans MS',cursive">Comic Sans</option><option value="Impact">Impact</option>
-</select><button class="btn" onclick="applyFont()">Apply Font</button></div>
+<div class="section">FONT STYLES OPTION - 20+ Added:</div>
+<div class="btn-row"><select id="fontSel" style="min-width:200px">
+<option value="Inter,system-ui">Default Inter</option>
+<option value="monospace">Monospace</option>
+<option value="serif">Serif</option>
+<option value="cursive">Cursive</option>
+<option value="'Courier New',monospace">Typewriter</option>
+<option value="'Times New Roman',serif">Times New Roman</option>
+<option value="'Comic Sans MS',cursive">Comic Sans</option>
+<option value="Impact">Impact</option>
+<option value="'Poppins',sans-serif">Poppins</option>
+<option value="'Roboto',sans-serif">Roboto</option>
+<option value="'Lato',sans-serif">Lato</option>
+<option value="'Montserrat',sans-serif">Montserrat</option>
+<option value="'Oswald',sans-serif">Oswald</option>
+<option value="'Raleway',sans-serif">Raleway</option>
+<option value="'Playfair Display',serif">Playfair Display</option>
+<option value="'Merriweather',serif">Merriweather</option>
+<option value="'Ubuntu',sans-serif">Ubuntu</option>
+<option value="'Dancing Script',cursive">Dancing Script</option>
+<option value="'Pacifico',cursive">Pacifico</option>
+<option value="'Caveat',cursive">Caveat</option>
+<option value="'Lobster',cursive">Lobster</option>
+<option value="'Bebas Neue',sans-serif">Bebas Neue</option>
+<option value="'Anton',sans-serif">Anton</option>
+<option value="'Righteous',cursive">Righteous</option>
+<option value="'Permanent Marker',cursive">Permanent Marker</option>
+<option value="'Press Start 2P',cursive">Press Start 2P</option>
+<option value="'Monoton',cursive">Monoton</option>
+</select><button class="btn" onclick="applyFont()">Apply Font</button><button class="btn" onclick="clearFont()">Clear Font</button></div>
 
 <div class="section">ALL CASES:</div>
 <div class="btn-row">
@@ -166,7 +193,6 @@ zebra</textarea>
 <p class="small" style="margin:6px 0"><b>Hexadecimal Guide:</b> Hex is base-16. Common in web colors (#a78bfa). Our converters handle Text↔Hexa, Binary↔Hexa, Hexa↔Binary.</p>
 </div>
 
-<!-- 12 FANCY STYLES - FULLY RESTORED WITH DOWNLOAD SHARE -->
 <div class="card">
 <h3>✨ Fancy Text Generator - 12 Styles (Restored)</h3>
 <div id="fancyBox"></div>
@@ -226,7 +252,7 @@ zebra</textarea>
 </div>
 
 <div class="footer">
-<a href="#" onclick="openPage('about')">About</a> | <a href="#" onclick="openPage('privacy')">Privacy</a> | <a href="#" onclick="openPage('terms')">Terms</a> | <a href="#" onclick="openPage('contact')">Contact</a> | <a href="#" onclick="openPage('disclaimer')">Disclaimer</a>
+<a href="#" onclick="openPage('about');return false">About</a> | <a href="#" onclick="openPage('privacy');return false">Privacy</a> | <a href="#" onclick="openPage('terms');return false">Terms</a> | <a href="#" onclick="openPage('contact');return false">Contact</a> | <a href="#" onclick="openPage('disclaimer');return false">Disclaimer</a>
 <p style="margin-top:8px">© 2026 CaseForge PRO - All Rights Reserved</p>
 </div>
 
@@ -234,113 +260,31 @@ zebra</textarea>
 
 <script>
 let mode='case';
+let currentColorType='color';
 function setM(m,el){mode=m;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active')}
 function highlightBtn(btn,cls){if(!btn)return;document.querySelectorAll('.'+cls).forEach(b=>b.classList.remove('btn-highlight'));btn.classList.add('btn-highlight');setTimeout(()=>btn.classList.remove('btn-highlight'),1500)}
 function parseWords(s){return s.trim().split(/[\s_\-]+/).filter(Boolean).map(w=>w.replace(/[^a-zA-Z0-9\u0900-\u097F]/g,'')).filter(Boolean)}
-function makeCase(t,btn){
- highlightBtn(btn,'case-btn');
- let src=document.getElementById('inp').value; if(!src.trim())return; let words=parseWords(src); let out='';
- if(t==='upper') out=src.toUpperCase(); else if(t==='lower') out=src.toLowerCase();
- else if(t==='title') out=src.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());
- else if(t==='sentence'){let l=src.toLowerCase(); out=l.replace(/(^\s*\w|[.!?]\s*\w)/g,c=>c.toUpperCase());}
- else if(t==='pascal') out=words.map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join('');
- else if(t==='camel') out=words.map((w,i)=>i===0?w.toLowerCase():w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join('');
- else if(t==='snake') out=words.map(w=>w.toLowerCase()).join('_'); else if(t==='kebab') out=words.map(w=>w.toLowerCase()).join('-');
- else if(t==='constant') out=words.map(w=>w.toUpperCase()).join('_'); else if(t==='dot') out=words.map(w=>w.toLowerCase()).join('.'); else if(t==='path') out=words.map(w=>w.toLowerCase()).join('/');
- else if(t==='bold') out=src.replace(/[A-Za-z0-9]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D5D4+c.charCodeAt(0)-65);if(c>='a'&&c<='z')return String.fromCodePoint(0x1D5EE+c.charCodeAt(0)-97);if(c>='0'&&c<='9')return String.fromCodePoint(0x1D7EC+c.charCodeAt(0)-48);return c});
- else if(t==='italic') out=src.replace(/[A-Za-z]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D608+c.charCodeAt(0)-65);return String.fromCodePoint(0x1D622+c.charCodeAt(0)-97)});
- else if(t==='underline') out=src.split('').map(c=>c+'\u0332').join(''); else if(t==='overline') out=src.split('').map(c=>c+'\u0305').join(''); else if(t==='strike') out=src.split('').map(c=>c+'\u0336').join('');
- document.getElementById('out').value=out; updateStats();
-}
-function makeExtra(t,btn){
- highlightBtn(btn,'extra-btn');
- let src=document.getElementById('inp').value; if(!src.trim())return; let out='';
- if(t==='sortAZ'){let lines=src.split('\n').map(l=>l.trim()).filter(Boolean); if(lines.length>1) out=lines.sort((a,b)=>a.toLowerCase().localeCompare(b.toLowerCase())).join('\n'); else out=src.split(/\s+/).filter(Boolean).sort((a,b)=>a.toLowerCase().localeCompare(b.toLowerCase())).join(' ');}
- else if(t==='sortZA'){let lines=src.split('\n').map(l=>l.trim()).filter(Boolean); if(lines.length>1) out=lines.sort((a,b)=>b.toLowerCase().localeCompare(a.toLowerCase())).join('\n'); else out=src.split(/\s+/).filter(Boolean).sort((a,b)=>b.toLowerCase().localeCompare(a.toLowerCase())).join(' ');}
- else if(t==='trim') out=src.split('\n').map(s=>s.trim()).join('\n').trim();
- else if(t==='extraSpaces') out=src.replace(/\s+/g,' ').trim();
- else if(t==='removeLineBreaks') out=src.replace(/[\r\n]+/g,' ');
- else if(t==='removeDupLines') out=[...new Set(src.split('\n'))].join('\n');
- else if(t==='removeDupWords') out=[...new Set(src.split(/\s+/))].join(' ');
- else if(t==='reverse') out=src.split('').reverse().join('');
- else if(t==='rot13') out=src.replace(/[a-zA-Z]/g,c=>String.fromCharCode((c<='Z'?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26));
- else if(t==='removeEmoji') out=src.replace(/[^a-zA-Z0-9\u0900-\u097F\s.,!?;:\-_(){}[\]'"`@#$%^&*+=|\\\/<>]/g,'').replace(/\s+/g,' ').trim();
- document.getElementById('out').value=out; updateStats();
-}
-function directConvert(type,btn){highlightBtn(btn,'direct-btn');mode=type;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));let id='t-'+type;if(document.getElementById(id))document.getElementById(id).classList.add('active');doConvert(false)}
-function doConvert(fromMain){
- if(fromMain){let b=document.getElementById('btn-convert');b.classList.add('btn-highlight');setTimeout(()=>b.classList.remove('btn-highlight'),800)}
- let inp=document.getElementById('inp').value.trim(); if(!inp)return; let out='';
- try{
-  if(mode==='textBin') out=inp.split('').map(c=>c.charCodeAt(0).toString(2).padStart(8,'0')).join(' ');
-  else if(mode==='binary') out=inp.split(/\s+/).filter(Boolean).map(b=>/^[01]+$/.test(b)?String.fromCharCode(parseInt(b,2)):'').join('');
-  else if(mode==='textHex') out=inp.split('').map(c=>c.charCodeAt(0).toString(16).padStart(2,'0')).join(' ');
-  else if(mode==='hex'){let cl=inp.replace(/\s/g,''); out=(cl.match(/.{1,2}/g)||[]).map(h=>String.fromCharCode(parseInt(h,16))).join('');}
-  else if(mode==='binHex') out=inp.split(/\s+/).filter(Boolean).map(b=>parseInt(b,2).toString(16).padStart(2,'0')).join(' ');
-  else if(mode==='hexBin') out=inp.split(/\s+/).filter(Boolean).map(h=>parseInt(h,16).toString(2).padStart(8,'0')).join(' ');
-  else out=inp;
- }catch(e){out='Error'} document.getElementById('out').value=out; updateStats(); genFancy();
-}
-function autoGen(){updateStats(); genFancy()}
-function updateStats(){let t=document.getElementById('inp').value; let w=t.trim().split(/\s+/).filter(Boolean).length; document.getElementById('stats').innerText=`${w} words | ${t.length} chars`;}
-function applyColor(){let col=document.getElementById('colorPick').value;let type=document.getElementById('colorType').value;let out=document.getElementById('out');let prev=document.getElementById('colorPreview');if(type==='color'){out.style.color=col;out.style.background='';prev.style.color=col;prev.innerText=`Color ${col}`}else{out.style.background=col+'33';prev.style.background=col+'55';prev.innerText=`Highlight ${col}`}}
-function clearColor(){let out=document.getElementById('out'); out.style.color=''; out.style.background='';}
-function applyFont(){let f=document.getElementById('fontSel').value; document.getElementById('out').style.fontFamily=f;}
 
-function genFancy(){
- let t=document.getElementById('inp').value||'test';
- const list=[
-  {name:'🔥 Bubble Text', fn:s=>s.replace(/[A-Za-z0-9]/g,c=>{let m={a:'ⓐ',b:'ⓑ',c:'ⓒ',d:'ⓓ',e:'ⓔ',f:'ⓕ',g:'ⓖ',h:'ⓗ',i:'ⓘ',j:'ⓙ',k:'ⓚ',l:'ⓛ',m:'ⓜ',n:'ⓝ',o:'ⓞ',p:'ⓟ',q:'ⓠ',r:'ⓡ',s:'ⓢ',t:'ⓣ',u:'ⓤ',v:'ⓥ',w:'ⓦ',x:'ⓧ',y:'ⓨ',z:'ⓩ',A:'Ⓐ',B:'Ⓑ',C:'Ⓒ',D:'Ⓓ',E:'Ⓔ',F:'Ⓕ',G:'Ⓖ',H:'Ⓗ',I:'Ⓘ',J:'Ⓙ',K:'Ⓚ',L:'Ⓛ',M:'Ⓜ',N:'Ⓝ',O:'Ⓞ',P:'Ⓟ',Q:'Ⓠ',R:'Ⓡ',S:'Ⓢ',T:'Ⓣ',U:'Ⓤ',V:'Ⓥ',W:'Ⓦ',X:'Ⓧ',Y:'Ⓨ',Z:'Ⓩ',0:'⓪',1:'①',2:'②',3:'③',4:'④',5:'⑤',6:'⑥',7:'⑦',8:'⑧',9:'⑨'};return m[c]||c})},
-  {name:'🙃 Upside Down', fn:s=>{let mp={a:'ɐ',b:'q',c:'ɔ',d:'p',e:'ǝ',f:'ɟ',g:'ƃ',h:'ɥ',i:'ᴉ',j:'ɾ',k:'ʞ',l:'ʅ',m:'ɯ',n:'u',o:'o',p:'d',q:'b',r:'ɹ',s:'s',t:'ʇ',u:'n',v:'ʌ',w:'ʍ',x:'x',y:'ʎ',z:'z'};return s.toLowerCase().split('').map(c=>mp[c]||c).reverse().join('')}},
-  {name:'⚡ Bold Sans', fn:s=>s.replace(/[A-Za-z0-9]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D5D4+c.charCodeAt(0)-65);if(c>='a'&&c<='z')return String.fromCodePoint(0x1D5EE+c.charCodeAt(0)-97);if(c>='0'&&c<='9')return String.fromCodePoint(0x1D7EC+c.charCodeAt(0)-48);return c})},
-  {name:'💌 Bold Italic Sans', fn:s=>s.replace(/[A-Za-z]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D63C+c.charCodeAt(0)-65);return String.fromCodePoint(0x1D656+c.charCodeAt(0)-97)})},
-  {name:'🌸 Cursive Script', fn:s=>s.replace(/[A-Za-z]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D4D0+c.charCodeAt(0)-65);return String.fromCodePoint(0x1D4EA+c.charCodeAt(0)-97)})},
-  {name:'📦 Fullwidth', fn:s=>s.split('').map(c=>{let cd=c.charCodeAt(0);if(cd>=33&&cd<=126)return String.fromCharCode(0xFF00+cd-32);return c}).join('')},
-  {name:'🖤 Blackletter Fraktur', fn:s=>s.replace(/[A-Za-z]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D56C+c.charCodeAt(0)-65);return String.fromCodePoint(0x1D586+c.charCodeAt(0)-97)})},
-  {name:'✨ Sparkles', fn:s=>'✨ '+s.split('').join(' ✨ ')+' ✨'},
-  {name:'🔠 Small Caps', fn:s=>{let m={a:'ᴀ',b:'ʙ',c:'ᴄ',d:'ᴅ',e:'ᴇ',f:'ꜰ',g:'ɢ',h:'ʜ',i:'ɪ',j:'ᴊ',k:'ᴋ',l:'ʟ',m:'ᴍ',n:'ɴ',o:'ᴏ',p:'ᴘ',q:'ǫ',r:'ʀ',s:'ꜱ',t:'ᴛ',u:'ᴜ',v:'ᴠ',w:'ᴡ',x:'x',y:'ʏ',z:'ᴢ'};return s.toLowerCase().split('').map(c=>m[c]||c).join('')}},
-  {name:'⭕ Circled', fn:s=>s.replace(/[A-Za-z]/g,c=>{let code=c.charCodeAt(0);if(code>=97)return String.fromCodePoint(0x24D0+code-97);return String.fromCodePoint(0x24B6+code-65)})},
-  {name:'💀 Zalgo Glitch', fn:s=>s.split('').map(c=>c+'\u0308'+'\u0337').join('')},
-  {name:'🎩 Double Struck', fn:s=>s.replace(/[A-Za-z0-9]/g,c=>{if(c>='A'&&c<='Z')return String.fromCodePoint(0x1D538+c.charCodeAt(0)-65);if(c>='a'&&c<='z')return String.fromCodePoint(0x1D552+c.charCodeAt(0)-97);if(c>='0'&&c<='9')return String.fromCodePoint(0x1D7D8+c.charCodeAt(0)-48);return c})},
- ];
- let html=''; list.forEach((st,i)=>{let v=st.fn(t); let id='f_'+i; html+=`<div class="fancy-item"><div class="small">${st.name}</div><div class="fancy-preview" id="${id}">${v}</div><div class="btn-row"><button class="btn" onclick="copyBtn(this,'${id}')">📋 Copy</button><button class="btn" onclick="downloadAny('${id}')">💾 Download</button><button class="btn" onclick="shareAny('${id}')">📤 Share</button></div></div>`;});
- document.getElementById('fancyBox').innerHTML=html;
+// COLOR FIX - NEW
+function setColorType(type){
+  currentColorType=type;
+  let b1=document.getElementById('btn-textColor'), b2=document.getElementById('btn-bgColor');
+  if(type==='color'){ b1.style.background='var(--accent)'; b1.style.color='#000'; b2.style.background='var(--card2)'; b2.style.color='var(--text)'; }
+  else { b2.style.background='var(--accent)'; b2.style.color='#000'; b1.style.background='var(--card2)'; b1.style.color='var(--text)'; }
+  livePreview();
 }
-
-function getVal(id){let el=document.getElementById(id); return el.value!==undefined?el.value:el.innerText}
-function copyBtn(btn,id){let txt=getVal(id); navigator.clipboard.writeText(txt); let o=btn.innerText; btn.innerText='Copied ✓'; setTimeout(()=>btn.innerText=o,1200)}
-function downloadAny(id){let txt=getVal(id); let b=new Blob([txt],{type:'text/plain'}); let a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=id+'.txt'; a.click()}
-async function shareAny(id){let txt=getVal(id); if(navigator.share){try{await navigator.share({text:txt})}catch{}}else navigator.clipboard.writeText(txt)}
-async function pasteClip(){try{let txt=await navigator.clipboard.readText(); document.getElementById('inp').value=txt; autoGen()}catch{alert('Allow clipboard')}}
-function clearAll(){document.getElementById('inp').value='';document.getElementById('out').value='';clearColor();updateStats();genFancy()}
-function handleDragOver(e){e.preventDefault(); document.getElementById('dropZone').classList.add('dragover')}
-function handleDragLeave(){document.getElementById('dropZone').classList.remove('dragover')}
-function handleDrop(e){e.preventDefault(); document.getElementById('dropZone').classList.remove('dragover'); handleFiles(e.dataTransfer.files)}
-async function handleFiles(files){
- let allText=''; let total=files.length; let c=0;
- for(let f of files){
-  let name=f.name.toLowerCase();
-  if(name.endsWith('.pdf')){try{let buf=await f.arrayBuffer(); let pdf=await pdfjsLib.getDocument({data:buf}).promise; let txt=''; for(let i=1;i<=pdf.numPages;i++){let page=await pdf.getPage(i); let content=await page.getTextContent(); txt+=content.items.map(it=>it.str).join(' ')+'\n';} allText+=txt+'\n';}catch{allText+='[PDF error]\n';}}
-  else if(name.endsWith('.docx')){try{let buf=await f.arrayBuffer(); let res=await mammoth.extractRawText({arrayBuffer:buf}); allText+=res.value+'\n';}catch{allText+='[DOCX error]\n';}}
-  else {let txt=await f.text(); allText+=txt+'\n';}
-  c++; if(c===total){document.getElementById('inp').value=allText.trim(); autoGen(); document.getElementById('out').value='File loaded: '+total+' file(s). Ready.';}
- }
+function livePreview(){
+  let col=document.getElementById('colorPick').value;
+  let prev=document.getElementById('colorPreview');
+  if(currentColorType==='color'){ prev.style.color=col; prev.style.background='var(--card2)'; prev.innerText='Text Color Preview '+col; }
+  else { prev.style.background=col; prev.style.color='#000'; prev.innerText='Background Highlight Preview '+col; }
 }
-function openPage(type){
- let titles={about:'About Us', privacy:'Privacy Policy', terms:'Terms & Conditions', contact:'Contact Us', disclaimer:'Disclaimer'};
- let contents={
-  about:'CaseForge PRO is a free global tool for text case conversion, binary, hexa, and fancy text.',
-  privacy:'We do not store your text. All processing happens locally in browser. GDPR compliant.',
-  terms:'Use for lawful purposes only. Provided as-is.',
-  contact:'Email: yourmail@gmail.com - Response within 24 hours.',
-  disclaimer:'Accuracy not 100% guaranteed for special chars.'
- };
- document.getElementById('modalTitle').innerText=titles[type]||type;
- document.getElementById('modalContent').innerText=contents[type]||'Coming soon';
- document.getElementById('pageModal').style.display='block';
+function applyColor(){
+  let col=document.getElementById('colorPick').value;
+  let out=document.getElementById('out');
+  if(currentColorType==='color'){ out.style.color=col; out.style.background=''; }
+  else { out.style.background=col; out.style.color='#000'; }
+  livePreview();
 }
-function closePage(){document.getElementById('pageModal').style.display='none'}
-autoGen();
-</script>
-</body>
-</html>
+function clearColor(){ let out=document.getElementById('out'); out.style.color=''; out.style.background=''; let prev=document.getElementById('colorPreview'); prev.style.color=''; prev.style.background='var(--card2)'; prev.innerText='Color preview - Live'; }
+function applyFont(){ let f=document.getElementById('fontSel
