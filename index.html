@@ -1,281 +1,1284 @@
-// @ts-nocheck
-"use client"
-import { useState, useEffect } from "react"
-const LANGS=[
-  ["HI","Hindi"],
-  ["EN","English"],
-  ["ES","Spanish"],
-  ["FR","French"],
-  ["DE","German"],
-  ["RU","Russian"],
-  ["JA","Japanese"],
-  ["IT","Italian"],
-  ["AR","Arabic"],
-  ["PT","Portuguese"],
-  ["BN","Bengali"],
-  ["UR","Urdu"],
-  ["ZH","Chinese"],
-  ["KO","Korean"],
-  ["TR","Turkish"],
-  ["NL","Dutch"],
-  ["PL","Polish"],
-  ["TH","Thai"],
-  ["VI","Vietnamese"],
-  ["ID","Indonesian"],
-  ["TA","Tamil"],
-  ["TE","Telugu"],
-  ["MR","Marathi"],
-  ["GU","Gujarati"],
-  ["PA","Punjabi"],
-  ["ML","Malayalam"],
-  ["KN","Kannada"],
-  ["OR","Odia"],
-  ["AS","Assamese"],
-  ["NE","Nepali"],
-  ["SI","Sinhala"],
-  ["MY","Burmese"],
-  ["KM","Khmer"],
-  ["LO","Lao"],
-  ["MS","Malay"],
-  ["FIL","Filipino"],
-  ["TL","Tagalog"],
-  ["SW","Swahili"],
-  ["AM","Amharic"],
-  ["HA","Hausa"],
-  ["YO","Yoruba"],
-  ["IG","Igbo"],
-  ["ZU","Zulu"],
-  ["AF","Afrikaans"],
-  ["SO","Somali"],
-  ["EL","Greek"],
-  ["HE","Hebrew"],
-  ["FA","Persian"],
-  ["PS","Pashto"],
-  ["KU","Kurdish"],
-  ["HY","Armenian"],
-  ["KA","Georgian"],
-  ["AZ","Azerbaijani"],
-  ["KK","Kazakh"],
-  ["UZ","Uzbek"],
-  ["TJ","Tajik"],
-  ["MN","Mongolian"],
-  ["BO","Tibetan"],
-  ["UK","Ukrainian"],
-  ["BE","Belarusian"],
-  ["CS","Czech"],
-  ["SK","Slovak"],
-  ["HU","Hungarian"],
-  ["RO","Romanian"],
-  ["BG","Bulgarian"],
-  ["SR","Serbian"],
-  ["HR","Croatian"],
-  ["BS","Bosnian"],
-  ["SL","Slovenian"],
-  ["LT","Lithuanian"],
-  ["LV","Latvian"],
-  ["ET","Estonian"],
-  ["FI","Finnish"],
-  ["SV","Swedish"],
-  ["NO","Norwegian"]
-]
-const DB={
-  HI: ["स्वस्थ जीवन के लिए रोज योग जरूरी है।","सुबह टहलने से शरीर स्वस्थ रहता है।","संतुलित भोजन जरूरी है।"],
-  EN: ["Healthy life needs daily yoga.","Morning walk keeps body fit.","Balanced diet is essential."],
-  ES: ["La vida saludable necesita yoga diario.","Caminar por la mañana mantiene el cuerpo en forma.","La dieta equilibrada es esencial."],
-  FR: ["La vie saine nécessite du yoga quotidien.","La marche matinale garde le corps en forme.","Une alimentation équilibrée est essentielle."],
-  DE: ["Gesundes Leben braucht tägliches Yoga.","Morgenspaziergang hält den Körper fit.","Ausgewogene Ernährung ist wichtig."],
-  RU: ["Здоровая жизнь требует ежедневной йоги.","Утренняя прогулка поддерживает форму.","Сбалансированная диета важна."],
-  JA: ["健康的な生活には毎日のヨガが必要です。","朝の散歩は体を健康に保ちます。","バランスの取れた食事が不可欠です。"],
-  IT: ["La vita sana ha bisogno di yoga quotidiano.","La passeggiata mattutina mantiene il corpo in forma.","Una dieta equilibrata è essenziale."],
-  AR: ["الحياة الصحية تحتاج اليوغا اليومية.","المشي الصباحي يحافظ على اللياقة.","النظام الغذائي المتوازن ضروري."],
-  PT: ["Vida saudável precisa de ioga diária.","Caminhada matinal mantém o corpo em forma.","Dieta equilibrada é essencial."],
-  BN: ["সুস্থ জীবনের জন্য প্রতিদিন যোগব্যায়াম প্রয়োজন।","সকালে হাঁটা শরীরকে সুস্থ রাখে।","সুষম খাদ্য অপরিহার্য।"],
-  UR: ["صحت مند زندگی کے لیے روزانہ یوگا ضروری ہے۔","صبح کی سیر جسم کو تندرست رکھتی ہے۔","متوازن غذا ضروری ہے۔"],
-  ZH: ["健康生活需要每天瑜伽。","晨步保持身体健康。","均衡饮食至关重要。"],
-  KO: ["건강한 삶을 위해서는 매일 요가가 필요합니다.","아침 산책은 몸을 건강하게 유지합니다.","균형 잡힌 식단이 필수적입니다."],
-  TR: ["Sağlıklı yaşam için günlük yoga gereklidir.","Sabah yürüyüşü vücudu zinde tutar.","Dengeli beslenme şarttır."],
-  NL: ["Gezond leven vereist dagelijkse yoga.","Ochtendwandeling houdt het lichaam fit.","Evenwichtige voeding is essentieel."],
-  PL: ["Zdrowe życie wymaga codziennej jogi.","Poranny spacer utrzymuje ciało w formie.","Zrównoważona dieta jest niezbędna."],
-  TH: ["ชีวิตที่มีสุขภาพดีต้องโยคะทุกวัน","การเดินตอนเช้าทำให้ร่างกายแข็งแรง","อาหารที่สมดุลเป็นสิ่งจำเป็น"],
-  VI: ["Cuộc sống khỏe mạnh cần yoga hàng ngày.","Đi bộ buổi sáng giữ cơ thể khỏe mạnh.","Chế độ ăn cân bằng là điều cần thiết."],
-  ID: ["Hidup sehat membutuhkan yoga harian.","Jalan pagi menjaga tubuh tetap bugar.","Diet seimbang sangat penting."],
-  TA: ["ஆரோக்கியமான வாழ்வுக்கு தினமும் யோகா தேவை.","காலை நடை உடலை ஆரோக்கியமாக வைக்கிறது.","சமச்சீர் உணவு அவசியம்."],
-  TE: ["ఆరోగ్యకరమైన జీవితానికి రోజూ యోగా అవసరం.","ఉదయం నడక శరీరాన్ని ఫిట్‌గా ఉంచుతుంది.","సమతుల్య ఆహారం అవసరం."],
-  MR: ["निरोगी जीवनासाठी रोज योग आवश्यक आहे.","सकाळी चालणे शरीर तंदुरुस्त ठेवते.","संतुलित आहार आवश्यक आहे."],
-  GU: ["સ્વસ્થ જીવન માટે રોજ યોગ જરૂરી છે.","સવારે ચાલવાથી શરીર સ્વસ્થ રહે છે.","સંતુલિત આહાર જરૂરી છે."],
-  PA: ["ਸਿਹਤਮੰਦ ਜੀਵਨ ਲਈ ਰੋਜ਼ਾਨਾ ਯੋਗਾ ਜ਼ਰੂਰੀ ਹੈ।","ਸਵੇਰ ਦੀ ਸੈਰ ਸਰੀਰ ਨੂੰ ਤੰਦਰੁਸਤ ਰੱਖਦੀ ਹੈ।","ਸੰਤੁਲਿਤ ਖੁਰਾਕ ਜ਼ਰੂਰੀ ਹੈ।"],
-  ML: ["ആരോഗ്യകരമായ ജീവിതത്തിന് ദിവസവും യോഗ ആവശ്യമാണ്.","രാവിലെ നടത്തം ശരീരത്തെ ആരോഗ്യത്തോടെ നിലനിർത്തുന്നു.","സമീകൃതാഹാരം അത്യാവശ്യമാണ്."],
-  KN: ["ಆರೋಗ್ಯಕರ ಜೀವನಕ್ಕೆ ಪ್ರತಿದಿನ ಯೋಗ ಅಗತ್ಯ.","ಬೆಳಿಗ್ಗೆ ನಡಿಗೆ ದೇಹವನ್ನು ಫಿಟ್ ಆಗಿಡುತ್ತದೆ.","ಸಮತೋಲಿತ ಆಹಾರ ಅತ್ಯಗತ್ಯ."],
-    OR: ["ସୁସ୍ଥ ଜୀବନ ପାଇଁ ପ୍ରତିଦିନ ଯୋଗ ଆବଶ୍ୟକ।","ସକାଳ ଚାଲିବା ଶରୀରକୁ ସୁସ୍ଥ ରଖେ।","ସନ୍ତୁଳିତ ଖାଦ୍ୟ ଜରୁରୀ।"],
-  AS: ["সুস্থ জীৱনৰ বাবে দৈনিক যোগ প্ৰয়োজন।","পুৱাৰ খোজে শৰীৰক সুস্থ ৰাখে।","সুষম খাদ্য অপৰিহাৰ্য।"],
-  NE: ["स्वस्थ जीवनका लागि दैनिक योग आवश्यक छ।","बिहानको हिँडाइले शरीरलाई स्वस्थ राख्छ।","सन्तुलित भोजन आवश्यक छ।"],
-  SI: ["නිරෝගී ජීවිතයට දිනපතා යෝග අවශ්‍යයි.","උදෑසන ඇවිදීම ශරීරය නිරෝගීව තබයි.","සමබර ආහාර අත්‍යවශ්‍යයි."],
-  MY: ["ကျန်းမာသောဘဝအတွက် နေ့စဉ်ယောဂ လိုအပ်သည်။","မနက်ခင်းလမ်းလျှောက်ခြင်းက ခန္ဓာကိုယ်ကို ကျန်းမာစေသည်။","မျှတသောအစားအစာ မရှိမဖြစ်လိုအပ်သည်။"],
-  KM: ["ជីវិតដែលមានសុខភាពល្អត្រូវការយូហ្គាប្រចាំថ្ងៃ។","ការដើរពេលព្រឹកធ្វើឱ្យរាងកាយមានសុខភាពល្អ។","របបអាហារមានតុល្យភាពគឺចាំបាច់។"],
-  LO: ["ຊີວິດທີ່ມີສຸຂະພາບດີຕ້ອງການໂຍຄະທຸກມື້.","ການຍ່າງຕອນເຊົ້າຮັກສາຮ່າງກາຍໃຫ້ແຂງແຮງ.","ອາຫານທີ່ສົມດູນແມ່ນຈໍາເປັນ."],
-  MS: ["Kehidupan sihat memerlukan yoga harian.","Berjalan pagi mengekalkan kecergasan badan.","Diet seimbang adalah penting."],
-  FIL: ["Ang malusog na buhay ay nangangailangan ng pang-araw-araw na yoga.","Ang paglalakad sa umaga ay nagpapanatili sa katawan na malusog.","Mahalaga ang balanseng diyeta."],
-  TL: ["Ang malusog na buhay ay nangangailangan ng pang-araw-araw na yoga.","Ang paglalakad sa umaga ay nagpapanatili sa katawan na malusog.","Mahalaga ang balanseng diyeta."],
-  SW: ["Maisha yenye afya yanahitaji yoga ya kila siku.","Kutembea asubuhi huweka mwili sawa.","Lishe bora ni muhimu."],
-  AM: ["ጤናማ ሕይወት ዕለታዊ ዮጋ ያስፈልገዋል።","ጠዋት የእግር ጉዞ አካልን ጤናማ ያደርገዋል።","ሚዛናዊ አመጋገብ አስፈላጊ ነው።"],
-  HA: ["Rayuwa mai lafiya tana bukatar yoga na yau da kullun.","Tafiya da safe yana kiyaye jiki lafiya.","Daidaitaccen abinci yana da mahimmanci."],
-  YO: ["Igbesi aye ilera nilo yoga ojoojumo.","Rin ni owuro n je ki ara wa ni ilera.","Ounje iwontunwonsi se pataki."],
-  IG: ["Ndu ahuike choro yoga kwa ubochi.","Ije ututu na-eme ka ahu di nma.","Nri kwesiri ekwesi di mkpa."],
-  ZU: ["Impilo enempilo idinga i-yoga yansuku zonke.","Ukuhamba ekuseni kugcina umzimba uqinile.","Ukudla okunokulinganisela kubalulekile."],
-  AF: ["Gesonde lewe benodig daaglikse joga.","Oggendstap hou die liggaam fiks.","Gebalanseerde dieet is noodsaaklik."],
-  SO: ["Nolosha caafimaadka qabta waxay u baahan tahay yoga maalinle ah.","Socodka subaxnimo wuxuu jirka dhigayaa mid taam ah.","Cunto dheellitiran waa muhiim."],
-  EL: ["Η υγιής ζωή χρειάζεται καθημερινή γιόγκα.","Το πρωινό περπάτημα κρατά το σώμα σε φόρμα.","Η ισορροπημένη διατροφή είναι απαραίτητη."],
-  HE: ["חיים בריאים דורשים יוגה יומית.","הליכת בוקר שומרת על הגוף בכושר.","תזונה מאוזנת חיונית."],
-  FA: ["زندگی سالم نیاز به یوگای روزانه دارد.","پیاده‌روی صبحگاهی بدن را سالم نگه می‌دارد.","رژیم متعادل ضروری است."],
-  PS: ["روغ ژوند ورځني یوګا ته اړتیا لري.","سهار ګرځېدل بدن روغ ساتي.","متوازن خواړه اړین دي."],
-  KU: ["Jiyana saxlem rojane yoga hewce dike.","Meşa sibehê laş saxlem dihêle.","Xwarina hevseng pewîst e."],
-  HY: ["Առողջ կյանքը պահանջում է ամենօրյա յոգա։","Առավոտյան զբոսանքը մարմինը առողջ է պահում։","Հավասարակշռված սննդակարգը կարևոր է։"],
-  KA: ["ჯანსაღი ცხოვრება ყოველდღიურ იოგას საჭიროებს.","დილის სეირნობა სხეულს ჯანმრთელს უნარჩუნებს.","დაბალანსებული დიეტა აუცილებელია."],
-  AZ: ["Sağlam həyat gündəlik yoqa tələb edir.","Səhər gəzintisi bədəni sağlam saxlayır.","Balanslı pəhriz vacibdir."],
-  KK: ["Салауатты өмір күнделікті йоганы қажет етеді.","Таңертеңгі серуен денені сау ұстайды.","Теңгерімді диета маңызды."],
-  UZ: ["Sog'lom hayot kundalik yoga talab qiladi.","Ertalab yurish tanani sog'lom saqlaydi.","Balansli ovqatlanish muhim."],
-  TJ: ["Ҳаёти солим йогаи ҳаррӯзаро талаб мекунад.","Пиёдагардии субҳ баданро солим нигоҳ медорад.","Парҳези мутавозин муҳим аст."],
-  MN: ["Эрүүл амьдралд өдөр тутмын йог хэрэгтэй.","Өглөөний алхалт биеийг эрүүл байлгадаг.","Тэнцвэртэй хооллолт чухал."],
-  BO: ["བདེ་ཐང་གི་འཚོ་བ་ལ་ཉིན་རེའི་ཡོ་ག་དགོས།","སྔ་དྲོའི་འཆམ་འཆམ་གྱིས་ལུས་པོ་བདེ་ཐང་བཞག་།","ཆ་སྙོམས་ཟས་རིགས་གལ་ཆེ།"],
-  UK: ["Здорове життя потребує щоденної йоги.","Ранкова прогулянка тримає тіло у формі.","Збалансоване харчування є важливим."],
-  BE: ["Здаровае жыццё патрабуе штодзённай ёгі.","Ранішняя прагулка трымае цела ў форме.","Збалансаванае харчаванне важна."],
-  CS: ["Zdravý život vyžaduje každodenní jógu.","Ranní procházka udržuje tělo v kondici.","Vyvážená strava je nezbytná."],
-  SK: ["Zdravý život si vyžaduje každodennú jogu.","Ranná prechádzka udržuje telo v kondícii.","Vyvážená strava je nevyhnutná."],
-  HU: ["Az egészséges élethez napi jóga szükséges.","A reggeli séta fitten tartja a testet.","A kiegyensúlyozott étrend elengedhetetlen."],
-  RO: ["Viața sănătoasă are nevoie de yoga zilnic.","Plimbarea de dimineață menține corpul în formă.","Dieta echilibrată este esențială."],
-  BG: ["Здравословният живот изисква ежедневно йога.","Сутрешната разходка поддържа тялото във форма.","Балансираната диета е от съществено значение."],
-  SR: ["Zdrav život zahteva svakodnevnu jogu.","Jutarnja šetnja održava telo u formi.","Uravnotežena ishrana je neophodna."],
-  HR: ["Zdrav život zahtijeva svakodnevnu jogu.","Jutarnja šetnja održava tijelo u formi.","Uravnotežena prehrana je bitna."],
-  BS: ["Zdrav život zahtijeva svakodnevnu jogu.","Jutarnja šetnja održava tijelo u formi.","Uravnotežena ishrana je bitna."],
-  SL: ["Zdravo življenje zahteva vsakodnevno jogo.","Jutranji sprehod ohranja telo v formi.","Uravnotežena prehrana je bistvena."],
-  LT: ["Sveikam gyvenimui reikia kasdienės jogos.","Ryto pasivaikščiojimas palaiko kūno formą.","Subalansuota mityba yra būtina."],
-  LV: ["Veselīgai dzīvei nepieciešama ikdienas joga.","Rīta pastaiga uztur ķermeni formā.","Sabalansēts uzturs ir būtisks."],
-  ET: ["Tervislik elu vajab igapäevast joogat.","Hommikune jalutuskäik hoiab keha vormis.","Tasakaalustatud toitumine on hädavajalik."],
-  FI: ["Terveellinen elämä vaatii päivittäistä joogaa.","Aamukävely pitää kehon kunnossa.","Tasapainoinen ruokavalio on välttämätön."],
-  SV: ["Hälsosamt liv kräver daglig yoga.","Morgonpromenad håller kroppen i form.","Balanserad kost är viktigt."],
-  NO: ["Sunt liv krever daglig yoga.","Morgentur holder kroppen i form.","Balansert kosthold er viktig."]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CaseForge PRO 2.0 - Advanced Text Toolkit | Case, Binary, Base64, Morse, Fancy Text</title>
+<meta name="description" content="CaseForge PRO 2.0 — Advanced free text toolkit. Case converter, Binary/Hex/Base64/URL/HTML/Morse/Caesar encoding, text analysis, find & replace, fancy text, PDF/DOCX support.">
+<meta name="keywords" content="case converter, binary converter, base64 encoder, morse code, caesar cipher, fancy text generator, text analysis, find replace regex, url encoder">
+<meta name="robots" content="index, follow">
+<meta name="author" content="CaseForge PRO">
+<link rel="canonical" href="https://convertmytext.blogspot.com/">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Oswald:wght@400;700&family=Raleway:wght@400;700&family=Playfair+Display:wght@400;700&family=Merriweather:wght@400;700&family=Ubuntu:wght@400;700&family=Dancing+Script:wght@700&family=Pacifico&family=Caveat:wght@700&family=Lobster&family=Bebas+Neue&family=Anton&family=Righteous&family=Permanent+Marker&family=Press+Start+2P&family=Monoton&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<style>
+:root{--bg:#08080a;--card:#121214;--card2:#1c1c21;--card3:#252529;--border:#2a2a32;--text:#e5e5e5;--muted:#9ca3af;--accent:#a78bfa;--accent2:#22d3ee;--green:#22c55e;--red:#ef4444;--amber:#f59e0b}
+.light-mode{--bg:#f4f4f7;--card:#ffffff;--card2:#f8f8fb;--card3:#eeeef3;--border:#e2e2ea;--text:#0b1120;--muted:#666;--accent:#6366f1;--accent2:#0891b2}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui}
+body{background:var(--bg);color:var(--text);line-height:1.6;transition:background .3s,color .3s}
+a{color:var(--accent);text-decoration:none}
+.header{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:1px solid var(--border);padding:10px 15px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.logo{font-weight:900;font-size:18px;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer;display:flex;align-items:center;gap:6px}
+.logo .ver{font-size:10px;background:var(--accent);color:#fff;padding:2px 6px;border-radius:6px;-webkit-text-fill-color:#fff;font-weight:700}
+.nav{display:flex;gap:4px;flex-wrap:wrap;font-size:12px;font-weight:700;align-items:center}
+.nav a{cursor:pointer;padding:6px 10px;border-radius:20px;border:1px solid transparent;transition:.2s;color:var(--text)}
+.nav a:hover{background:var(--card3);border-color:var(--border);color:var(--accent2)}
+.theme-btn{padding:6px 10px;border:1px solid var(--border);background:var(--card2);color:var(--text);border-radius:20px;cursor:pointer;font-size:12px;font-weight:700}
+.container{max-width:1350px;margin:0 auto;padding:12px;display:grid;grid-template-columns:1fr 340px;gap:14px}
+@media(max-width:1050px){.container{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px}
+.card h2{font-size:18px;margin-bottom:6px}
+.card h3{font-size:15px;margin-bottom:8px}
+.tabs{display:flex;gap:5px;flex-wrap:wrap;margin:10px 0;border-bottom:1px solid var(--border);padding-bottom:8px}
+.tab{padding:7px 12px;background:var(--card2);border:1px solid var(--border);border-radius:99px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;color:var(--text)}
+.tab:hover{border-color:var(--accent)}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+textarea{width:100%;background:var(--card2);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:14px;min-height:130px;margin:6px 0;font-family:'JetBrains Mono',Consolas,monospace;line-height:1.5;resize:vertical}
+textarea:focus{outline:none;border-color:var(--accent)}
+.btn{padding:8px 12px;border-radius:10px;border:1px solid var(--border);font-weight:700;font-size:11px;cursor:pointer;margin:3px;background:var(--card2);color:var(--text);transition:.15s}
+.btn:hover{border-color:var(--accent);transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{background:var(--accent2);border-color:var(--accent2)}
+.btn-highlight{background:var(--accent)!important;color:#fff!important;box-shadow:0 0 15px rgba(167,139,250,.7);transform:scale(1.04)}
+.btn-copied{background:var(--green)!important;color:#fff!important;border-color:var(--green)!important;box-shadow:0 0 15px rgba(34,197,94,.6)!important;transform:scale(1.04)}
+.btn-danger{background:var(--red);color:#fff;border-color:var(--red)}
+.btn-row{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}
+.small{font-size:11px;color:var(--muted)}
+.section{font-size:11px;font-weight:900;color:var(--accent);margin:14px 0 6px;letter-spacing:.6px;text-transform:uppercase}
+.divider{height:1px;background:var(--border);margin:16px 0}
+.drop{border:2px dashed var(--accent);border-radius:14px;padding:18px;text-align:center;margin:10px 0;background:var(--card2);cursor:pointer;transition:.2s}
+.drop.dragover{background:var(--card3);transform:scale(1.02)}
+select,input[type=color],input[type=text],input[type=number]{background:var(--card2);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:8px;font-size:12px;font-family:Inter,system-ui}
+select:focus,input:focus{outline:none;border-color:var(--accent)}
+input[type=color]{width:44px;height:38px;padding:2px;cursor:pointer;border:2px solid var(--border)}
+.pulse-btn{display:inline-block;padding:12px 22px;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;font-weight:900;font-size:13px;animation:pulse 1.8s infinite;text-align:center;margin:10px 0;cursor:pointer;border:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(167,139,250,.6)}70%{box-shadow:0 0 0 16px rgba(167,139,250,0)}100%{box-shadow:0 0 0 0 rgba(167,139,250,0)}}
+.footer{background:var(--card);border-top:1px solid var(--border);padding:22px 15px;margin-top:20px;text-align:center;font-size:12px;color:var(--muted)}
+.footer a{cursor:pointer;margin:0 6px;font-weight:700;color:var(--text)}
+.fancy-item{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:12px;margin:10px 0}
+.fancy-preview{font-size:17px;margin:8px 0;word-break:break-all;line-height:1.4}
+.tool-category{border:1px solid var(--border);border-radius:14px;padding:12px;background:linear-gradient(135deg,var(--card2),var(--card3));margin-bottom:12px}
+.tool-category h4{font-size:12px;color:var(--accent2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.tool-link{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:rgba(255,255,255,.03);margin:6px 0;font-size:12px;border:1px solid transparent;color:var(--text)}
+.tool-link:hover{background:var(--card);border-color:var(--accent)}
+.tool-link img{width:22px;height:22px;border-radius:6px;background:#fff;flex-shrink:0}
+.badge{font-size:9px;padding:3px 7px;border-radius:99px;background:var(--accent);color:#fff;font-weight:800;margin-left:auto}
+.color-preview-box{padding:14px;border-radius:10px;background:var(--card2);border:1px solid var(--border);font-weight:700;margin:8px 0;transition:.3s}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:6px;margin:8px 0}
+.stat-box{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:8px;text-align:center}
+.stat-box .num{font-size:16px;font-weight:900;color:var(--accent)}
+.stat-box .lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.history-list{max-height:220px;overflow-y:auto;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:6px}
+.history-item{padding:6px 8px;border-radius:6px;font-size:11px;cursor:pointer;border-bottom:1px solid var(--border);color:var(--muted);transition:.15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.history-item:hover{background:var(--card3);color:var(--text)}
+.history-item:last-child{border-bottom:none}
+.emoji-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(36px,1fr));gap:4px;max-height:180px;overflow-y:auto;padding:8px;background:var(--card2);border:1px solid var(--border);border-radius:10px}
+.emoji-btn{background:transparent;border:none;font-size:20px;cursor:pointer;padding:4px;border-radius:6px;transition:.15s}
+.emoji-btn:hover{background:var(--card3);transform:scale(1.2)}
+.kbd{display:inline-block;background:var(--card3);border:1px solid var(--border);border-radius:5px;padding:2px 6px;font-size:10px;font-family:monospace;font-weight:700;color:var(--text);margin:0 2px}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:12px 20px;border-radius:30px;font-size:13px;font-weight:700;display:none;z-index:9999;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.toast.show{display:block;animation:toastIn .3s ease}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,20px)}to{opacity:1;transform:translate(-50%,0)}}
+.article-item{border:1px solid var(--border);border-radius:12px;margin:10px 0;overflow:hidden;background:var(--card2)}
+.article-head{padding:14px 16px;font-weight:800;font-size:13px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:.2s}
+.article-head:hover{background:var(--card3)}
+.article-head .arrow{font-size:16px;transition:.3s;color:var(--accent);font-weight:700}
+.article-item.open .article-head .arrow{transform:rotate(45deg)}
+.article-body{display:none;padding:0 16px 16px;font-size:13px;line-height:1.8;color:var(--text);border-top:1px solid var(--border)}
+.article-item.open .article-body{display:block}
+.article-body h4{font-size:14px;color:var(--accent2);margin:14px 0 6px}
+.article-body p{margin-bottom:10px;color:var(--muted)}
+.article-body ul{margin:10px 0 10px 20px}
+.article-body li{margin-bottom:6px;color:var(--muted)}
+.howto-step{background:var(--card2);border-left:3px solid var(--accent);border-radius:8px;padding:10px 14px;margin:10px 0;font-size:12px;line-height:1.7}
+.howto-step b{color:var(--accent2)}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+.opt-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0}
+.opt-row label{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px;cursor:pointer}
+.mono{font-family:'JetBrains Mono',Consolas,monospace}
+.warn{background:rgba(245,158,11,.15);border-left:3px solid var(--amber);padding:8px 12px;border-radius:6px;font-size:11px;color:var(--amber);margin:8px 0}
+.section-card{background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:14px;margin:12px 0}
+.section-card h4{font-size:13px;color:var(--accent);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:900}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">⚡ CaseForge PRO <span class="ver">2.0</span></div>
+  <div class="nav">
+    <a onclick="scrollToSection('tool')">Home</a>
+    <a onclick="scrollToSection('howto')">How To</a>
+    <a onclick="scrollToSection('articles')">Articles</a>
+    <a onclick="scrollToSection('useful')">Tools</a>
+    <a onclick="scrollToSection('hire')">Hire Me</a>
+    <button class="theme-btn" onclick="toggleSiteTheme()" id="themeBtn">☀️ Light</button>
+  </div>
+</div>
+
+<div class="container">
+<div>
+<!-- ============ MAIN TOOL ============ -->
+<div class="card" id="tool">
+<h2>🧰 Advanced All-in-One Text Toolkit</h2>
+<p class="small">Supports TXT, CSV, JSON, PDF, DOCX • Keyboard shortcuts enabled • Auto-saves your work</p>
+
+<!-- INPUT AREA -->
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-top:10px">
+  <label class="small" style="font-weight:800;color:var(--accent)">📥 INPUT</label>
+  <div class="btn-row" style="margin:0">
+    <button class="btn" onclick="undoAction()" title="Ctrl+Z">↶ Undo</button>
+    <button class="btn" onclick="redoAction()" title="Ctrl+Y">↷ Redo</button>
+    <button class="btn" onclick="pasteClip()">📋 Paste</button>
+    <button class="btn" onclick="loadSample()">🎲 Sample</button>
+    <button class="btn btn-danger" onclick="clearAll()">🗑️ Clear</button>
+  </div>
+</div>
+<textarea id="inp" oninput="onInputChange()" placeholder="Type, paste, or upload a file..."></textarea>
+
+<!-- LIVE STATS -->
+<div class="stats-grid" id="statsGrid">
+  <div class="stat-box"><div class="num" id="stWords">0</div><div class="lbl">Words</div></div>
+  <div class="stat-box"><div class="num" id="stChars">0</div><div class="lbl">Chars</div></div>
+  <div class="stat-box"><div class="num" id="stLines">0</div><div class="lbl">Lines</div></div>
+  <div class="stat-box"><div class="num" id="stSent">0</div><div class="lbl">Sentences</div></div>
+  <div class="stat-box"><div class="num" id="stPara">0</div><div class="lbl">Paragraphs</div></div>
+  <div class="stat-box"><div class="num" id="stRead">0m</div><div class="lbl">Read Time</div></div>
+</div>
+
+<!-- FILE DROP -->
+<div class="drop" id="dropZone" onclick="document.getElementById('fileIn').click()" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave()">
+  📁 <b>Drag & Drop or Click to Upload</b><br><span class="small">TXT, CSV, JSON, PDF, DOCX</span>
+  <input type="file" id="fileIn" hidden multiple accept=".txt,.csv,.json,.pdf,.docx" onchange="handleFiles(this.files)">
+</div>
+
+<!-- ============ 🔤 CASE CONVERSIONS (VISIBLE) ============ -->
+<div class="section-card">
+  <h4>🔤 Case Conversions</h4>
+  <div class="section" style="margin-top:0">Basic</div>
+  <div class="btn-row">
+    <button class="btn case-btn" onclick="makeCase('upper',this)">UPPER</button>
+    <button class="btn case-btn" onclick="makeCase('lower',this)">lower</button>
+    <button class="btn case-btn" onclick="makeCase('title',this)">Title</button>
+    <button class="btn case-btn" onclick="makeCase('sentence',this)">Sentence</button>
+    <button class="btn case-btn" onclick="makeCase('capital',this)">Capitalize</button>
+    <button class="btn case-btn" onclick="makeCase('alternating',this)">aLtErNaTiNg</button>
+    <button class="btn case-btn" onclick="makeCase('inverse',this)">iNVERSE</button>
+    <button class="btn case-btn" onclick="makeCase('random',this)">rAnDoM</button>
+  </div>
+  <div class="section">Programming</div>
+  <div class="btn-row">
+    <button class="btn case-btn" onclick="makeCase('pascal',this)">PascalCase</button>
+    <button class="btn case-btn" onclick="makeCase('camel',this)">camelCase</button>
+    <button class="btn case-btn" onclick="makeCase('snake',this)">snake_case</button>
+    <button class="btn case-btn" onclick="makeCase('kebab',this)">kebab-case</button>
+    <button class="btn case-btn" onclick="makeCase('constant',this)">CONSTANT_CASE</button>
+    <button class="btn case-btn" onclick="makeCase('dot',this)">dot.case</button>
+    <button class="btn case-btn" onclick="makeCase('path',this)">path/case</button>
+  </div>
+  <div class="section">Stylized</div>
+  <div class="btn-row">
+    <button class="btn case-btn" onclick="makeCase('bold',this)">𝗕𝗼𝗹𝗱</button>
+    <button class="btn case-btn" onclick="makeCase('italic',this)">𝘐𝘵𝘢𝘭𝘪𝘤</button>
+    <button class="btn case-btn" onclick="makeCase('bolditalic',this)">𝙗𝙤𝙡𝙙 𝙞𝙩𝙖𝙡𝙞𝙘</button>
+    <button class="btn case-btn" onclick="makeCase('script',this)">𝓢𝓬𝓻𝓲𝓹𝓽</button>
+    <button class="btn case-btn" onclick="makeCase('underline',this)">U̲n̲d̲e̲r̲l̲i̲n̲e̲</button>
+    <button class="btn case-btn" onclick="makeCase('overline',this)">O̅v̅e̅r̅l̅i̅n̅e̅</button>
+    <button class="btn case-btn" onclick="makeCase('strike',this)">S̶t̶r̶i̶k̶e̶</button>
+    <button class="btn case-btn" onclick="makeCase('wide',this)">Ｗ ｉ ｄ ｅ</button>
+  </div>
+</div>
+
+<!-- ============ 🔄 DIRECT BINARY / HEXA (VISIBLE — RESTORED) ============ -->
+<div class="section-card">
+  <h4>🔄 Direct Binary / Hexa / Decimal Conversion</h4>
+  <div class="btn-row">
+    <button class="btn direct-btn" onclick="convert('textBin',this)">Text → Binary</button>
+    <button class="btn direct-btn" onclick="convert('binary',this)">Binary → Text</button>
+    <button class="btn direct-btn" onclick="convert('textHex',this)">Text → Hexa</button>
+    <button class="btn direct-btn" onclick="convert('hex',this)">Hexa → Text</button>
+    <button class="btn direct-btn" onclick="convert('binHex',this)">Binary → Hexa</button>
+    <button class="btn direct-btn" onclick="convert('hexBin',this)">Hexa → Binary</button>
+    <button class="btn direct-btn" onclick="convert('textDec',this)">Text → Decimal</button>
+    <button class="btn direct-btn" onclick="convert('dec',this)">Decimal → Text</button>
+  </div>
+</div>
+
+<!-- ============ 🧹 CLEANUP & SORT (VISIBLE — RESTORED) ============ -->
+<div class="section-card">
+  <h4>🧹 Cleanup & Sort</h4>
+  <div class="section" style="margin-top:0">Whitespace & Lines</div>
+  <div class="btn-row">
+    <button class="btn extra-btn" onclick="cleanup('trim',this)">Trim Lines</button>
+    <button class="btn extra-btn" onclick="cleanup('extraSpaces',this)">Extra Spaces</button>
+    <button class="btn extra-btn" onclick="cleanup('removeLineBreaks',this)">Remove Line Breaks</button>
+    <button class="btn extra-btn" onclick="cleanup('removeBlankLines',this)">Remove Blank Lines</button>
+    <button class="btn extra-btn" onclick="cleanup('tabsToSpaces',this)">Tabs → Spaces</button>
+  </div>
+  <div class="section">Remove Characters</div>
+  <div class="btn-row">
+    <button class="btn extra-btn" onclick="cleanup('removeEmoji',this)">Remove Emojis</button>
+    <button class="btn extra-btn" onclick="cleanup('removeNumbers',this)">Remove Numbers</button>
+    <button class="btn extra-btn" onclick="cleanup('removePunctuation',this)">Remove Punctuation</button>
+    <button class="btn extra-btn" onclick="cleanup('removeHtml',this)">Remove HTML Tags</button>
+    <button class="btn extra-btn" onclick="cleanup('removeSpecial',this)">Remove Special Chars</button>
+    <button class="btn extra-btn" onclick="cleanup('removeDiacritics',this)">Remove Diacritics</button>
+  </div>
+  <div class="section">Duplicates</div>
+  <div class="btn-row">
+    <button class="btn extra-btn" onclick="cleanup('removeDupLines',this)">Remove Dup Lines</button>
+    <button class="btn extra-btn" onclick="cleanup('removeDupWords',this)">Remove Dup Words</button>
+  </div>
+  <div class="section">Sort Lines</div>
+  <div class="btn-row">
+    <button class="btn extra-btn" onclick="sortOp('az',this)">Sort A → Z</button>
+    <button class="btn extra-btn" onclick="sortOp('za',this)">Sort Z → A</button>
+    <button class="btn extra-btn" onclick="sortOp('numAsc',this)">Numeric ↑</button>
+    <button class="btn extra-btn" onclick="sortOp('numDesc',this)">Numeric ↓</button>
+    <button class="btn extra-btn" onclick="sortOp('lenAsc',this)">Length ↑</button>
+    <button class="btn extra-btn" onclick="sortOp('lenDesc',this)">Length ↓</button>
+    <button class="btn extra-btn" onclick="sortOp('shuffle',this)">🔀 Shuffle Lines</button>
+    <button class="btn extra-btn" onclick="sortOp('reverseLines',this)">Reverse Lines</button>
+  </div>
+  <div class="section">Sort Words</div>
+  <div class="btn-row">
+    <button class="btn extra-btn" onclick="sortOp('wordsAz',this)">Words A → Z</button>
+    <button class="btn extra-btn" onclick="sortOp('wordsZa',this)">Words Z → A</button>
+    <button class="btn extra-btn" onclick="sortOp('shuffleWords',this)">🔀 Shuffle Words</button>
+    <button class="btn extra-btn" onclick="convert('rot13',this)">ROT13</button>
+    <button class="btn extra-btn" onclick="convert('reverse',this)">Reverse Text</button>
+    <button class="btn extra-btn" onclick="convert('reverseWords',this)">Reverse Words</button>
+  </div>
+</div>
+
+<!-- ============ ADVANCED TABS ============ -->
+<div class="divider"></div>
+<p class="small" style="text-align:center;margin-bottom:8px">▼ Advanced Tools — Click a tab below ▼</p>
+
+<div class="tabs" id="opTabs">
+  <div class="tab active" data-tab="encode" onclick="setTab('encode',this)">🔐 Encode / Cipher</div>
+  <div class="tab" data-tab="line" onclick="setTab('line',this)">📏 Line Tools</div>
+  <div class="tab" data-tab="find" onclick="setTab('find',this)">🔍 Find & Replace</div>
+  <div class="tab" data-tab="analyze" onclick="setTab('analyze',this)">📈 Analyze</div>
+</div>
+
+<!-- TAB: ENCODE / CIPHER -->
+<div class="tab-panel" id="panel-encode">
+  <div class="section">Base64 / URL / HTML</div>
+  <div class="btn-row">
+    <button class="btn" onclick="convert('b64enc',this)">Base64 Encode</button>
+    <button class="btn" onclick="convert('b64dec',this)">Base64 Decode</button>
+    <button class="btn" onclick="convert('urlenc',this)">URL Encode</button>
+    <button class="btn" onclick="convert('urldec',this)">URL Decode</button>
+    <button class="btn" onclick="convert('htmlenc',this)">HTML Encode</button>
+    <button class="btn" onclick="convert('htmldec',this)">HTML Decode</button>
+  </div>
+  <div class="section">Morse Code</div>
+  <div class="btn-row">
+    <button class="btn" onclick="convert('morseEnc',this)">Text → Morse</button>
+    <button class="btn" onclick="convert('morseDec',this)">Morse → Text</button>
+  </div>
+  <div class="section">Caesar Cipher</div>
+  <div class="opt-row">
+    <label>Shift: <input type="number" id="caesarShift" value="3" min="1" max="25" style="width:60px"></label>
+    <button class="btn" onclick="convert('caesarEnc',this)">Caesar Encrypt</button>
+    <button class="btn" onclick="convert('caesarDec',this)">Caesar Decrypt</button>
+  </div>
+</div>
+
+<!-- TAB: LINE TOOLS -->
+<div class="tab-panel" id="panel-line" style="display:none">
+  <div class="section">Line Numbers</div>
+  <div class="btn-row">
+    <button class="btn" onclick="lineOp('addNumbers',this)">Add Line Numbers</button>
+    <button class="btn" onclick="lineOp('removeNumbers',this)">Remove Line Numbers</button>
+  </div>
+  <div class="section">Wrap & Indent</div>
+  <div class="opt-row">
+    <label>Wrap at <input type="number" id="wrapWidth" value="80" min="10" max="500" style="width:70px"> chars</label>
+    <button class="btn" onclick="lineOp('wrap',this)">Wrap Text</button>
+    <button class="btn" onclick="lineOp('indent',this)">Indent (4 spaces)</button>
+    <button class="btn" onclick="lineOp('unindent',this)">Unindent</button>
+  </div>
+  <div class="section">Add Prefix / Suffix</div>
+  <div class="opt-row">
+    <input type="text" id="affixText" placeholder="e.g. - or 1." style="width:130px">
+    <button class="btn" onclick="lineOp('addPrefix',this)">Add Prefix</button>
+    <button class="btn" onclick="lineOp('addSuffix',this)">Add Suffix</button>
+  </div>
+  <div class="section">Join / Split</div>
+  <div class="btn-row">
+    <button class="btn" onclick="lineOp('joinComma',this)">Join with Comma</button>
+    <button class="btn" onclick="lineOp('joinSpace',this)">Join with Space</button>
+    <button class="btn" onclick="lineOp('splitByComma',this)">Split by Comma</button>
+    <button class="btn" onclick="lineOp('splitBySpace',this)">Split by Space</button>
+  </div>
+</div>
+
+<!-- TAB: FIND & REPLACE -->
+<div class="tab-panel" id="panel-find" style="display:none">
+  <div class="section">Find & Replace</div>
+  <input type="text" id="findText" placeholder="Find..." style="width:100%;margin:3px 0">
+  <input type="text" id="replaceText" placeholder="Replace with..." style="width:100%;margin:3px 0">
+  <div class="opt-row">
+    <label><input type="checkbox" id="findCase"> Case Sensitive</label>
+    <label><input type="checkbox" id="findRegex"> Use Regex</label>
+    <label><input type="checkbox" id="findWhole"> Whole Word</label>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="findReplace(false)">Replace All</button>
+    <button class="btn" onclick="findReplace(true)">Preview Count</button>
+  </div>
+  <div class="small" id="findInfo" style="margin-top:6px"></div>
+</div>
+
+<!-- TAB: ANALYZE -->
+<div class="tab-panel" id="panel-analyze" style="display:none">
+  <div class="section">Character Breakdown</div>
+  <div class="stats-grid">
+    <div class="stat-box"><div class="num" id="anLetters">0</div><div class="lbl">Letters</div></div>
+    <div class="stat-box"><div class="num" id="anDigits">0</div><div class="lbl">Digits</div></div>
+    <div class="stat-box"><div class="num" id="anSpaces">0</div><div class="lbl">Spaces</div></div>
+    <div class="stat-box"><div class="num" id="anSpecial">0</div><div class="lbl">Special</div></div>
+    <div class="stat-box"><div class="num" id="anVowels">0</div><div class="lbl">Vowels</div></div>
+    <div class="stat-box"><div class="num" id="anConsonants">0</div><div class="lbl">Consonants</div></div>
+    <div class="stat-box"><div class="num" id="anUpper">0</div><div class="lbl">Uppercase</div></div>
+    <div class="stat-box"><div class="num" id="anLower">0</div><div class="lbl">Lowercase</div></div>
+  </div>
+  <div class="section">Top 10 Words</div>
+  <div id="topWords" class="small">Type something to see analysis...</div>
+  <div class="section">Reading Statistics</div>
+  <div id="readStats" class="small">—</div>
+</div>
+
+<!-- OUTPUT -->
+<div class="divider"></div>
+<label class="small" style="font-weight:800;color:var(--accent);display:block">📤 OUTPUT</label>
+<textarea id="out" readonly style="border:2px solid var(--accent);min-height:150px"></textarea>
+
+<!-- OUTPUT ACTIONS -->
+<div class="btn-row">
+  <button class="btn btn-primary" onclick="copyOut(this)">📋 Copy</button>
+  <button class="btn" onclick="downloadOut('txt')">💾 .txt</button>
+  <button class="btn" onclick="downloadOut('md')">💾 .md</button>
+  <button class="btn" onclick="downloadOut('html')">💾 .html</button>
+  <button class="btn" onclick="downloadOut('json')">💾 .json</button>
+  <button class="btn" onclick="downloadOut('csv')">💾 .csv</button>
+  <button class="btn" onclick="shareOut()">📤 Share</button>
+  <button class="btn" onclick="speakOut()">🔊 Speak</button>
+  <button class="btn" onclick="printOut()">🖨️ Print</button>
+</div>
+
+<!-- COLOR / FONT OPTIONS -->
+<div class="section">🎨 Text Color</div>
+<div class="opt-row">
+  <input type="color" id="textColorPick" value="#a78bfa" oninput="previewTextColor()">
+  <button class="btn" onclick="applyTextColor()">✔ Apply</button>
+  <button class="btn" onclick="clearTextColor()">✖ Clear</button>
+  <div class="color-preview-box" id="textColorPreview" style="flex:1;color:#a78bfa;font-size:12px;padding:8px">Preview</div>
+</div>
+
+<div class="section">🖍️ Background Color</div>
+<div class="opt-row">
+  <input type="color" id="bgColorPick" value="#22d3ee" oninput="previewBgColor()">
+  <button class="btn" onclick="applyBgColor()">✔ Apply</button>
+  <button class="btn" onclick="clearBgColor()">✖ Clear</button>
+  <div class="color-preview-box" id="bgColorPreview" style="flex:1;background:#22d3ee;color:#000;font-size:12px;padding:8px">Preview</div>
+</div>
+
+<div class="section">Font Style (27 fonts)</div>
+<div class="opt-row">
+  <select id="fontSel" style="min-width:180px">
+    <option value="Inter,system-ui">Default Inter</option>
+    <option value="monospace">Monospace</option>
+    <option value="serif">Serif</option>
+    <option value="cursive">Cursive</option>
+    <option value="'Courier New',monospace">Typewriter</option>
+    <option value="'Times New Roman',serif">Times New Roman</option>
+    <option value="'Comic Sans MS',cursive">Comic Sans</option>
+    <option value="Impact">Impact</option>
+    <option value="'Poppins',sans-serif">Poppins</option>
+    <option value="'Roboto',sans-serif">Roboto</option>
+    <option value="'Lato',sans-serif">Lato</option>
+    <option value="'Montserrat',sans-serif">Montserrat</option>
+    <option value="'Oswald',sans-serif">Oswald</option>
+    <option value="'Raleway',sans-serif">Raleway</option>
+    <option value="'Playfair Display',serif">Playfair Display</option>
+    <option value="'Merriweather',serif">Merriweather</option>
+    <option value="'Ubuntu',sans-serif">Ubuntu</option>
+    <option value="'Dancing Script',cursive">Dancing Script</option>
+    <option value="'Pacifico',cursive">Pacifico</option>
+    <option value="'Caveat',cursive">Caveat</option>
+    <option value="'Lobster',cursive">Lobster</option>
+    <option value="'Bebas Neue',sans-serif">Bebas Neue</option>
+    <option value="'Anton',sans-serif">Anton</option>
+    <option value="'Righteous',cursive">Righteous</option>
+    <option value="'Permanent Marker',cursive">Permanent Marker</option>
+    <option value="'Press Start 2P',cursive">Press Start 2P</option>
+    <option value="'Monoton',cursive">Monoton</option>
+  </select>
+  <button class="btn" onclick="applyFont()">Apply Font</button>
+  <button class="btn" onclick="clearFont()">Clear Font</button>
+</div>
+
+<div class="section">📏 Font Size</div>
+<div class="opt-row">
+  <input type="number" id="fontSize" value="14" min="8" max="72" style="width:70px">
+  <button class="btn" onclick="applyFontSize()">Apply Size</button>
+  <button class="btn" onclick="clearFontSize()">Reset</button>
+</div>
+
+<!-- EMOJI PICKER -->
+<div class="section">😀 Emoji Picker</div>
+<div class="emoji-grid" id="emojiGrid"></div>
+</div>
+</div>
+
+<!-- ============ SIDEBAR ============ -->
+<div>
+<div class="card">
+<h3>⚡ Quick Actions</h3>
+<div class="btn-row">
+  <button class="btn" onclick="copyOut(document.querySelector('.btn-primary'))">📋 Copy Output</button>
+  <button class="btn" onclick="swapInOut()">⇅ Swap In/Out</button>
+  <button class="btn" onclick="saveToFile()">💾 Save Draft</button>
+  <button class="btn" onclick="loadFromFile()">📂 Load Draft</button>
+  <button class="btn" onclick="exportAll()">📦 Export All</button>
+</div>
+<div class="small" style="margin-top:6px">Drafts saved in your browser only.</div>
+</div>
+
+<div class="card">
+<h3>📜 History <span class="small" style="font-weight:400">(last 20)</span></h3>
+<div class="history-list" id="historyList">
+  <div class="small" style="padding:8px;text-align:center">No operations yet</div>
+</div>
+<div class="btn-row" style="margin-top:6px">
+  <button class="btn" onclick="clearHistory()">🗑️ Clear History</button>
+</div>
+</div>
+
+<div class="card">
+<h3>⌨️ Keyboard Shortcuts</h3>
+<div class="small" style="line-height:2">
+  <div><span class="kbd">Ctrl</span>+<span class="kbd">Enter</span> Convert</div>
+  <div><span class="kbd">Ctrl</span>+<span class="kbd">Z</span> Undo</div>
+  <div><span class="kbd">Ctrl</span>+<span class="kbd">Y</span> Redo</div>
+  <div><span class="kbd">Ctrl</span>+<span class="kbd">S</span> Save Draft</div>
+  <div><span class="kbd">Ctrl</span>+<span class="kbd">K</span> Clear All</div>
+  <div><span class="kbd">Esc</span> Close Modal</div>
+</div>
+</div>
+
+<div class="card" id="useful">
+<h3>🌐 Other Useful Tools</h3>
+<div class="tool-category"><h4>📝 Text Tools</h4>
+<a class="tool-link" href="https://convertmytext.blogspot.com/" target="_blank"><img src="https://www.google.com/s2/favicons?domain=convertmytext.blogspot.com&sz=64"><span>CaseForge PRO</span><span class="badge">HOT</span></a>
+<a class="tool-link" href="https://loremipsumpro.blogspot.com/" target="_blank"><img src="https://www.google.com/s2/favicons?domain=loremipsumpro.blogspot.com&sz=64"><span>LoremIpsum Pro</span><span class="badge">NEW</span></a>
+<a class="tool-link" href="https://text-to-handwriting-pro.blogspot.com/" target="_blank"><img src="https://www.google.com/s2/favicons?domain=text-to-handwriting-pro.blogspot.com&sz=64"><span>Text to Handwriting</span><span>→</span></a>
+</div>
+<div class="tool-category"><h4>🔢 Calculators</h4>
+<a class="tool-link" href="https://binary-hex-converter.blogspot.com/" target="_blank"><img src="https://www.google.com/s2/favicons?domain=binary-hex-converter.blogspot.com&sz=64"><span>Binary Hex Converter</span><span>→</span></a>
+<a class="tool-link" href="https://qr-code-gen-pro.blogspot.com/" target="_blank"><img src="https://www.google.com/s2/favicons?domain=qr-code-gen-pro.blogspot.com&sz=64"><span>QR Code Generator</span><span>→</span></a>
+<a class="tool-link" href="https://password-gen-tool.blogspot.com/" target="_blank"><img src="https://www.google.com/s2/favicons?domain=password-gen-tool.blogspot.com&sz=64"><span>Password Generator</span><span>→</span></a>
+</div>
+<div class="tool-category"><h4>🎨 Design & SEO</h4>
+<a class="tool-link" href="https://color-picker-pro.blogspot.com/" target="_blank"><img src="https://www.google.com/s2/favicons?domain=color-picker-pro.blogspot.com&sz=64"><span>Color Picker Pro</span><span>→</span></a>
+<a class="tool-link" href="https://meta-tag-generator.blogspot.com/" target="_blank"><img src="https://www.google.com/s2/favicons?domain=meta-tag-generator.blogspot.com&sz=64"><span>Meta Tag Generator</span><span>→</span></a>
+</div>
+</div>
+
+<div class="card" id="hire" style="background:linear-gradient(135deg,var(--card),var(--card3));border:1px solid var(--accent)">
+<h3>💼 Hire Me</h3>
+<p style="font-size:13px;margin:8px 0"><b>100+ Tools Built | 5+ Years Experience</b></p>
+<ul class="small" style="margin:8px 0 8px 18px">
+<li>✅ Custom Tool Development</li>
+<li>✅ AdSense Approval & SEO</li>
+<li>✅ Fast Delivery 24-48 Hours</li>
+</ul>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="window.open('mailto:yourmail@gmail.com')">📧 Email Me</button>
+<button class="btn" onclick="window.open('https://convertmytext.blogspot.com/','_blank')">🌐 Portfolio</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ============ FANCY TEXT ============ -->
+<div style="max-width:1350px;margin:0 auto;padding:0 12px 12px">
+<div class="card">
+<h3>✨ Fancy Text Generator — 15 Styles</h3>
+<p class="small">Type in the INPUT box above to instantly see 15 fancy styles below.</p>
+<div id="fancyBox"></div>
+</div>
+</div>
+
+<!-- ============ HOW TO USE ============ -->
+<div style="max-width:1350px;margin:0 auto;padding:0 12px 12px">
+<div class="card" id="howto">
+<h3>📖 How to Use — Complete Guide</h3>
+<p class="small">CaseForge PRO 2.0 has 40+ features. Here's how to use each one.</p>
+
+<div class="howto-step"><b>STEP 1 — Enter Text</b><br>Type or paste text into the INPUT box. Drag-and-drop TXT, CSV, JSON, PDF, or DOCX files. Click <b>🎲 Sample</b> for demo text.</div>
+<div class="howto-step"><b>STEP 2 — Case Conversions (visible section)</b><br>Directly on the main page you'll find <b>23 case buttons</b>: UPPER, lower, Title, Sentence, Capitalize, Alternating, Inverse, Random, PascalCase, camelCase, snake_case, kebab-case, CONSTANT_CASE, dot.case, path/case, Bold, Italic, Bold Italic, Script, Underline, Overline, Strike, Wide.</div>
+<div class="howto-step"><b>STEP 3 — Direct Binary / Hexa (visible section)</b><br>Convert in one click: <b>Text ⇄ Binary, Text ⇄ Hexa, Binary ⇄ Hexa, Text ⇄ Decimal</b>. All 8 conversions are always visible.</div>
+<div class="howto-step"><b>STEP 4 — Cleanup & Sort (visible section)</b><br>All cleanup and sort tools are visible on the main page: Trim, Extra Spaces, Remove Line Breaks, Blank Lines, Tabs→Spaces, Remove Emojis/Numbers/Punctuation/HTML/Special/Diacritics, Remove Duplicates, Sort A-Z/Z-A/Numeric/Length, Shuffle, Reverse, ROT13, Reverse Text/Words.</div>
+<div class="howto-step"><b>STEP 5 — Advanced Tab: Encode / Cipher</b><br>Click the <b>🔐 Encode / Cipher</b> tab for Base64, URL, HTML, Morse code, and Caesar cipher (with adjustable shift 1-25).</div>
+<div class="howto-step"><b>STEP 6 — Advanced Tab: Line Tools</b><br>Add/remove line numbers, wrap text at any width, indent/unindent, add custom prefix/suffix, join lines with comma/space, split by comma/space.</div>
+<div class="howto-step"><b>STEP 7 — Advanced Tab: Find & Replace</b><br>Standard find-and-replace with case-sensitive, regex, and whole-word options. Preview match count before replacing.</div>
+<div class="howto-step"><b>STEP 8 — Advanced Tab: Analyze</b><br>Character breakdown (letters, digits, spaces, special, vowels, consonants, uppercase, lowercase), top 10 words, reading and speaking time.</div>
+<div class="howto-step"><b>STEP 9 — Output Actions</b><br>Copy (turns green with "✓ Copied"), download as .txt / .md / .html / .json / .csv, share, 🔊 Speak (text-to-speech), 🖨️ Print.</div>
+<div class="howto-step"><b>STEP 10 — Styling</b><br>Apply separate Text Color and Background Color, choose from 27 fonts, adjust font size (8–72 px).</div>
+<div class="howto-step"><b>STEP 11 — History & Undo</b><br>Every operation saved. Click history item to restore. Ctrl+Z / Ctrl+Y for undo/redo.</div>
+<div class="howto-step"><b>STEP 12 — Save Drafts</b><br>Click 💾 Save Draft to store your work. Click 📂 Load Draft to restore. Export All downloads JSON.</div>
+<div class="howto-step"><b>STEP 13 — Emoji Picker</b><br>Click any emoji to append to INPUT.</div>
+<div class="howto-step"><b>STEP 14 — Fancy Text (15 styles)</b><br>Scroll down to see Bubble, Upside Down, Bold, Cursive, Fullwidth, Sparkles, Small Caps, Circled, Zalgo, Double Struck, Superscript, Subscript, Wide, and more.</div>
+</div>
+</div>
+
+<!-- ============ ARTICLES ============ -->
+<div style="max-width:1350px;margin:0 auto;padding:0 12px 12px">
+<div class="card" id="articles">
+<h3>📚 Articles — Click a heading to read</h3>
+
+<div class="article-item">
+  <div class="article-head" onclick="toggleArticle(this)"><span>📝 What Is a Case Converter and Why Do You Need One?</span><span class="arrow">＋</span></div>
+  <div class="article-body">
+    <h4>Introduction</h4>
+    <p>A Case Converter is a utility that instantly changes the letter casing of any text — transforming it into uppercase, lowercase, title case, sentence case, and even programming-specific styles such as camelCase, PascalCase, snake_case, and kebab-case.</p>
+    <h4>Why Is It Important?</h4>
+    <p>For programmers, naming conventions are critical. JavaScript prefers camelCase, Python prefers snake_case, and React components use PascalCase.</p>
+    <h4>Main Types of Cases</h4>
+    <ul><li><b>UPPERCASE</b> — every letter capital</li><li><b>lowercase</b> — every letter small</li><li><b>Title Case</b> — first letter of every word capital</li><li><b>Sentence case</b> — only first letter of sentence capital</li><li><b>camelCase</b> — helloWorldTest</li><li><b>PascalCase</b> — HelloWorldTest</li><li><b>snake_case</b> — hello_world_test</li><li><b>kebab-case</b> — hello-world-test</li></ul>
+    <h4>Conclusion</h4>
+    <p>Whether you are a coder, blogger, student, or marketer, a reliable case converter makes your daily work easier and more accurate.</p>
+  </div>
+</div>
+
+<div class="article-item">
+  <div class="article-head" onclick="toggleArticle(this)"><span>💻 Binary, Hexadecimal, Base64, and Morse — The Complete Guide</span><span class="arrow">＋</span></div>
+  <div class="article-body">
+    <h4>What Is Binary?</h4>
+    <p>Binary uses only 0 and 1. When you press "A", the computer stores it as 01000001.</p>
+    <h4>What Is Hexadecimal?</h4>
+    <p>Hex is a base-16 system using 0-9 and A-F. Web designers use hex color codes like #a78bfa.</p>
+    <h4>What Is Base64?</h4>
+    <p>Base64 encodes binary data as text using 64 characters. Used for embedding images and email attachments.</p>
+    <h4>What Is Morse Code?</h4>
+    <p>Morse represents letters as dots and dashes. "SOS" is ··· ––– ···.</p>
+    <h4>Conclusion</h4>
+    <p>Understanding these encodings is essential for programming and cybersecurity.</p>
+  </div>
+</div>
+
+<div class="article-item">
+  <div class="article-head" onclick="toggleArticle(this)"><span>✨ Fancy Text Generator — Stylish Text for Social Media</span><span class="arrow">＋</span></div>
+  <div class="article-body">
+    <h4>What Is Fancy Text?</h4>
+    <p>Fancy text uses Unicode characters to display letters uniquely. "A" can be Ⓐ, 𝐀, 𝓐, 𝔸, or 🅰️.</p>
+    <h4>Why Is It Popular?</h4>
+    <p>People use fancy text on Instagram bios, WhatsApp statuses, YouTube names, and gaming usernames to stand out.</p>
+    <h4>Top Styles</h4>
+    <ul><li>Bubble ⓗⓔⓛⓛⓞ</li><li>Bold 𝐡𝐞𝐥𝐥𝐨</li><li>Cursive 𝓱𝓮𝓵𝓵𝓸</li><li>Sparkles ✨h✨e✨l✨l✨o</li><li>Small Caps ʜᴇʟʟᴏ</li></ul>
+    <h4>Conclusion</h4>
+    <p>With CaseForge PRO's free 15-style generator, you can transform ordinary words into eye-catching designs.</p>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer">
+<a onclick="openPage('about')">About</a> |
+<a onclick="openPage('contact')">Contact</a> |
+<a onclick="openPage('privacy')">Privacy</a> |
+<a onclick="openPage('terms')">Terms</a> |
+<a onclick="openPage('disclaimer')">Disclaimer</a>
+<p style="margin-top:8px">© 2026 CaseForge PRO 2.0 — All Rights Reserved.</p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div id="pageModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);z-index:100;padding:20px;overflow:auto">
+<div style="max-width:760px;margin:40px auto;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+<h3 id="modalTitle" style="font-size:20px"></h3>
+<button class="btn" onclick="closePage()">✖ Close</button>
+</div>
+<div id="modalContent" class="small" style="line-height:1.8"></div>
+</div>
+</div>
+
+<script>
+'use strict';
+let state = { undoStack: [], redoStack: [], history: [], maxStack: 40 };
+
+document.addEventListener('DOMContentLoaded', function(){
+  loadTheme();
+  buildEmojiPicker();
+  const saved = localStorage.getItem('caseforge_input');
+  document.getElementById('inp').value = saved || 'hello world test case\napple\nmango\nzebra';
+  refreshAll();
+  attachShortcuts();
+  console.log('✅ CaseForge PRO 2.0 loaded');
+});
+
+function toggleSiteTheme(){
+  document.body.classList.toggle('light-mode');
+  const isLight = document.body.classList.contains('light-mode');
+  localStorage.setItem('caseforge_theme', isLight?'light':'dark');
+  document.getElementById('themeBtn').innerText = isLight ? '🌙 Dark' : '☀️ Light';
 }
-export default function Page(){
-const [lang,setLang]=useState("HI")
-const [mode,setMode]=useState("paragraph")
-const [cnt,setCnt]=useState(5)
-const [out,setOut]=useState("")
-const [cp,setCp]=useState(false)
-const [dtype,setDtype]=useState("txt")
-const [showPage,setShowPage]=useState("")
-const [menuOpen,setMenuOpen]=useState(false)
-
-const gen=()=>{
-let base=DB[lang]||DB.EN
-let words=base.join(" ").split(/\s+/).filter(Boolean)
-let r=""
-if(mode==="word"){r=words.slice(0,cnt).join(" ")}
-else if(mode==="sentence"){let arr=[];while(arr.length<cnt){arr=arr.concat(base)};r=arr.slice(0,cnt).join(" ")}
-else if(mode==="list"){let arr=[];while(arr.length<cnt){arr=arr.concat(base)};r=arr.slice(0,cnt).map(v=>"• "+v).join("\n")}
-else{let a=[];for(let i=0;i<cnt;i++){a.push(base[i%base.length])};r=a.join("\n\n")}
-setOut(r)
+function loadTheme(){
+  if(localStorage.getItem('caseforge_theme')==='light'){
+    document.body.classList.add('light-mode');
+    document.getElementById('themeBtn').innerText = '🌙 Dark';
+  }
 }
-useEffect(()=>{gen()},[lang,mode,cnt])
+function scrollToSection(id){
+  const el=document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function setTab(name, el){
+  document.querySelectorAll('#opTabs .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(p=>p.style.display='none');
+  document.getElementById('panel-'+name).style.display='block';
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.innerText=msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer=setTimeout(()=>t.classList.remove('show'), 2000);
+}
+let inputTimer=null;
+function onInputChange(){
+  clearTimeout(inputTimer);
+  inputTimer = setTimeout(()=>{
+    refreshAll();
+    localStorage.setItem('caseforge_input', document.getElementById('inp').value);
+  }, 250);
+}
+function refreshAll(){
+  updateStats();
+  updateAnalysis();
+  genFancy();
+}
+function updateStats(){
+  const t = document.getElementById('inp').value;
+  const words = t.trim()? t.trim().split(/\s+/).filter(Boolean).length : 0;
+  const chars = t.length;
+  const lines = t? t.split('\n').length : 0;
+  const sentences = (t.match(/[.!?]+(?=\s|$)/g)||[]).length || (t.trim()?1:0);
+  const paras = t.trim()? t.split(/\n\s*\n/).filter(p=>p.trim()).length : 0;
+  const readMin = Math.max(1, Math.ceil(words/200));
+  document.getElementById('stWords').innerText = words;
+  document.getElementById('stChars').innerText = chars;
+  document.getElementById('stLines').innerText = lines;
+  document.getElementById('stSent').innerText = sentences;
+  document.getElementById('stPara').innerText = paras;
+  document.getElementById('stRead').innerText = readMin + 'm';
+}
+function updateAnalysis(){
+  const t = document.getElementById('inp').value;
+  const letters = (t.match(/[a-zA-Z]/g)||[]).length;
+  const digits = (t.match(/[0-9]/g)||[]).length;
+  const spaces = (t.match(/\s/g)||[]).length;
+  const special = (t.match(/[^a-zA-Z0-9\s]/g)||[]).length;
+  const vowels = (t.match(/[aeiouAEIOU]/g)||[]).length;
+  const consonants = letters - vowels;
+  const upper = (t.match(/[A-Z]/g)||[]).length;
+  const lower = (t.match(/[a-z]/g)||[]).length;
+  document.getElementById('anLetters').innerText = letters;
+  document.getElementById('anDigits').innerText = digits;
+  document.getElementById('anSpaces').innerText = spaces;
+  document.getElementById('anSpecial').innerText = special;
+  document.getElementById('anVowels').innerText = vowels;
+  document.getElementById('anConsonants').innerText = consonants;
+  document.getElementById('anUpper').innerText = upper;
+  document.getElementById('anLower').innerText = lower;
+  const words = t.toLowerCase().match(/[a-z\u0900-\u097F]+/g)||[];
+  const freq = {};
+  words.forEach(w=>{ if(w.length>2) freq[w]=(freq[w]||0)+1; });
+  const top = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const topEl = document.getElementById('topWords');
+  if(top.length===0) topEl.innerText = 'Type something to see analysis...';
+  else topEl.innerHTML = top.map(([w,c])=>`<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed var(--border)"><span><b>${escapeHtml(w)}</b></span><span style="color:var(--accent)">${c}×</span></div>`).join('');
+  const wcount = words.length;
+  const readMin = Math.max(1, Math.ceil(wcount/200));
+  const speakMin = Math.max(1, Math.ceil(wcount/130));
+  document.getElementById('readStats').innerHTML = `Total words: <b>${wcount}</b><br>Reading time (200 wpm): <b>${readMin} min</b><br>Speaking time (130 wpm): <b>${speakMin} min</b>`;
+}
+function pushState(beforeValue, opName){
+  state.undoStack.push(beforeValue);
+  if(state.undoStack.length > state.maxStack) state.undoStack.shift();
+  state.redoStack = [];
+  state.history.unshift({op:opName, time:new Date(), preview:beforeValue.slice(0,50)});
+  if(state.history.length > 20) state.history.pop();
+  renderHistory();
+}
+function renderHistory(){
+  const list = document.getElementById('historyList');
+  if(state.history.length===0){
+    list.innerHTML = '<div class="small" style="padding:8px;text-align:center">No operations yet</div>';
+    return;
+  }
+  list.innerHTML = state.history.map((h,i)=>{
+    const time = h.time.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    return `<div class="history-item" onclick="showToast('${escapeHtml(h.op)}')" title="${escapeHtml(h.preview)}">${time} — ${escapeHtml(h.op)}</div>`;
+  }).join('');
+}
+function undoAction(){
+  if(state.undoStack.length===0){ showToast('Nothing to undo'); return; }
+  const cur = document.getElementById('inp').value;
+  state.redoStack.push(cur);
+  document.getElementById('inp').value = state.undoStack.pop();
+  refreshAll();
+  showToast('↶ Undone');
+}
+function redoAction(){
+  if(state.redoStack.length===0){ showToast('Nothing to redo'); return; }
+  const cur = document.getElementById('inp').value;
+  state.undoStack.push(cur);
+  document.getElementById('inp').value = state.redoStack.pop();
+  refreshAll();
+  showToast('↷ Redone');
+}
+function clearHistory(){ state.history = []; renderHistory(); showToast('History cleared'); }
 
-const wc=out?out.split(/\s+/).filter(Boolean).length:0
-const cc=out.length
-const sc=out?out.split(/[.!?।]/).filter(s=>s.trim().length>5).length:0
-const pc=out?out.split(/\n\n/).filter(Boolean).length:0
-const rt=Math.max(1,Math.ceil(wc/200))
-
-const download=()=>{
-let content=out
-let ext=dtype
-if(dtype==="html"){content="<p>"+out.split("\n\n").join("</p><p>")+"</p>";}
-else if(dtype==="md"){content="# LoremPro "+lang+"\n\n"+out;}
-else if(dtype==="json"){content=JSON.stringify({language:lang,mode:mode,count:cnt,text:out},null,2);}
-else if(dtype==="csv"){content="lang,mode,count,text\n"+lang+","+mode+","+cnt+',"'+out.replace(/"/g,'""')+'"';}
-let blob=new Blob([content],{type:"text/plain"})
-let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="lorem-"+lang+"-"+cnt+"."+ext;a.click()
+function parseWords(s){
+  return s.trim().split(/[\s_\-]+/).filter(Boolean).map(w=>w.replace(/[^a-zA-Z0-9]/g,'')).filter(Boolean);
+}
+function toMathFont(s, upperBase, lowerBase, digitBase){
+  return s.replace(/[A-Za-z0-9]/g, c=>{
+    if(c>='A'&&c<='Z') return String.fromCodePoint(upperBase + c.charCodeAt(0)-65);
+    if(c>='a'&&c<='z') return String.fromCodePoint(lowerBase + c.charCodeAt(0)-97);
+    if(c>='0'&&c<='9') return String.fromCodePoint(digitBase + c.charCodeAt(0)-48);
+    return c;
+  });
+}
+function makeCase(t, btn){
+  const src = document.getElementById('inp').value;
+  if(!src.trim()){ showToast('Please enter text'); return; }
+  pushState(src, 'Case: '+t);
+  highlight(btn);
+  const words = parseWords(src);
+  let result = '';
+  try {
+    switch(t){
+      case 'upper': result = src.toUpperCase(); break;
+      case 'lower': result = src.toLowerCase(); break;
+      case 'title': result = src.replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.substr(1).toLowerCase()); break;
+      case 'sentence': result = src.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, c => c.toUpperCase()); break;
+      case 'capital': result = src.replace(/\b\w/g, c => c.toUpperCase()); break;
+      case 'alternating': result = src.split('').map((c,i)=> i%2? c.toLowerCase() : c.toUpperCase()).join(''); break;
+      case 'inverse': result = src.split('').map(c => c === c.toUpperCase() ? c.toLowerCase() : c.toUpperCase()).join(''); break;
+      case 'random': result = src.split('').map(c => Math.random()>0.5? c.toUpperCase() : c.toLowerCase()).join(''); break;
+      case 'pascal': result = words.map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join(''); break;
+      case 'camel': result = words.map((w,i)=> i===0? w.toLowerCase() : w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join(''); break;
+      case 'snake': result = words.map(w=>w.toLowerCase()).join('_'); break;
+      case 'kebab': result = words.map(w=>w.toLowerCase()).join('-'); break;
+      case 'constant': result = words.map(w=>w.toUpperCase()).join('_'); break;
+      case 'dot': result = words.map(w=>w.toLowerCase()).join('.'); break;
+      case 'path': result = words.map(w=>w.toLowerCase()).join('/'); break;
+      case 'bold': result = toMathFont(src, 0x1D5D4, 0x1D5EE, 0x1D7EC); break;
+      case 'italic': result = toMathFont(src, 0x1D608, 0x1D622, 0x1D7E2); break;
+      case 'bolditalic': result = toMathFont(src, 0x1D63C, 0x1D656, 0x1D7EC); break;
+      case 'script': result = toMathFont(src, 0x1D4D0, 0x1D4EA, 0x1D7EC); break;
+      case 'underline': result = src.split('').map(c=>c+'\u0332').join(''); break;
+      case 'overline': result = src.split('').map(c=>c+'\u0305').join(''); break;
+      case 'strike': result = src.split('').map(c=>c+'\u0336').join(''); break;
+      case 'wide': result = src.split('').join(' '); break;
+    }
+    document.getElementById('out').value = result;
+  } catch(e){ document.getElementById('out').value = 'Error: '+e.message; }
 }
 
-const pages={
-about:"About LoremPro - 75 Native Languages\n\nWorld's first true 75 native language lorem generator. Real script for every language.\n\nFeatures:\n- 75 native translations\n- Exact count\n- 8 download formats\n- Live counters\n- 100% free",
-contact:"Contact Us\n\nEmail: hello@lorempro.tool\nTwitter: @lorempro\nWe reply within 24 hours.",
-privacy:"Privacy Policy\n\n1. No data collection - runs in browser.\n2. No tracking cookies.\n3. No personal info stored.\n4. Downloads local.\n\nYour text never leaves your device.",
-disclaimer:"Disclaimer\n\nDummy placeholder text only.\n1. Not professional advice.\n2. For placeholder purpose.\n3. Free to use commercially."
+const MORSE = {'A':'.-','B':'-...','C':'-.-.','D':'-..','E':'.','F':'..-.','G':'--.','H':'....','I':'..','J':'.---','K':'-.-','L':'.-..','M':'--','N':'-.','O':'---','P':'.--.','Q':'--.-','R':'.-.','S':'...','T':'-','U':'..-','V':'...-','W':'.--','X':'-..-','Y':'-.--','Z':'--..','0':'-----','1':'.----','2':'..---','3':'...--','4':'....-','5':'.....','6':'-....','7':'--...','8':'---..','9':'----.',' ':'/'};
+const MORSE_REV = Object.fromEntries(Object.entries(MORSE).map(([k,v])=>[v,k]));
+
+function convert(type, btn){
+  const src = document.getElementById('inp').value;
+  if(!src.trim() && !['b64dec','urldec','htmldec','morseDec','dec'].includes(type)){ showToast('Please enter text'); return; }
+  pushState(src, 'Convert: '+type);
+  highlight(btn);
+  let result = '';
+  try {
+    switch(type){
+      case 'textBin': result = src.split('').map(c=>c.charCodeAt(0).toString(2).padStart(8,'0')).join(' '); break;
+      case 'binary': result = src.split(/\s+/).filter(Boolean).map(b=>/^[01]+$/.test(b)? String.fromCharCode(parseInt(b,2)) : '').join(''); break;
+      case 'textHex': result = src.split('').map(c=>c.charCodeAt(0).toString(16).padStart(2,'0')).join(' '); break;
+      case 'hex': { const cl = src.replace(/\s/g,''); result = (cl.match(/.{1,2}/g)||[]).map(h=>String.fromCharCode(parseInt(h,16))).join(''); break; }
+      case 'binHex': result = src.split(/\s+/).filter(Boolean).map(b=>parseInt(b,2).toString(16).padStart(2,'0')).join(' '); break;
+      case 'hexBin': result = src.split(/\s+/).filter(Boolean).map(h=>parseInt(h,16).toString(2).padStart(8,'0')).join(' '); break;
+      case 'textDec': result = src.split('').map(c=>c.charCodeAt(0)).join(' '); break;
+      case 'dec': result = src.split(/\s+/).filter(Boolean).map(n=>String.fromCharCode(parseInt(n,10))).join(''); break;
+      case 'b64enc': result = btoa(unescape(encodeURIComponent(src))); break;
+      case 'b64dec': result = decodeURIComponent(escape(atob(src))); break;
+      case 'urlenc': result = encodeURIComponent(src); break;
+      case 'urldec': result = decodeURIComponent(src); break;
+      case 'htmlenc': result = src.replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); break;
+      case 'htmldec': { const ta = document.createElement('textarea'); ta.innerHTML = src; result = ta.value; break; }
+      case 'morseEnc': result = src.toUpperCase().split('').map(c=>MORSE[c]||c).join(' '); break;
+      case 'morseDec': result = src.trim().split(/\s+/).map(m=>MORSE_REV[m]||m).join(''); break;
+      case 'rot13': result = src.replace(/[a-zA-Z]/g, c=>String.fromCharCode((c<='Z'?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26)); break;
+      case 'reverse': result = src.split('').reverse().join(''); break;
+      case 'reverseWords': result = src.split(/\s+/).reverse().join(' '); break;
+      case 'caesarEnc': {
+        const shift = parseInt(document.getElementById('caesarShift').value)||3;
+        result = src.replace(/[a-zA-Z]/g, c=>{
+          const base = c<='Z'? 65:97;
+          return String.fromCharCode(((c.charCodeAt(0)-base+shift)%26+26)%26 + base);
+        });
+        break;
+      }
+      case 'caesarDec': {
+        const shift = parseInt(document.getElementById('caesarShift').value)||3;
+        result = src.replace(/[a-zA-Z]/g, c=>{
+          const base = c<='Z'? 65:97;
+          return String.fromCharCode(((c.charCodeAt(0)-base-shift)%26+26)%26 + base);
+        });
+        break;
+      }
+    }
+    document.getElementById('out').value = result;
+  } catch(e){ document.getElementById('out').value = 'Error: '+e.message; }
 }
-  return(
-<div style={{background:"linear-gradient(135deg,#667eea 0%,#764ba2 100%)",minHeight:"100vh",fontFamily:"system-ui"}}>
-<style>{`@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}@keyframes glow{0%,100%{box-shadow:0 0 15px rgba(99,102,241,.4)}50%{box-shadow:0 0 30px rgba(99,102,241,.8)}}.anim-float{animation:float 3s ease-in-out infinite}.anim-glow{animation:glow 2s ease-in-out infinite}`}</style>
 
-<header style={{background:"rgba(255,255,255,.97)",padding:"12px 14px",display:"flex",justifyContent:"space-between",alignItems:"center",position:"sticky",top:0,zIndex:30,borderBottom:"1px solid #e5e7eb"}}>
-<div style={{display:"flex",alignItems:"center",gap:10}}>
-<div style={{width:40,height:40,borderRadius:12,background:"linear-gradient(135deg,#6366f1,#8b5cf6)",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:900,fontSize:18}} className="anim-float">LP</div>
-<div><div style={{fontWeight:900,fontSize:16}}>LoremPro</div><div style={{fontSize:10,color:"#6366f1",fontWeight:800}}>75 LANGUAGES • NATIVE</div></div>
-</div>
-<div style={{display:"flex",gap:8,alignItems:"center"}}>
-<div style={{background:"#10b981",color:"#fff",padding:"4px 8px",borderRadius:999,fontSize:9,fontWeight:900}} className="anim-glow">LIVE</div>
-<button onClick={()=>setMenuOpen(!menuOpen)} style={{background:"#111",color:"#fff",borderRadius:999,padding:"8px 14px",border:"none",fontWeight:800,fontSize:12}}>Menu</button>
-</div>
-</header>
-
-<nav style={{background:"#111",padding:"8px 12px",display:menuOpen?"flex":"none",gap:6,flexWrap:"wrap",position:"sticky",top:58,zIndex:25}}>
-{[["gen","Generator"],["art","Articles"],["use","How to Use"],["tools","Tools"],["about","About"],["contact","Contact"],["privacy","Privacy"],["disclaimer","Disclaimer"],["hire","Hire Me"]].map(([id,lbl])=><button key={id} onClick={()=>{if(["about","contact","privacy","disclaimer"].includes(id)){setShowPage(id)}else{setShowPage("");document.getElementById(id)?.scrollIntoView({behavior:"smooth"})}setMenuOpen(false)}} style={{border:"1px solid #333",color:"#fff",background:id===showPage?"#6366f1":"#222",padding:"6px 10px",borderRadius:999,fontSize:10,fontWeight:700}}>{lbl}</button>)}
-</nav>
-
-{!menuOpen && <div style={{background:"rgba(17,17,17,.9)",padding:"8px 12px",display:"flex",gap:6,overflowX:"auto",position:"sticky",top:58,zIndex:24}}>
-{[["gen","Generator"],["tools","Tools"],["about","About"],["contact","Contact"]].map(([id,lbl])=><button key={id} onClick={()=>{if(["about","contact","privacy","disclaimer"].includes(id)){setShowPage(id)}else{document.getElementById(id)?.scrollIntoView({behavior:"smooth"})}}} style={{whiteSpace:"nowrap",border:"1px solid #444",color:"#fff",background:"transparent",padding:"5px 10px",borderRadius:999,fontSize:10,fontWeight:700}}>{lbl}</button>)}
-<div style={{marginLeft:"auto",color:"#10b981",fontSize:10,fontWeight:800}}>V26 FINAL</div>
-</div>}
-
-<div style={{maxWidth:680,margin:"auto",padding:12}}>
-
-{showPage && <div style={{background:"#fff",borderRadius:16,padding:16,marginBottom:12,border:"2px solid #6366f1"}}>
-<div style={{display:"flex",justifyContent:"space-between"}}><h3 style={{margin:0,fontSize:14,textTransform:"uppercase"}}>{showPage}</h3><button onClick={()=>setShowPage("")} style={{background:"#111",color:"#fff",borderRadius:999,padding:"4px 10px",border:"none",fontSize:10}}>Close</button></div>
-<pre style={{whiteSpace:"pre-wrap",fontSize:12,lineHeight:"18px",marginTop:10,fontFamily:"system-ui"}}>{pages[showPage]}</pre>
-</div>}
-
-<div id="gen" style={{background:"#fff",borderRadius:20,padding:16,boxShadow:"0 8px 32px rgba(0,0,0,.12)"}} className="anim-float">
-<div style={{display:"flex",justifyContent:"space-between",marginBottom:10}}>
-<label style={{fontSize:12,fontWeight:900}}>SELECT LANGUAGE - 75 NATIVE</label>
-<div style={{background:"#6366f1",color:"#fff",padding:"4px 8px",borderRadius:999,fontSize:9,fontWeight:900}}>{LANGS.length} LANGS</div>
-</div>
-<select value={lang} onChange={e=>setLang(e.target.value)} style={{width:"100%",padding:14,borderRadius:12,border:"2px solid #6366f1",fontWeight:800,background:"#fff"}}>
-{LANGS.map(([c,n])=><option key={c} value={c}>{c} - {n}</option>)}
-</select>
-<div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6,marginTop:12}}>
-{["paragraph","sentence","word","list"].map(m=><button key={m} onClick={()=>setMode(m)} style={{padding:10,borderRadius:10,background:mode===m?"#6366f1":"#f3f4f6",color:mode===m?"#fff":"#111",border:"none",fontSize:10,fontWeight:800}}>{m.toUpperCase()}</button>)}</div>
-<div style={{display:"flex",gap:10,alignItems:"center",marginTop:14,background:"#f8fafc",padding:10,borderRadius:12}}>
-<span style={{fontSize:11,fontWeight:900}}>COUNT:</span><input type="range" min={1} max={50} value={cnt} onChange={e=>setCnt(Number(e.target.value))} style={{flex:1}}/><b style={{background:"#111",color:"#fff",padding:"6px 12px",borderRadius:8}}>{cnt}</b>
-</div>
-<button onClick={gen} style={{width:"100%",background:"#111",color:"#fff",padding:14,borderRadius:12,fontWeight:900,marginTop:12,border:"none"}}>GENERATE {mode.toUpperCase()} - {lang}</button>
-<div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:6,marginTop:12}}>
-{[["Words",wc,"#6366f1"],["Chars",cc,"#8b5cf6"],["Sent.",sc,"#ec4899"],["Paras",pc,"#10b981"],["Min",rt,"#f59e0b"]].map(([lbl,val,color])=><div key={lbl} style={{background:"#fff",border:"2px solid "+color,borderRadius:10,padding:"6px 4px",textAlign:"center"}}><div style={{fontSize:14,fontWeight:900,color:color}}>{val}</div><div style={{fontSize:8,fontWeight:800}}>{lbl}</div></div>)}
-</div>
-<div style={{background:"#fff",border:"2px solid #111",borderRadius:12,padding:14,marginTop:14,whiteSpace:"pre-wrap",fontSize:15,minHeight:90}}>{out}</div>
-<div style={{display:"flex",gap:8,marginTop:12,flexWrap:"wrap"}}>
-<button onClick={()=>{navigator.clipboard.writeText(out);setCp(true);setTimeout(()=>setCp(false),1500)}} style={{background:cp?"#10b981":"#111",color:"#fff",padding:"10px 16px",borderRadius:999,border:"none",fontWeight:800,flex:"1 0 auto"}}>{cp?"Copied":"Copy"}</button>
-<div style={{display:"flex",gap:6,flex:"2 0 auto",background:"#f3f4f6",padding:6,borderRadius:999,border:"1px solid #e5e7eb"}}>
-<select value={dtype} onChange={e=>setDtype(e.target.value)} style={{flex:1,border:"none",background:"transparent",fontWeight:800,fontSize:12}}>
-<option value="txt">TXT</option>
-<option value="html">HTML</option>
-<option value="md">MD</option>
-<option value="json">JSON</option>
-<option value="csv">CSV</option>
-<option value="pdf">PDF</option>
-<option value="doc">DOC</option>
-<option value="rtf">RTF</option>
-</select>
-<button onClick={download} style={{background:"#6366f1",color:"#fff",padding:"8px 14px",borderRadius:999,border:"none",fontWeight:800,fontSize:12}}>Download</button>
-</div>
-</div>
-</div>
-
-<div id="art" style={{background:"#fff",borderRadius:16,padding:14,marginTop:14}}><h3 style={{fontSize:14,fontWeight:900,margin:0}}>Latest Articles</h3><p style={{fontSize:11,color:"#555"}}>Why 75 native languages boost SEO.</p></div>
-<div id="use" style={{background:"#fff",borderRadius:16,padding:14,marginTop:14}}><h3 style={{fontSize:14,fontWeight:900,margin:0}}>How to Use</h3><ol style={{fontSize:12,paddingLeft:18}}><li>Language chuno</li><li>Mode + Count</li><li>Generate + Download (8 formats)</li></ol></div>
-<div id="tools" style={{background:"#fff",borderRadius:16,padding:14,marginTop:14}}><h3 style={{fontSize:14,fontWeight:900,margin:0}}>Other Useful Tools</h3><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginTop:10}}>{["Word Counter","Char Counter","Hashtag Gen","Meta Tags","YT Title","Slug Gen"].map(t=><div key={t} style={{border:"1px solid #e5e7eb",padding:10,borderRadius:10,fontSize:11,fontWeight:700}}>{t}</div>)}</div></div>
-<div id="hire" style={{background:"#111",color:"#fff",borderRadius:16,padding:16,marginTop:14}}><h3 style={{margin:0,fontSize:14}}>Hire Me</h3><p style={{fontSize:12,color:"#cbd5e1"}}>Custom tools for Blogger/WordPress?</p></div>
-
-<footer style={{background:"#fff",borderRadius:16,padding:14,marginTop:14,textAlign:"center"}}>
-<div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap",fontSize:11,fontWeight:700}}><a href="#" onClick={e=>{e.preventDefault();setShowPage("about")}}>About</a><a href="#" onClick={e=>{e.preventDefault();setShowPage("contact")}}>Contact</a><a href="#" onClick={e=>{e.preventDefault();setShowPage("privacy")}}>Privacy</a><a href="#" onClick={e=>{e.preventDefault();setShowPage("disclaimer")}}>Disclaimer</a></div>
-<p style={{fontSize:11,color:"#666",marginTop:8}}>© 2026 LoremPro V26 FINAL - 75 Native - 8 Downloads - Counters</p>
-</footer>
-
-</div></div>)
+function cleanup(type, btn){
+  const src = document.getElementById('inp').value;
+  if(!src.trim()){ showToast('Please enter text'); return; }
+  pushState(src, 'Cleanup: '+type);
+  highlight(btn);
+  let result = '';
+  try {
+    switch(type){
+      case 'trim': result = src.split('\n').map(s=>s.trim()).join('\n').trim(); break;
+      case 'extraSpaces': result = src.replace(/[ \t]+/g,' ').trim(); break;
+      case 'removeLineBreaks': result = src.replace(/[\r\n]+/g,' '); break;
+      case 'removeBlankLines': result = src.split('\n').filter(l=>l.trim()).join('\n'); break;
+      case 'tabsToSpaces': result = src.replace(/\t/g,'    '); break;
+      case 'removeEmoji': result = src.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu,''); break;
+      case 'removeNumbers': result = src.replace(/[0-9]/g,''); break;
+      case 'removePunctuation': result = src.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\[\]"?<>]/g,''); break;
+      case 'removeHtml': result = src.replace(/<[^>]*>/g,''); break;
+      case 'removeSpecial': result = src.replace(/[^a-zA-Z0-9\s]/g,''); break;
+      case 'removeDiacritics': result = src.normalize('NFD').replace(/[\u0300-\u036f]/g,''); break;
+      case 'removeDupLines': result = [...new Set(src.split('\n'))].join('\n'); break;
+      case 'removeDupWords': result = [...new Set(src.split(/\s+/))].join(' '); break;
+    }
+    document.getElementById('out').value = result;
+  } catch(e){ document.getElementById('out').value = 'Error: '+e.message; }
 }
+
+function sortOp(type, btn){
+  const src = document.getElementById('inp').value;
+  if(!src.trim()){ showToast('Please enter text'); return; }
+  pushState(src, 'Sort: '+type);
+  highlight(btn);
+  let result = '';
+  const lines = src.split('\n');
+  try {
+    switch(type){
+      case 'az': result = [...lines].sort((a,b)=>a.toLowerCase().localeCompare(b.toLowerCase())).join('\n'); break;
+      case 'za': result = [...lines].sort((a,b)=>b.toLowerCase().localeCompare(a.toLowerCase())).join('\n'); break;
+      case 'numAsc': result = [...lines].sort((a,b)=>(parseFloat(a)||0)-(parseFloat(b)||0)).join('\n'); break;
+      case 'numDesc': result = [...lines].sort((a,b)=>(parseFloat(b)||0)-(parseFloat(a)||0)).join('\n'); break;
+      case 'lenAsc': result = [...lines].sort((a,b)=>a.length-b.length).join('\n'); break;
+      case 'lenDesc': result = [...lines].sort((a,b)=>b.length-a.length).join('\n'); break;
+      case 'shuffle': result = shuffle(lines).join('\n'); break;
+      case 'reverseLines': result = [...lines].reverse().join('\n'); break;
+      case 'wordsAz': result = src.split(/\s+/).sort((a,b)=>a.toLowerCase().localeCompare(b.toLowerCase())).join(' '); break;
+      case 'wordsZa': result = src.split(/\s+/).sort((a,b)=>b.toLowerCase().localeCompare(a.toLowerCase())).join(' '); break;
+      case 'shuffleWords': result = shuffle(src.split(/\s+/)).join(' '); break;
+    }
+    document.getElementById('out').value = result;
+  } catch(e){ document.getElementById('out').value = 'Error: '+e.message; }
+}
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function lineOp(type, btn){
+  const src = document.getElementById('inp').value;
+  if(!src.trim()){ showToast('Please enter text'); return; }
+  pushState(src, 'Line: '+type);
+  highlight(btn);
+  let result = '';
+  const lines = src.split('\n');
+  try {
+    switch(type){
+      case 'addNumbers': result = lines.map((l,i)=>`${i+1}. ${l}`).join('\n'); break;
+      case 'removeNumbers': result = lines.map(l=>l.replace(/^\s*\d+[\.\)]\s*/,'')).join('\n'); break;
+      case 'wrap': {
+        const w = parseInt(document.getElementById('wrapWidth').value)||80;
+        result = lines.map(l=>{
+          if(l.length<=w) return l;
+          const out = [];
+          let cur = '';
+          l.split(/\s+/).forEach(word=>{
+            if((cur+' '+word).trim().length > w){ out.push(cur.trim()); cur = word; }
+            else cur = (cur+' '+word).trim();
+          });
+          if(cur) out.push(cur);
+          return out.join('\n');
+        }).join('\n');
+        break;
+      }
+      case 'indent': result = lines.map(l=>'    '+l).join('\n'); break;
+      case 'unindent': result = lines.map(l=>l.replace(/^(    |\t)/,'')).join('\n'); break;
+      case 'addPrefix': { const p = document.getElementById('affixText').value; result = lines.map(l=>p+l).join('\n'); break; }
+      case 'addSuffix': { const s = document.getElementById('affixText').value; result = lines.map(l=>l+s).join('\n'); break; }
+      case 'joinComma': result = lines.filter(l=>l.trim()).join(', '); break;
+      case 'joinSpace': result = lines.filter(l=>l.trim()).join(' '); break;
+      case 'splitByComma': result = src.split(',').map(s=>s.trim()).join('\n'); break;
+      case 'splitBySpace': result = src.split(/\s+/).filter(Boolean).join('\n'); break;
+    }
+    document.getElementById('out').value = result;
+  } catch(e){ document.getElementById('out').value = 'Error: '+e.message; }
+}
+
+function findReplace(previewOnly){
+  const src = document.getElementById('inp').value;
+  const find = document.getElementById('findText').value;
+  const repl = document.getElementById('replaceText').value;
+  const caseS = document.getElementById('findCase').checked;
+  const regex = document.getElementById('findRegex').checked;
+  const whole = document.getElementById('findWhole').checked;
+  const info = document.getElementById('findInfo');
+  if(!find){ info.innerText = 'Enter text to find.'; return; }
+  try {
+    let pattern = find;
+    if(!regex) pattern = pattern.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    if(whole) pattern = '\\b'+pattern+'\\b';
+    const flags = caseS? 'g' : 'gi';
+    const re = new RegExp(pattern, flags);
+    const matches = src.match(re) || [];
+    info.innerText = `Found ${matches.length} match${matches.length!==1?'es':''}.`;
+    if(previewOnly) return;
+    pushState(src, 'Replace: '+find);
+    document.getElementById('out').value = src.replace(re, repl);
+    showToast(`Replaced ${matches.length} match${matches.length!==1?'es':''}`);
+  } catch(e){ info.innerText = 'Error: '+e.message; }
+}
+
+function _copyText(text){
+  if(navigator.clipboard && window.isSecureContext){
+    return navigator.clipboard.writeText(text);
+  }
+  return new Promise((resolve, reject)=>{
+    try{
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.top = '-9999px';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      ok? resolve() : reject(new Error('Copy failed'));
+    }catch(e){ reject(e); }
+  });
+}
+
+function copyOut(btn){
+  const txt = document.getElementById('out').value;
+  if(!txt){ showToast('Nothing to copy'); return; }
+  const original = btn.innerHTML;
+  _copyText(txt).then(()=>{
+    btn.classList.add('btn-copied');
+    btn.innerHTML = '✓ Copied';
+    showToast('✓ Copied to clipboard!');
+    setTimeout(()=>{
+      btn.classList.remove('btn-copied');
+      btn.innerHTML = original;
+    }, 1500);
+  }).catch(()=>showToast('Copy failed'));
+}
+
+function downloadOut(format){
+  const txt = document.getElementById('out').value;
+  if(!txt){ showToast('Nothing to download'); return; }
+  let content = txt, filename = 'output', mime = 'text/plain';
+  const ts = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+  switch(format){
+    case 'txt': filename = `caseforge-${ts}.txt`; break;
+    case 'md': content = '# Output\n\n```\n'+txt+'\n```\n'; filename = `caseforge-${ts}.md`; mime='text/markdown'; break;
+    case 'html': content = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>CaseForge Output</title></head><body><pre>${escapeHtml(txt)}</pre></body></html>`; filename = `caseforge-${ts}.html`; mime='text/html'; break;
+    case 'json': content = JSON.stringify({generated:new Date().toISOString(), text:txt}, null, 2); filename = `caseforge-${ts}.json`; mime='application/json'; break;
+    case 'csv': content = 'text\n'+txt.split('\n').map(l=>`"${l.replace(/"/g,'""')}"`).join('\n'); filename = `caseforge-${ts}.csv`; mime='text/csv'; break;
+  }
+  _downloadText(content, filename, mime);
+  showToast('Downloaded '+filename);
+}
+
+function _downloadText(text, filename, mime){
+  try{
+    const blob = new Blob([text], {type:(mime||'text/plain')+';charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.rel = 'noopener';
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>{
+      if(a.parentNode) document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 300);
+  }catch(e){ showToast('Download failed: '+e.message); }
+}
+
+async function shareOut(){
+  const txt = document.getElementById('out').value;
+  if(!txt){ showToast('Nothing to share'); return; }
+  if(navigator.share && window.isSecureContext){
+    try{ await navigator.share({text:txt}); return; }catch(e){ if(e.name==='AbortError') return; }
+  }
+  try{ await _copyText(txt); showToast('✓ Copied! Paste anywhere to share.'); }
+  catch(e){ window.prompt('Copy this text manually:', txt); }
+}
+
+function speakOut(){
+  const txt = document.getElementById('out').value || document.getElementById('inp').value;
+  if(!txt){ showToast('Nothing to speak'); return; }
+  if(!('speechSynthesis' in window)){ showToast('Speech not supported'); return; }
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(txt);
+  speechSynthesis.speak(u);
+  showToast('🔊 Speaking...');
+}
+
+function printOut(){
+  const txt = document.getElementById('out').value;
+  if(!txt){ showToast('Nothing to print'); return; }
+  const w = window.open('', '_blank');
+  w.document.write(`<pre style="font-family:monospace;padding:20px;white-space:pre-wrap">${escapeHtml(txt)}</pre>`);
+  w.document.close();
+  w.focus();
+  setTimeout(()=>w.print(), 300);
+}
+
+function swapInOut(){
+  const inp = document.getElementById('inp');
+  const out = document.getElementById('out');
+  const tmp = inp.value;
+  inp.value = out.value;
+  out.value = tmp;
+  refreshAll();
+  showToast('⇅ Swapped');
+}
+function saveToFile(){
+  const data = { input: document.getElementById('inp').value, output: document.getElementById('out').value, savedAt: new Date().toISOString() };
+  localStorage.setItem('caseforge_draft', JSON.stringify(data));
+  showToast('💾 Draft saved');
+}
+function loadFromFile(){
+  try {
+    const d = localStorage.getItem('caseforge_draft');
+    if(!d){ showToast('No draft found'); return; }
+    const data = JSON.parse(d);
+    if(data.input) document.getElementById('inp').value = data.input;
+    if(data.output) document.getElementById('out').value = data.output;
+    refreshAll();
+    showToast('📂 Draft loaded');
+  } catch(e){ showToast('Load failed'); }
+}
+function exportAll(){
+  const data = { input: document.getElementById('inp').value, output: document.getElementById('out').value, history: state.history.map(h=>({op:h.op, time:h.time})), exportedAt: new Date().toISOString() };
+  _downloadText(JSON.stringify(data, null, 2), 'caseforge-export-'+Date.now()+'.json', 'application/json');
+  showToast('📦 Exported');
+}
+
+function previewTextColor(){ const c = document.getElementById('textColorPick').value; const p = document.getElementById('textColorPreview'); p.style.color = c; p.innerText = 'Text: '+c; }
+function applyTextColor(){ document.getElementById('out').style.color = document.getElementById('textColorPick').value; showToast('Text color applied'); }
+function clearTextColor(){ document.getElementById('out').style.color = ''; document.getElementById('textColorPreview').style.color = '#a78bfa'; document.getElementById('textColorPreview').innerText = 'Preview'; }
+function previewBgColor(){ const c = document.getElementById('bgColorPick').value; const p = document.getElementById('bgColorPreview'); p.style.background = c; p.style.color = '#000'; p.innerText = 'BG: '+c; }
+function applyBgColor(){ const out = document.getElementById('out'); out.style.background = document.getElementById('bgColorPick').value; out.style.color = '#000'; showToast('Background applied'); }
+function clearBgColor(){ const out = document.getElementById('out'); out.style.background = ''; out.style.color = ''; const p = document.getElementById('bgColorPreview'); p.style.background = '#22d3ee'; p.style.color = '#000'; p.innerText = 'Preview'; }
+function applyFont(){ document.getElementById('out').style.fontFamily = document.getElementById('fontSel').value; showToast('Font applied'); }
+function clearFont(){ document.getElementById('out').style.fontFamily = ''; }
+function applyFontSize(){ const s = document.getElementById('fontSize').value; document.getElementById('out').style.fontSize = s+'px'; showToast('Size: '+s+'px'); }
+function clearFontSize(){ document.getElementById('out').style.fontSize = ''; document.getElementById('fontSize').value = 14; }
+
+function buildEmojiPicker(){
+  const emojis = '😀😃😄😁😆😅😂🤣😊😇🙂🙃😉😌😍🥰😘😗😙😚😋😛😝😜🤪🤨🧐🤓😎🤩🥳😏😒😞😔😟😕🙁☹️😣😖😫😩🥺😢😭😤😠😡🤬🤯😳🥵🥶😱😨😰😥😓🤗🤔🤭🤫🤥😶😐😑😬🙄😯😦😧😮😲🥱😴🤤😪😵🤐🥴🤢🤮🤧😷🤒🤕🤑🤠😈👿👹👺🤡💩👻💀☠️👽👾🤖🎃😺😸😹😻😼😽🙀😿😾❤️🧡💛💚💙💜🖤🤍🤎💔❣️💕💞💓💗💖💘💝💟👍👎👌✌️🤞🤟🤘🤙👈👉👆👇☝️✋🤚🖐️🖖👋🤝🙏💪✍️💅🤳💃🕺👯👫👬👭🎉🎊🎈🎁🎂🍕🍔🍟🌭🍿🍩🍪🍰🍫🍬🍭🍮🍯☕🍵🥤🍺🍻🥂🍷🥃🍸🍹🏆🥇🥈🥉🏅🎖️🎗️🎫🎟️🎪🎭🎨🎬🎤🎧🎼🎵🎶🔥💯⚡✨⭐🌟💫💥💢💨';
+  document.getElementById('emojiGrid').innerHTML = emojis.split('').filter(c=>c.trim()).map(e=>`<button class="emoji-btn" onclick="insertEmoji('${e}')">${e}</button>`).join('');
+}
+function insertEmoji(e){ document.getElementById('inp').value += e; onInputChange(); showToast('Emoji inserted'); }
+
+window._fancyValues = {};
+function genFancy(){
+  try {
+    const t = document.getElementById('inp').value || 'test';
+    const bubbleMap = {'a':'ⓐ','b':'ⓑ','c':'ⓒ','d':'ⓓ','e':'ⓔ','f':'ⓕ','g':'ⓖ','h':'ⓗ','i':'ⓘ','j':'ⓙ','k':'ⓚ','l':'ⓛ','m':'ⓜ','n':'ⓝ','o':'ⓞ','p':'ⓟ','q':'ⓠ','r':'ⓡ','s':'ⓢ','t':'ⓣ','u':'ⓤ','v':'ⓥ','w':'ⓦ','x':'ⓧ','y':'ⓨ','z':'ⓩ','A':'Ⓐ','B':'Ⓑ','C':'Ⓒ','D':'Ⓓ','E':'Ⓔ','F':'Ⓕ','G':'Ⓖ','H':'Ⓗ','I':'Ⓘ','J':'Ⓙ','K':'Ⓚ','L':'Ⓛ','M':'Ⓜ','N':'Ⓝ','O':'Ⓞ','P':'Ⓟ','Q':'Ⓠ','R':'Ⓡ','S':'Ⓢ','T':'Ⓣ','U':'Ⓤ','V':'Ⓥ','W':'Ⓦ','X':'Ⓧ','Y':'Ⓨ','Z':'Ⓩ'};
+    const upsideMap = {'a':'ɐ','b':'q','c':'ɔ','d':'p','e':'ǝ','f':'ɟ','g':'ƃ','h':'ɥ','i':'ᴉ','j':'ɾ','k':'ʞ','l':'ʅ','m':'ɯ','n':'u','o':'o','p':'d','q':'b','r':'ɹ','s':'s','t':'ʇ','u':'n','v':'ʌ','w':'ʍ','x':'x','y':'ʎ','z':'z'};
+    const smallMap = {'a':'ᴀ','b':'ʙ','c':'ᴄ','d':'ᴅ','e':'ᴇ','f':'ꜰ','g':'ɢ','h':'ʜ','i':'ɪ','j':'ᴊ','k':'ᴋ','l':'ʟ','m':'ᴍ','n':'ɴ','o':'ᴏ','p':'ᴘ','q':'ǫ','r':'ʀ','s':'ꜱ','t':'ᴛ','u':'ᴜ','v':'ᴠ','w':'ᴡ','x':'x','y':'ʏ','z':'ᴢ'};
+    const superMap = {'a':'ᵃ','b':'ᵇ','c':'ᶜ','d':'ᵈ','e':'ᵉ','f':'ᶠ','g':'ᵍ','h':'ʰ','i':'ⁱ','j':'ʲ','k':'ᵏ','l':'ˡ','m':'ᵐ','n':'ⁿ','o':'ᵒ','p':'ᵖ','q':'ᑫ','r':'ʳ','s':'ˢ','t':'ᵗ','u':'ᵘ','v':'ᵛ','w':'ʷ','x':'ˣ','y':'ʸ','z':'ᶻ','0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
+    const subMap = {'a':'ₐ','e':'ₑ','h':'ₕ','i':'ᵢ','j':'ⱼ','k':'ₖ','l':'ₗ','m':'ₘ','n':'ₙ','o':'ₒ','p':'ₚ','r':'ᵣ','s':'ₛ','t':'ₜ','u':'ᵤ','v':'ᵥ','x':'ₓ','0':'₀','1':'₁','2':'₂','3':'₃','4':'₄','5':'₅','6':'₆','7':'₇','8':'₈','9':'₉'};
+
+    const list = [
+      {key:'bubble', name:'🔥 Bubble', fn:s=>s.replace(/[A-Za-z0-9]/g,c=>bubbleMap[c]||c)},
+      {key:'upside', name:'🙃 Upside Down', fn:s=>s.toLowerCase().split('').map(c=>upsideMap[c]||c).reverse().join('')},
+      {key:'boldsans', name:'⚡ Bold Sans', fn:s=>toMathFont(s, 0x1D5D4, 0x1D5EE, 0x1D7EC)},
+      {key:'bolditalic', name:'💌 Bold Italic', fn:s=>toMathFont(s, 0x1D63C, 0x1D656, 0x1D7EC)},
+      {key:'cursive', name:'🌸 Cursive', fn:s=>toMathFont(s, 0x1D4D0, 0x1D4EA, 0x1D7EC)},
+      {key:'fullwidth', name:'📦 Fullwidth', fn:s=>s.split('').map(c=>{const cd=c.charCodeAt(0); if(cd>=33&&cd<=126) return String.fromCharCode(0xFF00+cd-32); return c;}).join('')},
+      {key:'blackletter', name:'🖤 Blackletter', fn:s=>toMathFont(s, 0x1D56C, 0x1D586, 0x1D7EC)},
+      {key:'sparkles', name:'✨ Sparkles', fn:s=>'✨ '+s.split('').join(' ✨ ')+' ✨'},
+      {key:'smallcaps', name:'🔠 Small Caps', fn:s=>s.toLowerCase().split('').map(c=>smallMap[c]||c).join('')},
+      {key:'circled', name:'⭕ Circled', fn:s=>s.replace(/[A-Za-z]/g,c=>{const code=c.charCodeAt(0); if(code>=97) return String.fromCodePoint(0x24D0+code-97); return String.fromCodePoint(0x24B6+code-65);})},
+      {key:'zalgo', name:'💀 Zalgo', fn:s=>s.split('').map(c=>c+'\u0308'+'\u0337').join('')},
+      {key:'double', name:'🎩 Double Struck', fn:s=>toMathFont(s, 0x1D538, 0x1D552, 0x1D7D8)},
+      {key:'super', name:'⬆️ Superscript', fn:s=>s.toLowerCase().split('').map(c=>superMap[c]||c).join('')},
+      {key:'sub', name:'⬇️ Subscript', fn:s=>s.toLowerCase().split('').map(c=>subMap[c]||c).join('')},
+      {key:'wide', name:'↔️ Wide Spaced', fn:s=>s.split('').join(' ')}
+    ];
+
+    window._fancyValues = {};
+    let html = '';
+    list.forEach((st, i)=>{
+      const v = st.fn(t);
+      const id = 'f_'+i;
+      window._fancyValues[id] = v;
+      window._fancyValues[st.key] = v;
+      html += `<div class="fancy-item"><div class="small">${st.name}</div><div class="fancy-preview" id="${id}">${escapeHtml(v)}</div><div class="btn-row"><button class="btn" onclick="copyFancy(this,'${id}')">📋 Copy</button><button class="btn" onclick="downloadFancy('${st.key}','${st.name}')">💾 Download</button><button class="btn" onclick="shareFancy('${st.key}')">📤 Share</button></div></div>`;
+    });
+    document.getElementById('fancyBox').innerHTML = html;
+  } catch(e){ document.getElementById('fancyBox').innerHTML = '<div class="small">Type to see fancy styles</div>'; }
+}
+
+function copyFancy(btn, id){
+  const txt = window._fancyValues[id] || '';
+  const original = btn.innerHTML;
+  _copyText(txt).then(()=>{
+    btn.classList.add('btn-copied');
+    btn.innerHTML = '✓ Copied';
+    showToast('✓ Copied!');
+    setTimeout(()=>{ btn.classList.remove('btn-copied'); btn.innerHTML = original; }, 1500);
+  }).catch(()=>showToast('Copy failed'));
+}
+function downloadFancy(key, name){
+  const txt = window._fancyValues[key] || '';
+  const safeName = name.replace(/[^a-zA-Z0-9_-]/g,'_').toLowerCase();
+  _downloadText(txt, 'fancy_'+safeName+'.txt', 'text/plain');
+  showToast('Downloaded fancy_'+safeName+'.txt');
+}
+async function shareFancy(key){
+  const txt = window._fancyValues[key] || '';
+  if(navigator.share && window.isSecureContext){ try{ await navigator.share({text:txt}); return; }catch(e){ if(e.name==='AbortError') return; } }
+  try{ await _copyText(txt); showToast('✓ Copied! Paste to share.'); }
+  catch(e){ window.prompt('Copy manually:', txt); }
+}
+
+function highlight(btn){ if(!btn) return; btn.classList.add('btn-highlight'); setTimeout(()=>btn.classList.remove('btn-highlight'), 900); }
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+async function pasteClip(){
+  try { const txt = await navigator.clipboard.readText(); pushState(document.getElementById('inp').value, 'Paste'); document.getElementById('inp').value = txt; refreshAll(); showToast('📋 Pasted'); }
+  catch(e){ showToast('Allow clipboard access'); }
+}
+function clearAll(){
+  pushState(document.getElementById('inp').value, 'Clear All');
+  document.getElementById('inp').value = '';
+  document.getElementById('out').value = '';
+  clearTextColor(); clearBgColor(); clearFont(); clearFontSize();
+  refreshAll();
+  showToast('🗑️ Cleared');
+}
+function loadSample(){
+  const samples = ['Hello World! This is a Test Case.\nApple Mango Zebra.\n123 Numbers 456.', 'The quick brown fox jumps over the lazy dog.', 'CaseForge PRO 2.0\nAdvanced Text Toolkit\nFast • Free • Powerful'];
+  pushState(document.getElementById('inp').value, 'Load Sample');
+  document.getElementById('inp').value = samples[Math.floor(Math.random()*samples.length)];
+  refreshAll();
+  showToast('🎲 Sample loaded');
+}
+
+function handleDragOver(e){ e.preventDefault(); document.getElementById('dropZone').classList.add('dragover'); }
+function handleDragLeave(){ document.getElementById('dropZone').classList.remove('dragover'); }
+function handleDrop(e){ e.preventDefault(); document.getElementById('dropZone').classList.remove('dragover'); handleFiles(e.dataTransfer.files); }
+
+async function handleFiles(files){
+  let allText = '';
+  const total = files.length;
+  let c = 0;
+  for(const f of files){
+    const name = f.name.toLowerCase();
+    if(name.endsWith('.pdf')){
+      try {
+        const buf = await f.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({data:buf}).promise;
+        let txt = '';
+        for(let i=1; i<=pdf.numPages; i++){
+          const page = await pdf.getPage(i);
+          const content = await page.getTextContent();
+          txt += content.items.map(it=>it.str).join(' ')+'\n';
+        }
+        allText += txt+'\n';
+      } catch(e){ allText += '[PDF error]\n'; }
+    } else if(name.endsWith('.docx')){
+      try {
+        const buf = await f.arrayBuffer();
+        const res = await mammoth.extractRawText({arrayBuffer:buf});
+        allText += res.value+'\n';
+      } catch(e){ allText += '[DOCX error]\n'; }
+    } else {
+      allText += await f.text()+'\n';
+    }
+    c++;
+    if(c===total){
+      pushState(document.getElementById('inp').value, 'File Upload');
+      document.getElementById('inp').value = allText.trim();
+      refreshAll();
+      showToast('📁 Loaded '+total+' file(s)');
+    }
+  }
+}
+
+function toggleArticle(head){
+  const item = head.parentElement;
+  item.classList.toggle('open');
+  const arrow = head.querySelector('.arrow');
+  if(item.classList.contains('open')) arrow.innerText = '✕';
+  else arrow.innerText = '＋';
+}
+
+function openPage(type){
+  const titles = { about:'About CaseForge PRO', privacy:'Privacy Policy', terms:'Terms & Conditions', contact:'Contact Us', disclaimer:'Disclaimer' };
+  const contents = {
+    about:`<h4 style="color:var(--accent2)">What is CaseForge PRO?</h4><p><b>CaseForge PRO 2.0</b> is a 100% free advanced text toolkit. It offers 40+ features: 23 case conversions, binary/hex/base64/URL/HTML/Morse/Caesar conversions, cleanup, sorting, line tools, find & replace with regex, text analysis, and 15 fancy text styles.</p><p style="margin-top:12px"><b>© 2026 CaseForge PRO 2.0</b></p>`,
+    contact:`<h4 style="color:var(--accent2)">Get in Touch</h4><p>Email: support@caseforgepro.com<br>Business: business@caseforgepro.com<br>Bugs: bugs@caseforgepro.com</p><p>Response time: 24-48 hours</p>`,
+    disclaimer:`<h4 style="color:var(--accent2)">Disclaimer</h4><p>All tools are provided for general and educational purposes only. No warranty. Not responsible for any loss or damage.</p>`,
+    privacy:`<h4 style="color:var(--accent2)">Privacy Policy</h4><p>Your text is never sent to any server — all processing is client-side. We may use anonymous cookies via Google Analytics and AdSense.</p>`,
+    terms:`<h4 style="color:var(--accent2)">Terms & Conditions</h4><p>Personal and commercial use permitted. Illegal activity prohibited. All content copyright CaseForge PRO.</p>`
+  };
+  document.getElementById('modalTitle').innerText = titles[type]||type;
+  document.getElementById('modalContent').innerHTML = contents[type]||'';
+  document.getElementById('pageModal').style.display = 'block';
+}
+function closePage(){ document.getElementById('pageModal').style.display = 'none'; }
+document.getElementById('pageModal').addEventListener('click', function(e){ if(e.target === this) closePage(); });
+
+function attachShortcuts(){
+  document.addEventListener('keydown', function(e){
+    if(e.ctrlKey || e.metaKey){
+      if(e.key === 'z' && !e.shiftKey){ e.preventDefault(); undoAction(); }
+      else if((e.key === 'y') || (e.key === 'z' && e.shiftKey)){ e.preventDefault(); redoAction(); }
+      else if(e.key === 's'){ e.preventDefault(); saveToFile(); }
+      else if(e.key === 'k'){ e.preventDefault(); clearAll(); }
+    }
+    if(e.key === 'Escape') closePage();
+  });
+}
+</script>
+</body>
+</html>
